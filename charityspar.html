@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CharitySpar - Turn Your Rolls Into Impact</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        nav {
+            background: #2c5f2d;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: background 0.3s;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            color: #2c5f2d;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #555;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .how-it-works {
+            background: #f9f9f9;
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .step h3 {
+            color: #2c5f2d;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #2c5f2d 0%, #097969 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .button.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .button.secondary:hover {
+            background: white;
+            color: #2c5f2d;
+        }
+
+        footer {
+            background: #1a3a1b;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="charityspar.html">CharitySpar</a></li>
+            <li><a href="completed-events.html">Completed Events</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#donate">Donate</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>CharitySpar</h1>
+        <p class="tagline">Turn Every Roll Into Impact</p>
+        <p>The revolutionary app that helps jiu-jitsu athletes raise money for charities through their training. Track your rolls, engage your supporters, and make a difference on and off the mats.</p>
+        <a href="https://charityspar.com" class="button" target="_blank">Download CharitySpar</a>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">$50K+</div>
+                <div class="stat-label">Raised for Charity</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">1,000+</div>
+                <div class="stat-label">Athletes Participating</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">25+</div>
+                <div class="stat-label">Charities Supported</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What is CharitySpar?</h2>
+            <p>CharitySpar is a mobile app that empowers jiu-jitsu athletes to turn their passion into purpose. Log your training sessions, set fundraising goals, and watch as your supporters pledge donations based on your rolls. Whether you're training for competition or just staying active, every session can make a real-world impact.</p>
+        </div>
+
+        <div class="section">
+            <h2>Key Features</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🥋</div>
+                    <h3>Track Your Rolls</h3>
+                    <p>Easily log your training sessions, sparring rounds, and competition matches in one place.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💚</div>
+                    <h3>Choose Your Cause</h3>
+                    <p>Select from verified charities or add your own. Support environmental, social, or health causes you care about.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Share Your Journey</h3>
+                    <p>Create shareable fundraising pages and updates to engage your network and grow your impact.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Track Your Impact</h3>
+                    <p>See your fundraising progress, training stats, and the real-world difference you're making.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Community Challenges</h3>
+                    <p>Join team fundraising challenges, compete with friends, and rally the BJJ community around causes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure & Transparent</h3>
+                    <p>100% of donations go directly to charities through trusted payment processing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="how-it-works">
+        <h2 style="text-align: center; color: #2c5f2d; font-size: 2.5rem; margin-bottom: 1rem;">How It Works</h2>
+        <p style="text-align: center; color: #555; font-size: 1.1rem; max-width: 800px; margin: 0 auto 2rem;">Getting started is simple. In just a few steps, you can start turning your training into charitable impact.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Create Your Campaign</h3>
+                <p>Choose a charity and set your fundraising goal. Create a compelling story about why you're rolling for this cause.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Get Pledges</h3>
+                <p>Share your campaign with friends, family, and the BJJ community. Supporters pledge per roll or flat donations.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Train & Log</h3>
+                <p>Hit the mats and log your training sessions in the app. Watch your impact grow with every roll.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Make an Impact</h3>
+                <p>Funds are automatically sent to your chosen charity. Share updates and celebrate your success!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Why CharitySpar?</h2>
+            <p style="margin-bottom: 2rem;">The jiu-jitsu community is built on principles of respect, discipline, and mutual growth. CharitySpar extends these values beyond the gym, giving athletes a platform to leverage their training for good. Whether you're raising funds for environmental conservation, supporting underprivileged youth programs, or funding medical research, CharitySpar makes it easy to combine your passion for BJJ with meaningful charitable action.</p>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Join hundreds of athletes who are turning their rolls into real-world impact</p>
+        <a href="https://charityspar.com" class="button" target="_blank">Get Started Today</a>
+        <a href="index.html" class="button secondary">Back to BJJ For The Planet</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 BJJ For The Planet. CharitySpar is a proud partner in protecting ecosystems through martial arts.</p>
+    </footer>
+</body>
+</html>

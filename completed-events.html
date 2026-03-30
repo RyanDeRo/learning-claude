@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Events - BJJ For The Planet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        nav {
+            background: #2c5f2d;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: background 0.3s;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(44, 95, 45, 0.9), rgba(44, 95, 45, 0.9)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23097969" width="1200" height="400"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .event {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .event-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+        }
+
+        .event-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-date {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .event-content {
+            padding: 2rem;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .event-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .event-section h3 {
+            color: #2c5f2d;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .event-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .event-section li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .event-section li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2c5f2d;
+            font-weight: bold;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .testimonial {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author {
+            color: #2c5f2d;
+            font-weight: bold;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .photo-placeholder {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            padding-top: 75%;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder:after {
+            content: "📷";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .cta-section {
+            background: #2c5f2d;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .cta-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .button {
+            display: inline-block;
+            background: white;
+            color: #2c5f2d;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        footer {
+            background: #1a3a1b;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="charityspar.html">CharitySpar</a></li>
+            <li><a href="completed-events.html">Completed Events</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#donate">Donate</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1>Completed Events</h1>
+        <p>Celebrating the impact we've made together through training, community service, and environmental conservation</p>
+    </div>
+
+    <div class="container">
+        <div class="event">
+            <div class="event-header">
+                <h2>Mancora, Peru Charity Retreat</h2>
+                <div class="event-date">March 2026</div>
+            </div>
+            <div class="event-content">
+                <p style="font-size: 1.1rem; margin-bottom: 2rem;">Our inaugural charity retreat brought together jiu-jitsu practitioners from around the world to the beautiful coastal town of Mancora, Peru. In partnership with Guardian Gyms, we combined intensive BJJ training with meaningful conservation work in the Amazon rainforest region and local community support initiatives.</p>
+
+                <div class="impact-stats">
+                    <div class="stat">
+                        <span class="stat-number">45</span>
+                        <div class="stat-label">Participants</div>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">500+</span>
+                        <div class="stat-label">Trees Planted</div>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">$15K</span>
+                        <div class="stat-label">Funds Raised</div>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">3</span>
+                        <div class="stat-label">Communities Served</div>
+                    </div>
+                </div>
+
+                <div class="event-grid">
+                    <div class="event-section">
+                        <h3>Training Highlights</h3>
+                        <ul>
+                            <li>Daily BJJ classes with black belt instructors</li>
+                            <li>Open mat sessions and technique workshops</li>
+                            <li>Beach training and conditioning</li>
+                            <li>Competition preparation seminars</li>
+                            <li>Cultural exchange with local martial artists</li>
+                        </ul>
+                    </div>
+
+                    <div class="event-section">
+                        <h3>Conservation & Community Work</h3>
+                        <ul>
+                            <li>Rainforest reforestation project</li>
+                            <li>Beach and coastal cleanup initiatives</li>
+                            <li>English language classes for local youth</li>
+                            <li>School supply and equipment donations</li>
+                            <li>Partnership with local conservation NGOs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-text">"This retreat changed my perspective on what it means to be a martial artist. Training alongside people from different countries while working together to plant trees and help the local community was an experience I'll never forget. BJJ For The Planet showed me that we can use our passion for jiu-jitsu to make a real difference in the world."</div>
+                    <div class="testimonial-author">— Sarah Martinez, Purple Belt, California</div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-text">"The combination of world-class training and meaningful conservation work made this more than just a vacation—it was a mission. Seeing the direct impact we had on the rainforest and local schools reminded me why I love this community. I can't wait for the next event!"</div>
+                    <div class="testimonial-author">— Marcus Johnson, Brown Belt, New York</div>
+                </div>
+
+                <h3 style="color: #2c5f2d; margin: 2rem 0 1rem;">Photo Gallery</h3>
+                <div class="photo-gallery">
+                    <div class="photo-placeholder"></div>
+                    <div class="photo-placeholder"></div>
+                    <div class="photo-placeholder"></div>
+                    <div class="photo-placeholder"></div>
+                    <div class="photo-placeholder"></div>
+                    <div class="photo-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <h2>Want to Join the Next Event?</h2>
+        <p style="font-size: 1.2rem; margin: 1rem 0 2rem;">Stay tuned for announcements about our upcoming charity retreats</p>
+        <a href="index.html" class="button">Back to Home</a>
+        <a href="charityspar.html" class="button">Try CharitySpar</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 BJJ For The Planet. Protecting ecosystems through martial arts.</p>
+    </footer>
+</body>
+</html>
