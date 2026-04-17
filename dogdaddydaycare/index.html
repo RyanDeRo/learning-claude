@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Daddy Daycare - Premium Dog Boarding in Philadelphia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        nav {
+            background: #4a5568;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #a0aec0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section Styling */
+        section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
+        section h2 {
+            color: #667eea;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f4f8" width="1200" height="600"/></svg>');
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            color: white;
+            border: none;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: #f7fafc;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 2px solid #e2e8f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+        }
+
+        .pet-info {
+            background: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .pet-info h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .pet {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        /* Services */
+        .service-list {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .service-item {
+            background: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .service-item h3 {
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Footer */
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🐾 Dog Daddy Daycare</h1>
+        <p>Your Dog's Home Away From Home in Philadelphia</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#why-choose-us">Why Choose Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div id="home" class="hero">
+            <h2>Welcome to Dog Daddy Daycare!</h2>
+            <p>Professional, loving dog boarding and daycare in a comfortable home environment</p>
+            <a href="#contact" class="cta-button">Book Your Dog's Stay Today</a>
+        </div>
+
+        <section id="about">
+            <h2>About Dog Daddy Daycare</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Welcome! At Dog Daddy Daycare, your furry friend isn't just a guest—they're part of the family. Located in Philadelphia, we offer premium in-home dog boarding and daycare services where your pup gets to enjoy all the comforts of a real home.</p>
+
+                    <p>Your dog will have access to a spacious, fully fenced yard for safe outdoor play, and we're conveniently located near a beautiful park for daily walks and adventures. Unlike traditional kennels, your dog will sleep comfortably inside the home and receive personalized attention throughout their stay.</p>
+
+                    <p>Plus, they'll have the chance to socialize with our friendly resident dog, Vito, and even meet our curious cat, Olive!</p>
+                </div>
+
+                <div class="pet-info">
+                    <h3>Meet the Crew</h3>
+                    <div class="pet">
+                        <strong>🐕 Vito (Our Dog)</strong>
+                        <p>Your dog's new best friend! Vito loves having playmates and is great with other dogs.</p>
+                    </div>
+                    <div class="pet">
+                        <strong>🐱 Olive (Our Cat)</strong>
+                        <p>Our resident feline who's used to dogs and adds to the cozy home atmosphere.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services">
+            <h2>Services We Offer</h2>
+            <div class="service-list">
+                <div class="service-item">
+                    <h3>🏠 In-Home Dog Boarding</h3>
+                    <p>Your dog stays at our home with full access to comfortable indoor spaces. They'll sleep inside, relax on the couch, and be treated like family—not kept in a kennel or cage.</p>
+                </div>
+
+                <div class="service-item">
+                    <h3>🌞 Doggy Daycare</h3>
+                    <p>Drop your pup off for the day while you're at work or running errands. They'll enjoy playtime in our fenced yard, walks to the park, and socialization with Vito.</p>
+                </div>
+
+                <div class="service-item">
+                    <h3>🎾 Daily Exercise & Play</h3>
+                    <p>Multiple play sessions throughout the day in our secure, fenced yard plus walks to the nearby park for fresh air and exploration.</p>
+                </div>
+
+                <div class="service-item">
+                    <h3>❤️ Personalized Care</h3>
+                    <p>We accommodate special needs, dietary requirements, medication schedules, and any other specific care instructions for your dog.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-choose-us">
+            <h2>Why Choose Dog Daddy Daycare?</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🏡</div>
+                    <h3>Home Environment</h3>
+                    <p>No cages or kennels—your dog stays in a comfortable, loving home just like their own.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌳</div>
+                    <h3>Fenced Yard</h3>
+                    <p>Spacious, secure outdoor space where your dog can run, play, and explore safely.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🏞️</div>
+                    <h3>Near a Park</h3>
+                    <p>Daily walks to the local park for exercise, socialization, and new adventures.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🐕</div>
+                    <h3>Socialization</h3>
+                    <p>Opportunity to play and socialize with our friendly dog Vito in a supervised environment.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👨</div>
+                    <h3>Experienced Care</h3>
+                    <p>Dedicated, attentive care from someone who genuinely loves dogs and treats them like family.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Philadelphia Based</h3>
+                    <p>Conveniently located to serve dog owners throughout the Philadelphia area.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get in Touch</h2>
+            <div class="contact-info">
+                <h3>Ready to Book Your Dog's Stay?</h3>
+                <p>Serving Philadelphia and surrounding areas</p>
+                <p><strong>📧 Email:</strong> contact@dogdaddydaycare.com</p>
+                <p><strong>📱 Phone:</strong> (215) XXX-XXXX</p>
+                <p style="margin-top: 1.5rem; font-size: 1rem;">Contact us today to schedule a meet-and-greet and discuss your dog's needs!</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Dog Daddy Daycare. Serving Philadelphia with Love and Care.</p>
+        <p>Your dog's happiness is our priority 🐾</p>
+    </footer>
+</body>
+</html>
