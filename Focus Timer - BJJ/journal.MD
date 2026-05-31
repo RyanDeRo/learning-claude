@@ -92,3 +92,32 @@ This file tracks progress session-by-session. Each entry documents what was buil
 - Add more polish to reveal screens (animations)
 
 **Status:** ✅ Phase 1 Complete — Core mechanic proven!
+
+---
+
+## 2026-05-31 — Git Commit: Phase 1 Saved
+
+**What we did:**
+- ✅ Created `.gitignore` to exclude node_modules and build files
+- ✅ Staged all 21 project files
+- ✅ Created git commit with descriptive message
+- ✅ Verified commit (ID: 4a70a19)
+
+**Education covered:**
+- Explained what git is (version control, savepoints)
+- Explained .gitignore (what to exclude and why)
+- Walked through 3-step commit process: stage → commit → verify
+- Explained git vocabulary (staging, commit, commit message, commit ID)
+- Explained why node_modules isn't committed (can be reinstalled)
+
+**Commit details:**
+- Commit ID: `4a70a19`
+- Files committed: 21 files, 3,651 lines
+- Message: "Initialize FightFocus POC: Phase 1 - Timer + Lock Detection"
+
+**Next steps:**
+- Begin Phase 2: XP system and belt progression
+- Or: Test the current app and provide feedback
+- Or: Learn more about the codebase structure
+
+**Status:** ✅ Phase 1 saved to git history
