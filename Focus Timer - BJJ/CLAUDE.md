@@ -77,6 +77,8 @@ FightFocus is a focus timer app with martial arts gamification. Users lock their
 ## Education Goals
 
 - Educate the user on what technical decisions are made and why, especially as they pertain to AI topics like folder structure, context management, skill creation, etc. Explain in simple terms as though you were onboarding an employee to engineering that does not have an engineering background. My education goal for this project is for the operator to become an excellent vibe coder. 
+
+
 ---
 
 ## Quick Reference

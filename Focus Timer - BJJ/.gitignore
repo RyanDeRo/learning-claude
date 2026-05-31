@@ -14,6 +14,9 @@ build/
 .vscode/
 .idea/
 
+# Claude Code memory
+.claude/
+
 # OS files
 .DS_Store
 Thumbs.db
