@@ -121,3 +121,37 @@ This file tracks progress session-by-session. Each entry documents what was buil
 - Or: Learn more about the codebase structure
 
 **Status:** ✅ Phase 1 saved to git history
+
+---
+
+## 2026-05-31 — Documentation Organization & File Structure
+
+**What we discussed:**
+- Reviewed unsaved files (CLAUDE.md, PRD.MD, .claude/)
+- Saved PRD.MD and updated CLAUDE.md with education goals
+- Added .claude/ to .gitignore (memory folder shouldn't be committed)
+- Discussed whether to organize docs into folders vs keeping at root
+
+**Education covered:**
+- Clarified what "skills" are (executable commands, not folder structure)
+- Explained CLAUDE.md convention (stays at root by convention)
+- Discussed pros/cons of flat vs nested doc structure
+- Explained "don't create structure until you need it" principle
+- Why simple is better for AI-assisted development
+
+**Decisions made:**
+- Keep docs at root (CLAUDE.md, PRD.MD, journal.MD)
+- Don't create premature folder organization
+- Can refactor later if root gets cluttered
+
+**Files committed:**
+- Commit ID: `7593365`
+- Added: PRD.MD, updated CLAUDE.md, updated .gitignore
+- All project files now saved (3 commits total)
+
+**Next steps:**
+- Ready for Phase 2: XP system and belt progression
+- Or: Test the current app implementation
+- Or: Continue learning about the codebase
+
+**Status:** ✅ All files saved, structure finalized
