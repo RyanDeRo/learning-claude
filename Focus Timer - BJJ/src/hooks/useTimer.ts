@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Session, SessionState } from '@/types/session'
+import { useProgressionStore } from '@/store/progressionStore'
 
 /**
  * Core timer hook that manages focus session logic
@@ -17,6 +18,7 @@ export function useTimer() {
   const [session, setSession] = useState<Session | null>(null)
   const [elapsedTime, setElapsedTime] = useState(0) // Seconds elapsed
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const awardXP = useProgressionStore((state) => state.awardXP)
 
   // Start a new focus session
   const startSession = useCallback((durationInSeconds: number) => {
@@ -46,6 +48,9 @@ export function useTimer() {
     const elapsed = (now - session.startTimestamp) / 1000 // Convert to seconds
     const goalReached = elapsed >= session.goalDuration
 
+    // Award XP if session was successful
+    const xpEarned = goalReached ? awardXP(session.goalDuration) : 0
+
     setSession(prev => {
       if (!prev) return prev
 
@@ -54,7 +59,7 @@ export function useTimer() {
         returnTimestamp: now,
         state: goalReached ? 'session_complete' : 'session_broken',
         timeCompleted: elapsed,
-        xpEarned: goalReached ? 100 : 0, // Fixed XP for now, will be dynamic later
+        xpEarned,
       }
     })
 
@@ -62,8 +67,9 @@ export function useTimer() {
       elapsed: `${Math.floor(elapsed)}s`,
       goal: `${session.goalDuration}s`,
       percentage: `${Math.floor((elapsed / session.goalDuration) * 100)}%`,
+      xpEarned: goalReached ? `+${xpEarned} XP` : 'No XP',
     })
-  }, [session])
+  }, [session, awardXP])
 
   // Reset session (start new one)
   const resetSession = useCallback(() => {

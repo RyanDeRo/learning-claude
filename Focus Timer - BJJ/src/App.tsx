@@ -5,6 +5,9 @@ import { TimerControls } from '@/components/timer/TimerControls'
 import { RevealScreen } from '@/components/session/RevealScreen'
 import { BrokenScreen } from '@/components/session/BrokenScreen'
 import { AvatarRenderer } from '@/components/avatar/AvatarRenderer'
+import { BeltDisplay } from '@/components/progression/BeltDisplay'
+import { XPBar } from '@/components/progression/XPBar'
+import { useProgressionStore } from '@/store/progressionStore'
 
 /**
  * 🎓 MAIN APP COMPONENT
@@ -30,6 +33,9 @@ function App() {
     resetSession,
     isRunning,
   } = useTimer()
+
+  // Get progression state
+  const { totalXP, currentBelt, completedSessions } = useProgressionStore()
 
   // Lock detection - only active when session is running
   useLockDetection(
@@ -67,6 +73,18 @@ function App() {
         </p>
 
         <div className="bg-pixel-panel p-8 rounded-lg shadow-2xl">
+          {/* Progression info */}
+          <div className="mb-6 space-y-4">
+            <div className="flex justify-between items-center">
+              <BeltDisplay rank={currentBelt} />
+              <div className="text-right">
+                <div className="text-2xl font-bold">{totalXP}</div>
+                <div className="text-xs text-gray-400">Total XP</div>
+              </div>
+            </div>
+            <XPBar currentXP={totalXP} />
+          </div>
+
           {/* Avatar - shows what your fighter is doing */}
           <div className="mb-8 flex justify-center">
             <AvatarRenderer
@@ -90,6 +108,13 @@ function App() {
               Lock your phone or switch tabs to test the mechanic
             </p>
           )}
+
+          {/* Session stats */}
+          <div className="mt-6 pt-4 border-t border-gray-700 text-center">
+            <div className="text-sm text-gray-400">
+              {completedSessions} {completedSessions === 1 ? 'session' : 'sessions'} completed
+            </div>
+          </div>
         </div>
       </div>
 
