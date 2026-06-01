@@ -1,4 +1,5 @@
 import { Session } from '@/types/session'
+import { AvatarRenderer } from '@/components/avatar/AvatarRenderer'
 
 /**
  * Success screen - shown when user completes a session
@@ -15,8 +16,10 @@ export function RevealScreen({ session, onContinue }: RevealScreenProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
       <div className="bg-pixel-panel p-8 rounded-lg max-w-md w-full text-center">
-        {/* Success animation placeholder */}
-        <div className="text-6xl mb-4">🎉</div>
+        {/* Avatar celebrating */}
+        <div className="mb-6 flex justify-center">
+          <AvatarRenderer state="celebration" size={160} />
+        </div>
 
         <h2 className="font-pixel text-xl mb-4 text-pixel-accent">
           SESSION COMPLETE!

@@ -2,6 +2,8 @@
 
 This file tracks progress session-by-session. Each entry documents what was built, what decisions were made, and what comes next.
 
+**🔗 Test App:** http://localhost:5174/ (run `npm run dev` to start)
+
 ---
 
 ## 2026-05-31 — Project Setup & CLAUDE.md Created
@@ -155,3 +157,51 @@ This file tracks progress session-by-session. Each entry documents what was buil
 - Or: Continue learning about the codebase
 
 **Status:** ✅ All files saved, structure finalized
+
+---
+
+## 2026-05-31 — Phase 2 Started: Placeholder Avatar Added
+
+**What we did:**
+- Discussed POC phase timeline and when avatar creation happens
+- Confirmed sticking with the original plan (progression before full avatar system)
+- Built placeholder avatar component using emojis (simple version)
+- Integrated avatar into main screen (shows idle/training states)
+- Integrated avatar into reveal screens (celebration/discouraged states)
+- Added test app link to top of journal.MD for quick access
+
+**Files created:**
+- `src/components/avatar/AvatarRenderer.tsx` — Simple placeholder avatar (4 states)
+
+**Files modified:**
+- `src/App.tsx` — Added avatar to main screen
+- `src/components/session/RevealScreen.tsx` — Added celebrating avatar
+- `src/components/session/BrokenScreen.tsx` — Added discouraged avatar
+- `journal.MD` — Added test link to header
+
+**Technical decisions:**
+- Using emoji-based placeholder instead of pixel art (Phase 4)
+- 4 avatar states: idle, training, celebration, discouraged
+- Avatar size: 140px on home, 160px on reveal screens
+- Color-coded backgrounds for visual feedback
+
+**Education covered:**
+- Explained POC phase timeline (Phase 2→3→4)
+- Explained "lowest viable implementation" principle
+- Why placeholder first, then complex sprite system later
+- Benefits of proving concept before investing in art assets
+
+**How to test:**
+1. Open http://localhost:5174/
+2. Avatar shows 🥋 when idle
+3. Click START → avatar changes to 💪 (training)
+4. Complete session → avatar shows 🎉 (celebration)
+5. Break session early → avatar shows 😔 (discouraged)
+
+**Next steps:**
+- Phase 3: Build progression system (XP, belt ranks, progress bars)
+- Create constants for belt system and XP thresholds
+- Build progression store (Zustand)
+- Display belt rank and progress on UI
+
+**Status:** Phase 2 in progress — placeholder avatar working

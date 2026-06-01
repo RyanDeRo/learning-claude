@@ -4,6 +4,7 @@ import { TimerDisplay } from '@/components/timer/TimerDisplay'
 import { TimerControls } from '@/components/timer/TimerControls'
 import { RevealScreen } from '@/components/session/RevealScreen'
 import { BrokenScreen } from '@/components/session/BrokenScreen'
+import { AvatarRenderer } from '@/components/avatar/AvatarRenderer'
 
 /**
  * 🎓 MAIN APP COMPONENT
@@ -66,6 +67,14 @@ function App() {
         </p>
 
         <div className="bg-pixel-panel p-8 rounded-lg shadow-2xl">
+          {/* Avatar - shows what your fighter is doing */}
+          <div className="mb-8 flex justify-center">
+            <AvatarRenderer
+              state={isRunning ? 'training' : 'idle'}
+              size={140}
+            />
+          </div>
+
           <TimerDisplay seconds={remainingTime} isRunning={isRunning} />
 
           <div className="mt-8">
