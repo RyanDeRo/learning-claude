@@ -205,3 +205,64 @@ This file tracks progress session-by-session. Each entry documents what was buil
 - Display belt rank and progress on UI
 
 **Status:** Phase 2 in progress — placeholder avatar working
+
+---
+
+## 2026-05-31 — Phase 3 Complete: XP & Belt Progression System
+
+**What we did:**
+- ✅ Built complete XP calculation system
+- ✅ Created belt progression with 10 stages (white → blue belts)
+- ✅ Implemented Zustand store with localStorage persistence
+- ✅ Built belt display component with stripe rendering
+- ✅ Built XP progress bar showing advancement to next rank
+- ✅ Integrated progression into timer hook (awards XP on success)
+- ✅ Added progression UI to main screen
+- ✅ Added session counter
+
+**Files created:**
+- `src/types/progression.ts` — Progression types (belt ranks, unlocks, state)
+- `src/constants/beltSystem.ts` — Belt progression stages and helper functions
+- `src/utils/xpCalc.ts` — XP calculation with bonuses
+- `src/store/progressionStore.ts` — Zustand store with persistence
+- `src/components/progression/BeltDisplay.tsx` — Belt with stripes display
+- `src/components/progression/XPBar.tsx` — Progress bar to next rank
+
+**Files modified:**
+- `src/hooks/useTimer.ts` — Awards XP on successful session
+- `src/App.tsx` — Shows belt, XP, progress bar, and session count
+
+**Technical decisions:**
+- Simplified to 10 belt stages for POC (full system has 32 from PRD)
+- XP formula: 100 XP per 25 minutes of focus time
+- First session bonus: +25% XP
+- Zustand persist middleware saves to localStorage (no backend needed yet)
+- Progress bar shows percentage to next belt/stripe
+- Belt display shows color swatch with white stripes
+
+**Education covered:**
+- Explained Zustand benefits (simple, no boilerplate, easy for AI)
+- Explained persist middleware (localStorage auto-save)
+- Explained helper functions vs hardcoded values (easier to modify)
+- Why placeholder implementation first (prove it works, then polish)
+
+**Belt progression included:**
+- White Belt (0-4 stripes)
+- Blue Belt (0-4 stripes)
+- XP thresholds: 0, 500, 1200, 2000, 3000, 4200, 5500, 7000, 8700, 10500
+
+**How to test:**
+1. Open http://localhost:5174/
+2. See your white belt and 0 XP at the top
+3. Complete a session (10 seconds for testing)
+4. See XP increase and progress bar fill
+5. Complete multiple sessions to earn stripes
+6. Progress bar shows % to next stripe/belt
+
+**Next steps:**
+- Add simple lesson delivery (show technique cards after sessions)
+- Build lesson journal/library
+- Polish reveal screens with better animations
+- Consider adding unlock notifications (gear unlocks)
+
+**Status:** ✅ Phase 3 Complete — Core progression system working!
