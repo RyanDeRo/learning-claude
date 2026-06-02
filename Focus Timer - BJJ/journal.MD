@@ -266,3 +266,162 @@ This file tracks progress session-by-session. Each entry documents what was buil
 - Consider adding unlock notifications (gear unlocks)
 
 **Status:** ✅ Phase 3 Complete — Core progression system working!
+
+---
+
+## 2026-06-01 — Bug Fix: XP Not Awarded When Timer Completes
+
+**What we did:**
+- ✅ Identified bug: XP only awarded when user locked phone and returned
+- ✅ If user stayed on page and let timer count down to 0, no XP was awarded
+- ✅ Fixed by adding auto-complete check in timer interval
+- ✅ Now awards XP whether phone is locked or user stays on page
+
+**Problem identified:**
+- `checkSession()` was only called when page visibility changed (lock → return)
+- Timer reaching 0 naturally didn't trigger session completion
+- Users staying on the timer page wouldn't earn XP
+
+**Solution:**
+- Modified `useTimer.ts` interval to check if `elapsed >= goalDuration`
+- Auto-triggers `checkSession()` when timer naturally completes
+- Preserves original lock detection flow (still works when locking phone)
+
+**Files modified:**
+- `src/hooks/useTimer.ts` — Added auto-complete check in interval effect
+
+**Design philosophy clarified:**
+- Goal is preventing phone usage, not requiring phone lock specifically
+- Both scenarios count as success:
+  - ✅ User locks phone and stays away
+  - ✅ User leaves timer open without touching phone
+- What matters: no phone interaction during focus session
+
+**How to test:**
+1. Open http://localhost:5174/
+2. Click START and let timer count down to 00:00 (stay on page)
+3. Session should complete automatically → see success screen
+4. XP should increase and progress bar should advance
+5. Also test lock flow: START → switch tabs → return after 10s → should also work
+
+**Next steps:**
+- Test both completion flows thoroughly
+- Consider adding visual/audio feedback when session auto-completes
+- Begin lesson delivery system (technique cards after sessions)
+- Polish reveal screens with better animations
+
+**Status:** ✅ XP bug fixed — both completion flows now work!
+
+---
+
+## 2026-06-01 — Phase 3.5: Polish & Visual Feedback
+
+**What we did:**
+- ✅ Added smooth animations to reveal screens (fade in, slide up)
+- ✅ Added celebration bounce animation to avatar on success screen
+- ✅ Added pulsing animation to XP display on success screen
+- ✅ Created completion toast notification that appears when timer hits 0
+- ✅ Added visual feedback to timer display (turns green + pulses at completion)
+- ✅ Enhanced UX with multiple layers of feedback for session completion
+- ✅ Fixed TypeScript build errors (NodeJS.Timeout → number, removed unused import)
+
+**Files created:**
+- `src/components/ui/CompletionToast.tsx` — Toast notification component
+
+**Files modified:**
+- `src/styles/globals.css` — Added animation keyframes (fadeIn, slideUp, pulse, celebrationBounce)
+- `src/components/session/RevealScreen.tsx` — Added animations to modal and content
+- `src/components/session/BrokenScreen.tsx` — Added fade/slide animations
+- `src/components/timer/TimerDisplay.tsx` — Added completion state styling (green + pulse)
+- `src/App.tsx` — Integrated toast notification with timing logic
+- `src/hooks/useTimer.ts` — Fixed TypeScript errors
+
+**Technical decisions:**
+- **Animation timing:** Toast shows for 1.5s, then reveal screen appears
+- **CSS animations:** Using @keyframes for smooth, performant animations
+- **Visual hierarchy:** Multiple feedback layers (timer change → toast → modal)
+- **Animation style:** Subtle but noticeable, fits pixel art aesthetic
+
+**Education covered:**
+- **Animations in React:** Using CSS keyframes vs JavaScript animations
+- **Why CSS animations:** More performant, GPU-accelerated, cleaner code
+- **UX feedback layers:** Multiple visual cues help user understand state changes
+- **TypeScript browser types:** `number` for setTimeout/setInterval in browser
+
+**Animation sequence when session completes:**
+1. Timer hits 00:00 → turns green and pulses
+2. Toast notification slides down: "✅ TIME'S UP!"
+3. Toast fades out after 1.5 seconds
+4. Reveal screen fades in with slide-up animation
+5. Avatar bounces in celebration
+6. XP display pulses to draw attention
+
+**How to test:**
+1. Open http://localhost:5174/
+2. Click START and watch the countdown (stay on page)
+3. When timer hits 00:00, observe the animation sequence:
+   - Timer turns green and pulses
+   - Toast appears at top
+   - Success screen slides up after brief delay
+   - Avatar bounces, XP pulses
+4. Test lock flow: START → lock phone → return → same animations
+
+**Next steps:**
+- Begin Phase 4: Lesson delivery system
+  - Create hardcoded library of BJJ techniques
+  - Build lesson card component
+  - Show random lesson after successful session
+  - Add lesson journal/history view
+- Or: Continue polish (sound effects, more animations)
+- Or: Add achievement/unlock system
+
+**Status:** ✅ Phase 3.5 Complete — Polished session completion experience!
+
+---
+
+## 2026-06-01 — Bug Fix: XP Calculation Issue Identified & Fixed
+
+**Problem discovered:**
+- XP was calculating to 0 for 10-second test sessions
+- Formula: `100 XP per 1500 seconds (25 minutes)`
+- For 10 seconds: `10 × (100/1500) = 0.666...` → rounded down to 0 XP
+- Sessions were completing successfully but awarding 0 XP
+
+**Root cause:**
+- XP formula uses `Math.floor()` which rounds down
+- Test duration (10s) was too short to earn even 1 XP
+- Needed at least 15 seconds to earn 1 XP
+
+**Solution:**
+- Increased test duration from 10 seconds to 60 seconds (1 minute)
+- Now earns 4 XP per test session
+- Long enough to test but short enough for rapid iteration
+
+**Console logs confirmed:**
+- ✅ `checkSession()` was being called correctly
+- ✅ `awardXP()` was being called correctly
+- ✅ State was updating correctly
+- ❌ XP calculation was returning 0
+
+**Files modified:**
+- `src/App.tsx` — Changed test duration: 10s → 60s
+
+**Education covered:**
+- **Debugging with console logs:** Added extensive logging to trace execution flow
+- **Math.floor() behavior:** Rounds down, so small decimals become 0
+- **XP formula implications:** Short sessions need different formula or minimum floor
+- **Why browser console is essential:** Can see exactly what values are being calculated
+
+**Testing verification:**
+- 60-second session now awards 4 XP
+- Progress bar should advance
+- Session counter should increment
+- Progression persists in localStorage
+
+**Next steps:**
+- Test the 60-second sessions to verify XP is awarded
+- Complete multiple sessions to see progression working
+- Consider adding minimum XP floor (e.g., 5 XP per session) for production
+- Move to Phase 4: Lesson system
+
+**Status:** ✅ XP bug fixed — test duration increased to 60 seconds

@@ -42,12 +42,30 @@ export const useProgressionStore = create<ProgressionStore>()(
         const state = get()
         const isFirstToday = isFirstSessionToday(state.lastSessionTimestamp)
 
+        console.log('🎯 awardXP called:', {
+          sessionDurationSeconds,
+          isFirstToday,
+          currentTotalXP: state.totalXP,
+        })
+
         // Calculate XP for this session
-        const { totalXP: xpEarned } = calculateSessionXP(sessionDurationSeconds, isFirstToday)
+        const { totalXP: xpEarned, breakdown } = calculateSessionXP(sessionDurationSeconds, isFirstToday)
+
+        console.log('📊 XP calculation result:', {
+          xpEarned,
+          breakdown,
+        })
 
         // Update state
         const newTotalXP = state.totalXP + xpEarned
         const newBeltStage = getCurrentBeltStage(newTotalXP)
+
+        console.log('💾 Updating progression state:', {
+          oldTotalXP: state.totalXP,
+          newTotalXP,
+          newBelt: newBeltStage.rank,
+          completedSessions: state.completedSessions + 1,
+        })
 
         set({
           totalXP: newTotalXP,

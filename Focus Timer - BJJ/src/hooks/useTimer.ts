@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Session, SessionState } from '@/types/session'
+import { Session } from '@/types/session'
 import { useProgressionStore } from '@/store/progressionStore'
 
 /**
@@ -17,7 +17,8 @@ import { useProgressionStore } from '@/store/progressionStore'
 export function useTimer() {
   const [session, setSession] = useState<Session | null>(null)
   const [elapsedTime, setElapsedTime] = useState(0) // Seconds elapsed
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const intervalRef = useRef<number | null>(null)
+  const isCheckingRef = useRef(false) // Prevent multiple simultaneous checks
   const awardXP = useProgressionStore((state) => state.awardXP)
 
   // Start a new focus session
@@ -44,12 +45,32 @@ export function useTimer() {
   const checkSession = useCallback(() => {
     if (!session || session.state !== 'focus_running') return
 
+    // Prevent multiple simultaneous checks
+    if (isCheckingRef.current) {
+      console.log('⚠️ Check already in progress, skipping')
+      return
+    }
+
+    isCheckingRef.current = true
+
     const now = Date.now()
     const elapsed = (now - session.startTimestamp) / 1000 // Convert to seconds
     const goalReached = elapsed >= session.goalDuration
 
+    console.log('🔍 Checking session:', {
+      elapsed: `${Math.floor(elapsed)}s`,
+      goal: `${session.goalDuration}s`,
+      goalReached,
+    })
+
     // Award XP if session was successful
     const xpEarned = goalReached ? awardXP(session.goalDuration) : 0
+
+    console.log('💰 XP calculation:', {
+      goalReached,
+      xpEarned,
+      sessionDuration: session.goalDuration,
+    })
 
     setSession(prev => {
       if (!prev) return prev
@@ -69,12 +90,18 @@ export function useTimer() {
       percentage: `${Math.floor((elapsed / session.goalDuration) * 100)}%`,
       xpEarned: goalReached ? `+${xpEarned} XP` : 'No XP',
     })
+
+    // Reset the checking flag after a brief delay
+    setTimeout(() => {
+      isCheckingRef.current = false
+    }, 100)
   }, [session, awardXP])
 
   // Reset session (start new one)
   const resetSession = useCallback(() => {
     setSession(null)
     setElapsedTime(0)
+    isCheckingRef.current = false // Reset checking flag
     if (intervalRef.current) {
       clearInterval(intervalRef.current)
       intervalRef.current = null
@@ -96,6 +123,12 @@ export function useTimer() {
       const now = Date.now()
       const elapsed = (now - session.startTimestamp) / 1000
       setElapsedTime(elapsed)
+
+      // Auto-complete when timer naturally reaches 0
+      // (works whether phone is locked or user stays on page)
+      if (elapsed >= session.goalDuration) {
+        checkSession()
+      }
     }, 1000)
 
     return () => {
@@ -104,7 +137,7 @@ export function useTimer() {
         intervalRef.current = null
       }
     }
-  }, [session])
+  }, [session, checkSession])
 
   return {
     session,

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useTimer } from '@/hooks/useTimer'
 import { useLockDetection } from '@/hooks/useLockDetection'
 import { TimerDisplay } from '@/components/timer/TimerDisplay'
@@ -7,6 +8,7 @@ import { BrokenScreen } from '@/components/session/BrokenScreen'
 import { AvatarRenderer } from '@/components/avatar/AvatarRenderer'
 import { BeltDisplay } from '@/components/progression/BeltDisplay'
 import { XPBar } from '@/components/progression/XPBar'
+import { CompletionToast } from '@/components/ui/CompletionToast'
 import { useProgressionStore } from '@/store/progressionStore'
 
 /**
@@ -37,6 +39,20 @@ function App() {
   // Get progression state
   const { totalXP, currentBelt, completedSessions } = useProgressionStore()
 
+  // Toast notification state
+  const [showToast, setShowToast] = useState(false)
+
+  // Show toast briefly when session completes, then hide it
+  useEffect(() => {
+    if (session?.state === 'session_complete' || session?.state === 'session_broken') {
+      setShowToast(true)
+      const timer = setTimeout(() => setShowToast(false), 1500)
+      return () => clearTimeout(timer)
+    } else {
+      setShowToast(false)
+    }
+  }, [session?.state])
+
   // Lock detection - only active when session is running
   useLockDetection(
     () => {
@@ -54,8 +70,8 @@ function App() {
 
   // Handle starting a session (default 25 minutes = 1500 seconds)
   const handleStart = () => {
-    // For testing, let's use 10 seconds instead of 25 minutes
-    startSession(10) // 🎓 Change this to 1500 for real 25-min sessions
+    // For testing, using 60 seconds (1 minute)
+    startSession(60) // 🎓 Change this to 1500 for real 25-min sessions
   }
 
   const handleContinue = () => {
@@ -64,6 +80,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-pixel-bg flex items-center justify-center p-4">
+      {/* Completion notification toast */}
+      <CompletionToast show={showToast && remainingTime === 0} />
+
       <div className="text-center max-w-md w-full">
         <h1 className="font-pixel text-2xl mb-2 text-pixel-accent">
           FightFocus

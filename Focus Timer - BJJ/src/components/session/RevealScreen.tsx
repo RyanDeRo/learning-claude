@@ -14,10 +14,10 @@ export function RevealScreen({ session, onContinue }: RevealScreenProps) {
   const minutes = Math.floor((session.timeCompleted || 0) / 60)
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
-      <div className="bg-pixel-panel p-8 rounded-lg max-w-md w-full text-center">
+    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 animate-fadeIn">
+      <div className="bg-pixel-panel p-8 rounded-lg max-w-md w-full text-center animate-slideUp">
         {/* Avatar celebrating */}
-        <div className="mb-6 flex justify-center">
+        <div className="mb-6 flex justify-center animate-celebrationBounce">
           <AvatarRenderer state="celebration" size={160} />
         </div>
 
@@ -27,7 +27,7 @@ export function RevealScreen({ session, onContinue }: RevealScreenProps) {
 
         <div className="space-y-4 mb-6 text-gray-300">
           <p>You focused for <span className="text-white font-bold">{minutes} minutes</span></p>
-          <p className="text-2xl font-bold text-green-400">+{session.xpEarned} XP</p>
+          <p className="text-2xl font-bold text-green-400 animate-pulse">+{session.xpEarned} XP</p>
         </div>
 
         <button

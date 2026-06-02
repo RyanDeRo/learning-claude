@@ -16,8 +16,8 @@ export function BrokenScreen({ session, onTryAgain }: BrokenScreenProps) {
   const percentage = Math.floor(((session.timeCompleted || 0) / session.goalDuration) * 100)
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
-      <div className="bg-pixel-panel p-8 rounded-lg max-w-md w-full text-center">
+    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 animate-fadeIn">
+      <div className="bg-pixel-panel p-8 rounded-lg max-w-md w-full text-center animate-slideUp">
         {/* Avatar discouraged */}
         <div className="mb-6 flex justify-center">
           <AvatarRenderer state="discouraged" size={160} />
