@@ -425,3 +425,88 @@ This file tracks progress session-by-session. Each entry documents what was buil
 - Move to Phase 4: Lesson system
 
 **Status:** ✅ XP bug fixed — test duration increased to 60 seconds
+
+---
+
+## 2026-06-02 — Git Commit: Phase 3.5 Complete
+
+**What we did:**
+- ✅ Staged all Phase 3.5 changes (9 files)
+- ✅ Created comprehensive commit documenting bug fixes and polish
+- ✅ Verified commit (ID: bce1220)
+
+**Commit details:**
+- Commit ID: `bce1220`
+- Files changed: 9 files, 332 insertions(+), 14 deletions(-)
+- Message: "Phase 3.5: Fix XP bugs and add completion animations"
+- Includes: XP bug fixes, toast notifications, animations, visual feedback
+
+**What was committed:**
+- Bug fixes for XP calculation and timer auto-completion
+- Toast notification system for session completion
+- CSS animations (fadeIn, slideUp, pulse, celebrationBounce)
+- Enhanced timer display with completion state
+- Polished reveal screens with smooth transitions
+- Console logging for debugging XP issues
+
+**Next steps:**
+- Begin Phase 4: Lesson delivery system
+  - Create hardcoded library of BJJ techniques
+  - Build lesson card component
+  - Show random lesson after successful session
+  - Add lesson journal/history view
+- Or: Test the current build thoroughly
+- Or: Continue polish (sound effects, more animations)
+
+**Status:** ✅ Phase 3.5 committed — ready for Phase 4!
+
+---
+
+## 2026-06-05 — Strategic Pivot: BJJ-Only Focus
+
+**What we discussed:**
+- Analyzed the strategic benefits of removing striking and focusing exclusively on BJJ
+- Decided to make the app BJJ-specific rather than multi-martial-arts
+
+**Why this decision makes sense:**
+1. **Faster validation** — Prove the concept with one discipline first
+2. **Stronger community fit** — BJJ has a tight-knit, passionate community (r/bjj, gyms, etc.)
+3. **Content quality** — Can deliver authentic progression with real BJJ belt system
+4. **Simpler marketing** — "FightFocus: Train Your Mind Like You Train on the Mats" vs. explaining multiple paths
+5. **Technical simplification** — Half the gear assets, single progression tree, clearer onboarding
+6. **Expansion opportunity** — Can add striking later if BJJ version succeeds
+
+**What we did:**
+- ✅ Removed all striking references from PRD.MD
+- ✅ Removed Path B: Striking section
+- ✅ Removed striking curriculum (Muay Thai, Boxing, Kickboxing lessons)
+- ✅ Updated app identity from "MMA Fighter" to BJJ-focused
+- ✅ Simplified onboarding flow (removed path selection screen)
+- ✅ Updated folder structure (removed striking folders)
+- ✅ Updated sprite system examples (removed gloves, added BJJ gear)
+- ✅ Updated gym environment to be BJJ academy only
+- ✅ Updated messaging throughout PRD to be BJJ-specific
+
+**Files changed:**
+- `PRD.MD` — Comprehensive rewrite to BJJ-only focus
+- `journal.MD` — This entry
+
+**Code status:**
+- No code changes needed! Code was already BJJ-only (grappling path only for POC)
+- All existing code (belt system, XP, progression) is BJJ-specific
+
+**Marketing changes:**
+- Old tagline: "Lock your phone. Train your fighter."
+- New tagline: "Lock your phone. Train on the mats."
+- Target audience now emphasizes BJJ practitioners and r/bjj community
+
+**Next steps:**
+- Begin Phase 4: Lesson delivery system
+  - Create hardcoded library of BJJ techniques (30+ lessons)
+  - Build lesson card component
+  - Show technique after successful session
+  - Add lesson journal/history view
+- Or: Update app metadata (package.json name, etc.) to reflect BJJ focus
+- Or: Continue testing current build
+
+**Status:** ✅ Pivot complete — app is now BJJ-focused, ready to continue Phase 4!

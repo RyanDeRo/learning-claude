@@ -7,28 +7,31 @@
 
 ## 1. Product Overview
 
-**App Name (working title):** Focus Timer - MMA Fighter
-**Platform:** Web app first (React PWA) → Native (Expo/React Native) in v2  
-**Core Concept:** A focus timer app that reduces phone addiction through martial arts–themed gamification. Users earn progress by keeping their phone screen locked for the duration of a focus session. When they return to the app, their avatar reveals what they learned and unlocked while they were away — creating a discovery moment that rewards discipline rather than punishing distraction.
+**App Name (working title):** FightFocus (or "Roll Timer" / "Mat Time")
+**Platform:** Web app first (React PWA) → Native (Expo/React Native) in v2
+**Core Concept:** A focus timer app that reduces phone addiction through Brazilian Jiu-Jitsu gamification. Users earn belt progression by keeping their phone screen locked for the duration of a focus session. When they return to the app, they discover what techniques they learned and what gear they unlocked while training — creating a discovery moment that rewards discipline rather than punishing distraction.
 
-**Tagline (working):** *"Lock your phone. Train your fighter."*
+**Tagline (working):** *"Lock your phone. Train on the mats."*
 
 ---
 
 ## 2. Problem Statement
 
-Smartphone addiction is widespread. Existing focus apps (Forest, Flora) provide passive deterrents but lack deep, sustained engagement loops. FightFocus turns phone abstinence into a fighter progression arc — combining the behavioral pull of RPG progression with a real martial arts education that compounds over time.
+Smartphone addiction is widespread. Existing focus apps (Forest, Flora) provide passive deterrents but lack deep, sustained engagement loops. FightFocus turns phone abstinence into a BJJ progression journey — combining the behavioral pull of RPG progression with authentic Brazilian Jiu-Jitsu education that compounds over time.
 
-The product works because it reframes the locked phone not as a sacrifice but as training time. The user doesn't miss out while the screen is dark — their fighter is working. The payoff comes on return.
+The product works because it reframes the locked phone not as a sacrifice but as mat time. The user doesn't miss out while the screen is dark — they're training. The payoff comes on return.
 
 ---
 
 ## 3. Target Audience
 
 - Ages 14–35
-- Gamers, martial arts fans, students, productivity-focused individuals
+- BJJ practitioners (white to blue belt) looking for supplemental motivation
+- Gamers and productivity enthusiasts with interest in BJJ
+- Students and knowledge workers who need focus support
 - People who have tried focus apps but lacked sustained motivation
-- Casual martial arts fans with no real training experience (education is a hook, not a barrier)
+- Aspiring BJJ students curious about the art (education is a hook, not a barrier)
+- r/bjj community, gym culture, podcast listeners (Lex Fridman, Joe Rogan)
 
 ---
 
@@ -38,9 +41,9 @@ The product works because it reframes the locked phone not as a sacrifice but as
 |---|---|
 | **Focus Timer** | Pomodoro-style timer with session management |
 | **Lock & Return Loop** | Core mechanic: lock phone → session runs passively → return to discover progress |
-| **Avatar & Gym** | Pixel JRPG-style avatar in an animated gym environment |
-| **Progression System** | Gear unlocks, belt ranks, gym decorations tied to session completions |
-| **Martial Arts Education** | Real technique lessons delivered on session completion, saved to journal |
+| **Avatar & Gym** | Pixel JRPG-style avatar training in a BJJ academy environment |
+| **Belt Progression** | Authentic BJJ belt and stripe system with gear unlocks |
+| **BJJ Education** | Real technique lessons delivered on session completion, saved to journal |
 | **Monetization** | Freemium with cosmetic IAP and premium subscription |
 
 ---
@@ -170,7 +173,7 @@ This screen is a key product moment. It should feel like opening a reward.
 
 **On BROKEN:**
 - Avatar discouraged animation plays
-- Brief message — encouraging, not punishing ("Your fighter is waiting. Try again.")
+- Brief message — encouraging, not punishing ("Back to the mats. Try again.")
 - How long they lasted shown (e.g., "You made it 14 of 25 minutes")
 - CTA: "Try again" (pre-fills same timer duration)
 - No XP awarded by default
@@ -209,10 +212,10 @@ This screen is a key product moment. It should feel like opening a reward.
 
 **Animation States:**
 - Idle (subtle breathing, slight sway)
-- Training (path-dependent — see Section 7.4)
+- Training (drilling on dummy, guard work, shrimping)
 - Celebration (fist pump, jump — plays on session success)
 - Discouraged (head down, slumped — plays on session broken)
-- Rank-up ceremony (special animation, plays on belt/rank advancement)
+- Rank-up ceremony (special animation, plays on belt advancement)
 
 **Audio (in-app only):**
 - Ambient gym sounds play while user is in the app
@@ -243,7 +246,7 @@ This spec must be handed to both the pixel artist and Claude Code before any art
 | 1 | `body` | Skin base, body shape | Skin tone applied here via palette swap |
 | 2 | `hair_back` | Back of hair, ponytails, long sections | Renders behind head/face |
 | 3 | `clothing_base` | Default t-shirt and shorts | Replaced by gear as user progresses |
-| 4 | `gear` | Gi, gloves, fight shorts, rash guard | Swapped on unlock; transparent where not applicable |
+| 4 | `gear` | Gi, rash guard, spats, training attire | Swapped on unlock; transparent where not applicable |
 | 5 | `face` | Eyes, nose, mouth | Eye color via palette swap |
 | 6 | `hair_front` | Bangs, front hair pieces | Renders over face |
 | 7 | `accessories` | Jewelry, headbands | Transparent until unlocked |
@@ -256,7 +259,7 @@ This spec must be handed to both the pixel artist and Claude Code before any art
 - Skin tone: 6 Fitzpatrick-scale swappable palettes (each palette = 4 shades: highlight, midtone, shadow, deep shadow)
 - Hair color: 10 swappable palettes
 - Eye color: 6 swappable palettes
-- Gear colors (gi, gloves, shorts): unlocked palettes replace neutral gear tones
+- Gear colors (gi, rash guard, spats): unlocked palettes replace neutral gear tones
 - Belt color: driven by rank (white → blue → purple → brown → black); not user-selectable
 
 **Animation Frames Per State**
@@ -264,11 +267,10 @@ This spec must be handed to both the pixel artist and Claude Code before any art
 | State | Frames | Notes |
 |---|---|---|
 | Idle | 4 | Subtle breathing cycle, loops |
-| Training — grappling | 6 | Drilling motion on dummy or partner |
-| Training — striking | 6 | Bag work combo |
+| Training | 6 | Drilling motion on dummy or partner |
 | Celebration | 8 | Fist pump or jump; plays once then returns to idle |
 | Discouraged | 4 | Head down, slumped; loops until user dismisses |
-| Rank-up ceremony | 10 | Special one-time animation on belt/rank change |
+| Rank-up ceremony | 10 | Special one-time animation on belt advancement |
 
 **File Naming Convention**
 
@@ -278,8 +280,8 @@ layer_{layer_name}_{variant}_{frame}.png
 Examples:
 layer_body_base_f01.png
 layer_hair_back_style03_f01.png
-layer_gear_gi_neutral_f01.png
-layer_gear_gloves_neutral_f01.png
+layer_gear_gi_white_f01.png
+layer_gear_rashguard_neutral_f01.png
 layer_belt_white_f01.png
 layer_belt_blue_f01.png
 layer_accessories_earring_gold_f01.png
@@ -295,13 +297,7 @@ layer_accessories_earring_gold_f01.png
 
 ---
 
-### 7.4 Martial Arts Paths
-
-User selects one active path. Both paths exist from day one and can be switched freely at any time. Progress on each path is saved independently.
-
----
-
-#### Path A: Grappling (BJJ / Wrestling / Judo)
+### 7.4 BJJ Belt Progression System
 
 **Progression model:** Accurate BJJ belt and stripe system
 
@@ -357,39 +353,20 @@ White → Blue → Purple → Brown → Black → Coral (red/white split)
 
 ---
 
-#### Path B: Striking (Muay Thai / Boxing / Kickboxing)
-
-**Progression model:** Experience-based visual rank (gym seniority model)
-
-| Stage | Level | Gear Unlock |
-|---|---|---|
-| 1 | Novice | Basic gloves, plain shorts |
-| 2 | Beginner | Hand wraps visible, slightly better gloves |
-| 3 | Intermediate | Branded gloves, patterned shorts |
-| 4 | Advanced | Headgear, premium glove styles, fight shorts |
-| 5 | Veteran | Full fight kit, shin guards |
-| 6 | Elite | Ring entrance gear, championship belt cosmetic |
-
-**Gym environment:** Heavy bag station, speed bag, jump rope area, ring corner (unlocked later)
-
-**Training animations:** Jab-cross-hook combo on bag, roundhouse kick, bob and weave, pad work with coach NPC, jump rope, shadowboxing
-
----
-
-### 7.5 Gym Environment
+### 7.5 BJJ Academy Environment
 
 - 2D side-scrolling pixel scene rendered as background behind avatar
-- One scene per path (grappling gym / striking gym)
-- Starts sparse: basic equipment, plain walls
-- Gym decorations unlock as user advances: trophies, posters, new equipment, flags, additional NPCs
+- BJJ academy aesthetic: mat room with grappling dummies, mirror wall, training partners (NPCs)
+- Starts sparse: basic mats, plain walls
+- Gym decorations unlock as user advances: trophies, belt display wall, posters, new equipment, flags, additional NPCs
 - Day/night cycle tied to real-world time of session (morning light vs. evening lighting)
 - Gym scene is only animated when user is in the app — static/idle when backgrounded
 
-**MVP gym:** One static background per path. Decoration system is v1.1.
+**MVP gym:** One static background. Decoration system is v1.1.
 
 ---
 
-### 7.6 Martial Arts Education Journal
+### 7.6 BJJ Technique Journal
 
 **Trigger:** One lesson delivered per completed focus session  
 **Delivery:** Lesson card shown on session success screen before returning to home
@@ -401,35 +378,24 @@ White → Blue → Purple → Brown → Black → Coral (red/white split)
 - Pixel art illustration of the position or technique
 - YouTube reference link (curated, not user-submitted) — v1.1
 
-**Grappling Curriculum (30 lessons for MVP):**
+**BJJ Curriculum (30+ lessons for MVP):**
 
-*Fundamentals:* Stance and base, hip escape (shrimping), bridging, posture in guard  
-*Guard:* Closed guard basics, open guard frames, guard retention principles  
-*Sweeps:* Scissor sweep, flower sweep, pendulum sweep  
-*Submissions:* Triangle choke setup, armbar from guard, rear naked choke  
-*Takedowns:* Double-leg mechanics, single-leg entry, body lock trips  
-*Passing:* Torreando pass, knee slide, leg drag concept  
-*Positions:* Mount control, back control, side control frames  
-*Concepts:* Connection and grips, invisible jiu-jitsu (pressure), when to tap  
-
-**Striking Curriculum (30 lessons for MVP):**
-
-*Fundamentals:* Stance, footwork, the four ranges of striking  
-*Hands:* Jab mechanics, cross and hip rotation, lead hook, rear hook, uppercut  
-*Kicks:* Teep (push kick), lead roundhouse, rear roundhouse, low kick targeting  
-*Defense:* Parrying, slipping, rolling under hooks, covering  
-*Clinch:* Clinch entry, collar tie, dirty boxing basics  
-*Combinations:* Jab-cross, jab-cross-hook, jab-body-head  
-*Concepts:* Ring cutting, timing vs. speed, reading telegraphs, breathing  
+*Fundamentals:* Stance and base, hip escape (shrimping), bridging, posture in guard
+*Guard:* Closed guard basics, open guard frames, guard retention principles
+*Sweeps:* Scissor sweep, flower sweep, pendulum sweep
+*Submissions:* Triangle choke setup, armbar from guard, rear naked choke
+*Takedowns:* Double-leg mechanics, single-leg entry, body lock trips
+*Passing:* Torreando pass, knee slide, leg drag concept
+*Positions:* Mount control, back control, side control frames
+*Concepts:* Connection and grips, invisible jiu-jitsu (pressure), when to tap
 
 **Journal Features:**
 - All received lessons saved chronologically
 - Search by technique name or keyword
-- Filter by path (grappling / striking)
-- Filter by category (offense, defense, footwork, clinch, etc.)
+- Filter by category (submissions, sweeps, passes, takedowns, guard, etc.)
 - Favorite / bookmark lessons
 - Locked lessons show title only (no spoilers)
-- Lesson count shown: "12 of 30 techniques learned"
+- Lesson count shown: "12 of 30+ techniques learned"
 
 ---
 
@@ -442,10 +408,10 @@ White → Blue → Purple → Brown → Black → Coral (red/white split)
 - Weekly challenge completion (v1.1)
 
 **XP triggers unlocks for:**
-- Belt stripes and new belt ranks (grappling)
-- New gear items (striking)
+- Belt stripes and new belt ranks
+- New gi colors and gear items
 - New gym decorations (v1.1)
-- Technique lessons (one per session, sequentially)
+- BJJ technique lessons (one per session, sequentially)
 
 **Broken session:** No XP awarded. Streak unaffected if at least one full session completed that day.
 
@@ -455,14 +421,13 @@ White → Blue → Purple → Brown → Black → Coral (red/white split)
 
 ### 7.8 Onboarding Flow
 
-1. Welcome screen — app identity, pixel art style preview
-2. Avatar creation — gender, skin tone, hair, eyes
-3. Path selection — Striking or Grappling (brief description of each, can change anytime)
-4. Timer setup — pre-filled 25/5 Pomodoro defaults, user can adjust
-5. Explanation of the lock mechanic — "Start your session, lock your phone. Your fighter trains while you're away. Come back when the time is up."
-6. First session launched
+1. Welcome screen — app identity, BJJ theme preview
+2. Avatar creation — gender, skin tone, hair, eyes (starts in white gi)
+3. Timer setup — pre-filled 25/5 Pomodoro defaults, user can adjust
+4. Explanation of the lock mechanic — "Start your session, lock your phone. You train on the mats while you're away. Come back when the time is up."
+5. First session launched
 
-Onboarding should take under 3 minutes. No account creation required to start (guest session with local storage, account creation prompted after first completed session).
+Onboarding should take under 2 minutes. No account creation required to start (guest session with local storage, account creation prompted after first completed session).
 
 ---
 
@@ -488,9 +453,8 @@ fightfocus/
 │ │ ├── hair_front/
 │ │ ├── accessories/
 │ │ └── belt/
-│ ├── backgrounds/ # Gym scene backgrounds
-│ │ ├── grappling/
-│ │ └── striking/
+│ ├── backgrounds/ # BJJ academy backgrounds
+│ │ └── academy/
 │ ├── sfx/ # Sound effects
 │ └── fonts/ # Pixel/display fonts
 │
@@ -533,10 +497,9 @@ fightfocus/
 │ │ └── PixelBorder.tsx # Reusable pixel-style border
 │ │
 │ ├── screens/ # Full page views (routed)
-│ │ ├── Home.tsx # Main gym screen with timer
+│ │ ├── Home.tsx # Main academy screen with timer
 │ │ ├── Onboarding.tsx
 │ │ ├── AvatarSetup.tsx
-│ │ ├── PathSelect.tsx
 │ │ ├── Journal.tsx
 │ │ ├── Profile.tsx
 │ │ ├── Store.tsx
@@ -570,7 +533,7 @@ fightfocus/
 │ │
 │ ├── constants/ # Values that never change
 │ │ ├── beltSystem.ts # Full belt/stripe progression data
-│ │ ├── strikingProgression.ts # Striking gear unlock data
+│ │ ├── bjjLessons.ts # BJJ technique library
 │ │ ├── colors.ts # Palette swap color definitions
 │ │ ├── xpThresholds.ts # XP required per rank
 │ │ └── spriteConfig.ts # Layer names, frame counts
@@ -590,8 +553,7 @@ fightfocus/
 ├── supabase/
 │ ├── migrations/ # Database schema files
 │ └── seed/ # Lesson data seed files
-│ ├── grappling_lessons.sql
-│ └── striking_lessons.sql
+│ └── bjj_lessons.sql
 │
 ├── .env.local # Secrets (never commit this)
 ├── .env.example # Template for env vars (commit this)
