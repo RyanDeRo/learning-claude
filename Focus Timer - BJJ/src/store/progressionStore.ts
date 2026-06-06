@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import { ProgressionState } from '@/types/progression'
 import { getCurrentBeltStage } from '@/constants/beltSystem'
 import { calculateSessionXP, isFirstSessionToday } from '@/utils/xpCalc'
+import { getLessonByIndex, type BJJLesson } from '@/constants/bjjLessons'
 
 /**
  * Progression store - manages XP, belt ranks, and unlocks
@@ -18,7 +19,9 @@ import { calculateSessionXP, isFirstSessionToday } from '@/utils/xpCalc'
 
 interface ProgressionStore extends ProgressionState {
   lastSessionTimestamp: number | null
+  receivedLessons: string[]  // Array of lesson IDs user has received
   awardXP: (sessionDurationSeconds: number) => number  // Returns XP earned
+  getNextLesson: () => BJJLesson | null  // Returns next lesson in sequence
   reset: () => void
 }
 
@@ -37,6 +40,23 @@ export const useProgressionStore = create<ProgressionStore>()(
     (set, get) => ({
       ...initialState,
       lastSessionTimestamp: null,
+      receivedLessons: [],
+
+      getNextLesson: () => {
+        const state = get()
+        const nextLessonIndex = state.receivedLessons.length
+        const nextLesson = getLessonByIndex(nextLessonIndex)
+
+        if (nextLesson) {
+          // Add lesson ID to received lessons
+          set({
+            receivedLessons: [...state.receivedLessons, nextLesson.id],
+          })
+          console.log('📚 Lesson awarded:', nextLesson.title)
+        }
+
+        return nextLesson
+      },
 
       awardXP: (sessionDurationSeconds: number) => {
         const state = get()
@@ -82,6 +102,7 @@ export const useProgressionStore = create<ProgressionStore>()(
         set({
           ...initialState,
           lastSessionTimestamp: null,
+          receivedLessons: [],
         })
       },
     }),

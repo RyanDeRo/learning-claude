@@ -510,3 +510,104 @@ This file tracks progress session-by-session. Each entry documents what was buil
 - Or: Continue testing current build
 
 **Status:** ✅ Pivot complete — app is now BJJ-focused, ready to continue Phase 4!
+
+---
+
+## 2026-06-06 — Lesson System: Data Structure Created
+
+**What we discussed:**
+- User asked about creating a skill to extract lessons from YouTube transcripts
+- Discussed the "build vs. buy" decision for automation
+- Decided to stay lean: use existing 20 lessons for POC, add automation later only if needed
+
+**Education covered — Premature Abstraction:**
+- **Don't build the tool before you've done the work**
+- Right sequence: Prove it works (manual) → Do it repeatedly (find pattern) → Automate (build tool)
+- Manual curation > automated garbage (YouTube transcripts need editing)
+- Only automate after doing something 3-5+ times and finding a clear pattern
+
+**What we did:**
+- ✅ Converted samplelessons.MD into TypeScript constants file
+- ✅ Created `src/constants/bjjLessons.ts` with 20 lessons
+- ✅ Added TypeScript types for lesson structure
+- ✅ Categorized lessons: mindset (5), strategy (5), technique (10)
+- ✅ Added helper functions: getRandomLesson(), getLessonByIndex(), getTotalLessonsCount()
+
+**Files created:**
+- `src/constants/bjjLessons.ts` — Complete lesson library with types and helpers
+
+**Data structure:**
+```typescript
+interface BJJLesson {
+  id: string           // e.g., 'mindset-01'
+  title: string        // e.g., "Don't Roll Just to Win"
+  category: 'mindset' | 'strategy' | 'technique'
+  content: string      // Full lesson text
+}
+```
+
+**Technical decisions:**
+- Lessons are delivered sequentially using getLessonByIndex()
+- Each completed session awards the next lesson in order
+- Categories help organize lessons but don't affect delivery order for POC
+- Helper functions make it easy to integrate into the app
+
+**Next steps:**
+- Build lesson card component (displays lesson after successful session)
+- Add lesson delivery to RevealScreen component
+- Create journal/library view to see all received lessons
+- Track which lessons user has received in progression store
+
+**Status:** Ready to build Phase 4 — Lesson delivery UI!
+
+---
+
+## 2026-06-06 — Phase 4 Complete: Lesson Delivery System
+
+**What we built:**
+- ✅ Updated progression store to track received lessons
+- ✅ Created LessonCard component for displaying lessons
+- ✅ Integrated lesson delivery into RevealScreen
+- ✅ Added lesson count to main UI stats
+- ✅ Lessons awarded sequentially (one per completed session)
+
+**Files created:**
+- `src/components/journal/LessonCard.tsx` — Lesson display component with category badges
+
+**Files modified:**
+- `src/store/progressionStore.ts` — Added receivedLessons tracking and getNextLesson() method
+- `src/components/session/RevealScreen.tsx` — Shows lesson card after XP display
+- `src/App.tsx` — Shows "X techniques learned" in stats section
+
+**How it works:**
+1. User completes a focus session → earns XP
+2. RevealScreen calls `getNextLesson()` from progression store
+3. Next lesson in sequence is awarded (lesson index = number of lessons received)
+4. Lesson is displayed in a card with category badge, title, and content
+5. Lesson ID is saved to `receivedLessons` array in store (persists to localStorage)
+6. Main UI shows "X techniques learned" counter
+
+**Technical decisions:**
+- **Sequential delivery:** Lessons delivered in order (0, 1, 2...) rather than random
+- **Automatic persistence:** Zustand persist middleware saves receivedLessons to localStorage
+- **Category badges:** Visual distinction between mindset, strategy, and technique lessons
+- **Graceful completion:** When all 20 lessons are complete, shows "You've completed all lessons"
+
+**UI Flow:**
+```
+Session Complete → XP Award → New Technique Unlocked → Lesson Card → Continue
+```
+
+**Education covered — State Management:**
+- Store methods can return values (getNextLesson returns BJJLesson | null)
+- Store methods can modify state internally (adds to receivedLessons array)
+- React components call store methods in useEffect to fetch data on mount
+- Arrays in Zustand should be immutated with spread operator: [...old, new]
+
+**Next steps:**
+- Test the lesson delivery system (complete 3-5 sessions)
+- Build journal/library view to see all received lessons
+- Add lesson search/filter features
+- Consider adding lesson illustrations (pixel art)
+
+**Status:** ✅ Phase 4 Complete — Lesson delivery working!

@@ -37,7 +37,7 @@ function App() {
   } = useTimer()
 
   // Get progression state
-  const { totalXP, currentBelt, completedSessions } = useProgressionStore()
+  const { totalXP, currentBelt, completedSessions, receivedLessons } = useProgressionStore()
 
   // Toast notification state
   const [showToast, setShowToast] = useState(false)
@@ -129,9 +129,14 @@ function App() {
           )}
 
           {/* Session stats */}
-          <div className="mt-6 pt-4 border-t border-gray-700 text-center">
-            <div className="text-sm text-gray-400">
-              {completedSessions} {completedSessions === 1 ? 'session' : 'sessions'} completed
+          <div className="mt-6 pt-4 border-t border-gray-700">
+            <div className="flex justify-between text-sm text-gray-400">
+              <div>
+                {completedSessions} {completedSessions === 1 ? 'session' : 'sessions'} completed
+              </div>
+              <div>
+                📚 {receivedLessons.length} techniques learned
+              </div>
             </div>
           </div>
         </div>
