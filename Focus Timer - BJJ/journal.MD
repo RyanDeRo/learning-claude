@@ -611,3 +611,73 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Consider adding lesson illustrations (pixel art)
 
 **Status:** ✅ Phase 4 Complete — Lesson delivery working!
+
+---
+
+## 2026-06-17 — Phase 5 Complete: Interactive Journal/Training Manual
+
+**What we built:**
+- ✅ Created full journal screen with ancient scroll/parchment aesthetic
+- ✅ Built search functionality (searches titles and content)
+- ✅ Built category filters (all, mindset, strategy, technique)
+- ✅ Implemented locked/unlocked lesson system with visual distinction
+- ✅ Added page-turning animations for detail view transitions
+- ✅ Integrated React Router for navigation between home and journal
+- ✅ Created interactive lesson cards with hover effects
+
+**Files created:**
+- `src/screens/Journal.tsx` — Complete journal screen with search, filters, and detail view
+- `src/screens/Home.tsx` — Moved home screen logic from App.tsx to enable routing
+
+**Files modified:**
+- `src/App.tsx` — Refactored to use React Router with routing setup
+- `src/styles/globals.css` — Added parchment scroll styling and page-turn animations
+- `package.json` — Added react-router-dom dependency
+
+**Technical decisions:**
+- **Ancient scroll aesthetic:** Parchment texture with brown borders mimics a training manual
+- **Page-turning animation:** 3D perspective transform creates realistic page flip effect
+- **Locked lessons show titles:** Teases content without spoiling (creates anticipation)
+- **Inline detail view:** Clicking a lesson expands it in place with animation (no modal)
+- **Pixel-style borders:** All buttons and cards use thick borders for retro aesthetic
+- **Category color coding:** Purple (mindset), blue (strategy), green (technique)
+
+**UI/UX Flow:**
+1. User clicks "📖 View Training Manual" from home screen
+2. Navigates to journal at `/journal` route
+3. Sees list of all 20 lessons (locked ones grayed out)
+4. Can search by text or filter by category
+5. Click unlocked lesson → page flips to detail view with full content
+6. Click "Back to List" → page flips back to list view
+7. Click "Back to Training" → returns to home screen
+
+**CSS Animations Added:**
+- `pageTurnIn` — 3D perspective rotation from left (0.6s)
+- `pageTurnOut` — 3D perspective rotation to right (0.5s)
+- `.parchment-scroll` — Gradient background with texture overlay
+- `.parchment-page` — Individual lesson page styling
+- `.lesson-card` — Hover effect with shadow and transform
+
+**Education covered — Routing in React:**
+- Why we need React Router (multi-page navigation in a single-page app)
+- BrowserRouter wraps the entire app
+- Routes component contains all route definitions
+- Route component maps paths to screen components
+- Link component for navigation (better than <a> tags)
+- How routing preserves state (Zustand store persists across routes)
+
+**Design philosophy:**
+- **Feels like an artifact:** The journal should feel like a ancient martial arts manual you're gradually unlocking
+- **Tactile interactions:** Page turns, hover effects, thick borders create physicality
+- **Progressive disclosure:** Locked lessons create curiosity without frustration
+- **Search and filter are essential:** With 20 lessons, discoverability matters
+
+**Next steps:**
+- Test the journal with actual lesson data (complete sessions to unlock)
+- Consider adding lesson illustrations (pixel art diagrams)
+- Add "Mark as favorite" feature
+- Add "Recently viewed" section
+- Consider expanding to 30-50 lessons
+- Polish animations further (add sound effects)
+
+**Status:** ✅ Phase 5 Complete — Journal system fully interactive!
