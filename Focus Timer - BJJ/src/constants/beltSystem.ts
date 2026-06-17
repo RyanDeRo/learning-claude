@@ -34,7 +34,7 @@ export const BELT_PROGRESSION: BeltStage[] = [
   },
   {
     rank: { color: 'white', stripes: 1 },
-    xpRequired: 500,
+    xpRequired: 250,
     unlocks: [
       {
         id: 'first_stripe',
@@ -46,22 +46,22 @@ export const BELT_PROGRESSION: BeltStage[] = [
   },
   {
     rank: { color: 'white', stripes: 2 },
-    xpRequired: 1200,
+    xpRequired: 600,
     unlocks: [],
   },
   {
     rank: { color: 'white', stripes: 3 },
-    xpRequired: 2000,
+    xpRequired: 1000,
     unlocks: [],
   },
   {
     rank: { color: 'white', stripes: 4 },
-    xpRequired: 3000,
+    xpRequired: 1500,
     unlocks: [],
   },
   {
     rank: { color: 'blue', stripes: 0 },
-    xpRequired: 4200,
+    xpRequired: 2100,
     unlocks: [
       {
         id: 'blue_gi',
@@ -79,7 +79,7 @@ export const BELT_PROGRESSION: BeltStage[] = [
   },
   {
     rank: { color: 'blue', stripes: 1 },
-    xpRequired: 5500,
+    xpRequired: 2750,
     unlocks: [
       {
         id: 'rash_guard',
@@ -91,17 +91,17 @@ export const BELT_PROGRESSION: BeltStage[] = [
   },
   {
     rank: { color: 'blue', stripes: 2 },
-    xpRequired: 7000,
+    xpRequired: 3500,
     unlocks: [],
   },
   {
     rank: { color: 'blue', stripes: 3 },
-    xpRequired: 8700,
+    xpRequired: 4350,
     unlocks: [],
   },
   {
     rank: { color: 'blue', stripes: 4 },
-    xpRequired: 10500,
+    xpRequired: 5250,
     unlocks: [],
   },
 ]
