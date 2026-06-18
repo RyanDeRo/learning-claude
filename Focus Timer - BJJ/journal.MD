@@ -681,3 +681,64 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Polish animations further (add sound effects)
 
 **Status:** ✅ Phase 5 Complete — Journal system fully interactive!
+
+---
+
+## 2026-06-18 — Phase 6 Complete: Custom Timer Duration System
+
+**What we built:**
+- ✅ Duration selector component with presets and custom input
+- ✅ Persistent duration memory (remembers last choice)
+- ✅ Compact/expanded UI states (clean interface)
+- ✅ Test mode for development (60-second sessions, dev-only)
+- ✅ Input validation with clamping (5-1440 min range)
+- ✅ Enhanced journal styling (ancient manuscript aesthetic)
+
+**Files created:**
+- `src/components/timer/DurationSelector.tsx` — Smart duration picker with presets, custom input, and test mode
+- `src/vite-env.d.ts` — Vite TypeScript environment type definitions (was missing)
+
+**Files modified:**
+- `src/store/progressionStore.ts` — Added `lastDuration` state with persistence (defaults to 25 min)
+- `src/screens/Home.tsx` — Integrated duration selector with collapsed/expanded states
+- `src/screens/Journal.tsx` — Enhanced ancient manuscript styling with calligraphy fonts
+- `src/styles/globals.css` — Added comprehensive dojo manuscript styles (600+ lines of polish)
+
+**Technical decisions:**
+- **Preset buttons:** 15/25/45/60 min for quick selection
+- **Custom input:** Accepts any value, clamps to 5-1440 min range (24 hours max)
+- **Test mode visibility:** `import.meta.env.DEV` flag shows 60s test button only in development
+- **Collapsed UI:** After selection, shows "Focus duration: X min [Change]" — clean but accessible
+- **State persistence:** Zustand persist middleware saves lastDuration to localStorage
+- **XP calculation:** Already handles variable durations (no changes needed)
+
+**UI/UX Flow:**
+1. User opens app → duration selector shows (expanded)
+2. Choose preset (15/25/45/60 min) OR enter custom minutes
+3. Selector collapses to compact view: "Focus duration: 25 min [Change]"
+4. Click [Change] to expand again
+5. Click START → timer runs with selected duration
+6. Next session → last duration is remembered and pre-selected
+
+**Education covered — Vibe Coding Lessons:**
+- **State persistence pattern:** Using Zustand persist middleware for localStorage
+- **Collapsed/expanded UI:** Show minimum viable info, make full control easily accessible
+- **Development-only features:** Test shortcuts hidden in production via env flags
+- **Input validation:** Silent correction (clamping) better than annoying error messages
+- **Principle dev mindset:** Assessed complexity trade-offs (Pomodoro = moderate complexity, fitness timer = different product)
+
+**Design philosophy discussion:**
+- Kept focus on core loop (lock-and-discover)
+- Deferred Pomodoro cycles to v1.1 (adds significant scope)
+- Rejected fitness timer mode (fundamentally different product)
+- Chose simple custom duration input over complex feature set
+- Prioritized proving core mechanic over feature completeness
+
+**Next steps:**
+- Test the duration system thoroughly (try different durations)
+- Consider adding sound effects (session start/complete)
+- Build the sprite system (replace emoji avatar with pixel art)
+- Add "lock your phone" prompt when session starts
+- Polish animations further
+
+**Status:** ✅ Phase 6 Complete — Custom duration system working!
