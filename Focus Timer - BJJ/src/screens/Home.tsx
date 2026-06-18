@@ -4,6 +4,7 @@ import { useTimer } from '@/hooks/useTimer'
 import { useLockDetection } from '@/hooks/useLockDetection'
 import { TimerDisplay } from '@/components/timer/TimerDisplay'
 import { TimerControls } from '@/components/timer/TimerControls'
+import { DurationSelector } from '@/components/timer/DurationSelector'
 import { RevealScreen } from '@/components/session/RevealScreen'
 import { BrokenScreen } from '@/components/session/BrokenScreen'
 import { AvatarRenderer } from '@/components/avatar/AvatarRenderer'
@@ -23,7 +24,10 @@ export default function Home() {
   } = useTimer()
 
   // Get progression state
-  const { totalXP, currentBelt, completedSessions, receivedLessons } = useProgressionStore()
+  const { totalXP, currentBelt, completedSessions, receivedLessons, lastDuration } = useProgressionStore()
+
+  // Duration selector expanded/collapsed state
+  const [selectorExpanded, setSelectorExpanded] = useState(false)
 
   // Toast notification state
   const [showToast, setShowToast] = useState(false)
@@ -54,10 +58,14 @@ export default function Home() {
     isRunning // Only listen when session is active
   )
 
-  // Handle starting a session (default 25 minutes = 1500 seconds)
+  // Handle duration selection
+  const handleDurationSelect = () => {
+    setSelectorExpanded(false)  // Collapse selector after selection
+  }
+
+  // Handle starting a session with selected duration
   const handleStart = () => {
-    // For testing, using 60 seconds (1 minute)
-    startSession(60) // 🎓 Change this to 1500 for real 25-min sessions
+    startSession(lastDuration)  // Use lastDuration from store
   }
 
   const handleContinue = () => {
@@ -97,6 +105,17 @@ export default function Home() {
               size={140}
             />
           </div>
+
+          {/* Duration Selector - expanded or compact */}
+          {!isRunning && (
+            <div className="mb-6">
+              <DurationSelector
+                onSelect={handleDurationSelect}
+                compact={!selectorExpanded}
+                onExpand={() => setSelectorExpanded(true)}
+              />
+            </div>
+          )}
 
           <TimerDisplay seconds={remainingTime} isRunning={isRunning} />
 

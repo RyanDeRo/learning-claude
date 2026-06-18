@@ -20,8 +20,10 @@ import { getLessonByIndex, type BJJLesson } from '@/constants/bjjLessons'
 interface ProgressionStore extends ProgressionState {
   lastSessionTimestamp: number | null
   receivedLessons: string[]  // Array of lesson IDs user has received
+  lastDuration: number  // Last selected session duration in seconds
   awardXP: (sessionDurationSeconds: number) => number  // Returns XP earned
   getNextLesson: () => BJJLesson | null  // Returns next lesson in sequence
+  setLastDuration: (durationSeconds: number) => void  // Store last duration choice
   reset: () => void
 }
 
@@ -41,6 +43,11 @@ export const useProgressionStore = create<ProgressionStore>()(
       ...initialState,
       lastSessionTimestamp: null,
       receivedLessons: [],
+      lastDuration: 1500,  // Default: 25 minutes
+
+      setLastDuration: (durationSeconds: number) => {
+        set({ lastDuration: durationSeconds })
+      },
 
       getNextLesson: () => {
         const state = get()
@@ -103,6 +110,7 @@ export const useProgressionStore = create<ProgressionStore>()(
           ...initialState,
           lastSessionTimestamp: null,
           receivedLessons: [],
+          lastDuration: 1500,  // Reset to default 25 min
         })
       },
     }),

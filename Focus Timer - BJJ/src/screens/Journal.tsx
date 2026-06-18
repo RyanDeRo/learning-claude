@@ -24,46 +24,60 @@ export default function Journal() {
   // Get selected lesson for detail view
   const selectedLesson = selectedLessonId ? BJJ_LESSONS.find(l => l.id === selectedLessonId) : null
 
+  // Get category class name
+  const getCategoryClass = (category: string) => {
+    switch (category) {
+      case 'mindset': return 'category-mindset'
+      case 'strategy': return 'category-strategy'
+      case 'technique': return 'category-technique'
+      default: return ''
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-900 via-amber-800 to-amber-900 p-4 md:p-8">
       {/* Parchment Container */}
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto scroll-unfurl">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-amber-100 mb-2 pixel-border-text">
+        <div className="text-center mb-10 ink-reveal">
+          <h1 className="text-6xl md:text-7xl mb-3 dojo-title">
             Training Manual
           </h1>
-          <p className="text-amber-300 text-lg">
-            {receivedLessons.length} of {BJJ_LESSONS.length} techniques learned
-          </p>
+          <div className="inline-block relative">
+            <p className="text-amber-200 text-xl calligraphy-accent tracking-wide">
+              {receivedLessons.length} of {BJJ_LESSONS.length} techniques mastered
+            </p>
+            {/* Decorative underline */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-amber-600 to-transparent opacity-50"></div>
+          </div>
         </div>
 
         {/* Scroll Container */}
         <div className="parchment-scroll relative">
           {/* Search Bar */}
-          <div className="mb-6">
+          <div className="mb-8 ink-reveal">
             <input
               type="text"
-              placeholder="Search techniques..."
+              placeholder="Search ancient wisdom..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 bg-amber-50 border-4 border-amber-900 rounded-none text-amber-900 placeholder-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-600 font-bold pixel-input"
+              className="w-full px-6 py-4 manuscript-input rounded-none focus:outline-none"
             />
           </div>
 
           {/* Category Filters */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap gap-3 mb-8 ink-reveal">
             {(['all', 'mindset', 'strategy', 'technique'] as FilterCategory[]).map((category) => (
               <button
                 key={category}
                 onClick={() => setFilterCategory(category)}
-                className={`px-4 py-2 font-bold border-4 transition-all ${
-                  filterCategory === category
-                    ? 'bg-amber-900 text-amber-50 border-amber-950'
-                    : 'bg-amber-100 text-amber-900 border-amber-700 hover:bg-amber-200'
+                className={`filter-button ${
+                  filterCategory === category ? 'filter-button-active' : 'filter-button-inactive'
                 }`}
               >
-                {category.charAt(0).toUpperCase() + category.slice(1)}
+                {category === 'all' ? '◈ All' :
+                 category === 'mindset' ? '☯ Mindset' :
+                 category === 'strategy' ? '⚔ Strategy' : '🥋 Technique'}
               </button>
             ))}
           </div>
@@ -74,35 +88,31 @@ export default function Journal() {
             <div className="page-turn-in">
               <button
                 onClick={() => setSelectedLessonId(null)}
-                className="mb-4 px-4 py-2 bg-amber-900 text-amber-50 border-4 border-amber-950 font-bold hover:bg-amber-800"
+                className="mb-6 dojo-button"
               >
-                ← Back to List
+                ← Return to Index
               </button>
 
-              <div className="parchment-page p-6 md:p-8">
+              <div className="parchment-page p-8 md:p-12">
                 {/* Category Badge */}
-                <div className="mb-4">
-                  <span className={`inline-block px-3 py-1 text-sm font-bold border-3 ${
-                    selectedLesson.category === 'mindset'
-                      ? 'bg-purple-200 text-purple-900 border-purple-900'
-                      : selectedLesson.category === 'strategy'
-                      ? 'bg-blue-200 text-blue-900 border-blue-900'
-                      : 'bg-green-200 text-green-900 border-green-900'
-                  }`}>
-                    {selectedLesson.category.toUpperCase()}
+                <div className="mb-6 ink-reveal">
+                  <span className={`category-badge ${getCategoryClass(selectedLesson.category)}`}>
+                    {selectedLesson.category === 'mindset' ? '☯ ' :
+                     selectedLesson.category === 'strategy' ? '⚔ ' : '🥋 '}
+                    {selectedLesson.category}
                   </span>
                 </div>
 
                 {/* Title */}
-                <h2 className="text-3xl md:text-4xl font-bold text-amber-900 mb-6 leading-tight">
+                <h2 className="text-4xl md:text-5xl mb-8 leading-tight calligraphy-accent text-amber-900 ink-reveal">
                   {selectedLesson.title}
                 </h2>
 
-                {/* Content */}
-                <div className="text-amber-900 text-lg leading-relaxed space-y-4 font-serif">
+                {/* Content - Split into paragraphs with ink reveal animation */}
+                <div className="manuscript-text text-xl leading-loose space-y-6">
                   {selectedLesson.content.split('. ').map((sentence, idx) => (
                     sentence.trim() && (
-                      <p key={idx} className="indent-8">
+                      <p key={idx} className="ink-reveal first-letter:text-5xl first-letter:font-bold first-letter:text-amber-900 first-letter:mr-2 first-letter:float-left">
                         {sentence.trim()}{sentence.includes('.') ? '' : '.'}
                       </p>
                     )
@@ -110,68 +120,70 @@ export default function Journal() {
                 </div>
 
                 {/* Decorative Border */}
-                <div className="mt-8 pt-4 border-t-4 border-amber-900 text-center">
-                  <p className="text-amber-700 text-sm italic">
-                    Keep training, keep learning 🥋
+                <div className="mt-12 pt-6 border-t-4 border-double border-amber-900 text-center ink-reveal">
+                  <p className="manuscript-text text-amber-700 italic text-base">
+                    "The path to mastery is walked one step at a time."
                   </p>
+                  <div className="mt-3 text-2xl">🥋</div>
                 </div>
               </div>
             </div>
           ) : (
             // List View - All Lessons
-            <div className="space-y-3">
+            <div className="space-y-4">
               {filteredLessons.length === 0 ? (
-                <div className="text-center py-12 text-amber-600 text-xl">
-                  No techniques found matching your search.
+                <div className="text-center py-16 ink-reveal">
+                  <p className="manuscript-text text-amber-600 text-2xl mb-3">
+                    No techniques found in your search.
+                  </p>
+                  <p className="text-amber-500 text-lg italic">
+                    Try adjusting your search or filters...
+                  </p>
                 </div>
               ) : (
-                filteredLessons.map((lesson, index) => {
+                filteredLessons.map((lesson) => {
                   const unlocked = isUnlocked(lesson.id)
                   return (
                     <button
                       key={lesson.id}
                       onClick={() => unlocked && setSelectedLessonId(lesson.id)}
                       disabled={!unlocked}
-                      className={`w-full text-left p-4 md:p-5 border-4 transition-all lesson-card ${
+                      className={`w-full text-left p-5 md:p-6 border-4 border-double lesson-card ${
                         unlocked
-                          ? 'bg-amber-50 border-amber-900 hover:bg-amber-100 hover:scale-105 cursor-pointer'
-                          : 'bg-amber-200 border-amber-700 opacity-60 cursor-not-allowed'
+                          ? 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-900 cursor-pointer wax-seal'
+                          : 'bg-gradient-to-br from-amber-200 to-amber-300 border-amber-700 opacity-60 cursor-not-allowed'
                       }`}
                     >
-                      <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start justify-between gap-4 relative">
                         <div className="flex-1">
                           {/* Category Badge */}
-                          <span className={`inline-block px-2 py-1 text-xs font-bold border-2 mb-2 ${
-                            lesson.category === 'mindset'
-                              ? 'bg-purple-200 text-purple-900 border-purple-900'
-                              : lesson.category === 'strategy'
-                              ? 'bg-blue-200 text-blue-900 border-blue-900'
-                              : 'bg-green-200 text-green-900 border-green-900'
-                          }`}>
+                          <span className={`category-badge ${getCategoryClass(lesson.category)} mb-3 inline-block`}>
+                            {lesson.category === 'mindset' ? '☯ ' :
+                             lesson.category === 'strategy' ? '⚔ ' : '🥋 '}
                             {lesson.category}
                           </span>
 
                           {/* Title */}
-                          <h3 className={`text-xl md:text-2xl font-bold mb-2 ${
+                          <h3 className={`text-2xl md:text-3xl mb-3 calligraphy-accent ${
                             unlocked ? 'text-amber-900' : 'text-amber-600'
                           }`}>
                             {unlocked ? lesson.title : '🔒 ' + lesson.title}
                           </h3>
 
                           {/* Preview or Locked Message */}
-                          <p className={`text-sm md:text-base ${
-                            unlocked ? 'text-amber-700' : 'text-amber-500 italic'
+                          <p className={`text-base md:text-lg manuscript-text ${
+                            unlocked ? 'text-amber-800' : 'text-amber-600 italic'
                           }`}>
                             {unlocked
-                              ? lesson.content.slice(0, 100) + '...'
-                              : 'Complete more sessions to unlock this technique'
+                              ? lesson.content.slice(0, 120) + '...'
+                              : 'Complete more training sessions to unlock this ancient wisdom'
                             }
                           </p>
                         </div>
 
                         {/* Arrow indicator for unlocked */}
                         {unlocked && (
-                          <div className="text-2xl text-amber-900">→</div>
+                          <div className="text-3xl text-amber-900 calligraphy-accent">→</div>
                         )}
                       </div>
                     </button>
@@ -183,12 +195,12 @@ export default function Journal() {
         </div>
 
         {/* Back to Training Button */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-10 ink-reveal">
           <a
             href="/"
-            className="inline-block px-8 py-4 bg-amber-900 text-amber-50 border-4 border-amber-950 font-bold text-xl hover:bg-amber-800 transition-all"
+            className="dojo-button inline-block text-xl"
           >
-            Back to Training
+            ◈ Return to Dojo
           </a>
         </div>
       </div>
