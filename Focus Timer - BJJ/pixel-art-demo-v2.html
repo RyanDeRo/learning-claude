@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FightFocus Pixel Art - Reference Style</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #0a1628;
+            color: #eee;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #1e3a5f;
+            padding-bottom: 20px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #4a9eff;
+            font-size: 28px;
+            text-shadow: 2px 2px 0 #0a1628;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            color: #7ab8ff;
+            font-size: 13px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .right-panel {
+            background: #0f1e33;
+            border: 3px solid #1e3a5f;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .sprite-showcase {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .sprite-card {
+            background: #0f1e33;
+            border: 3px solid #1e3a5f;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .sprite-card:hover {
+            border-color: #4a9eff;
+            transform: translateY(-2px);
+        }
+
+        .sprite-card h3 {
+            margin: 0 0 15px 0;
+            color: #4a9eff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .canvas-wrapper {
+            background: #1a2d47;
+            padding: 20px;
+            border-radius: 4px;
+            display: inline-block;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+            border: 2px solid #2a4d6f;
+        }
+
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            border: 2px solid #4a9eff;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .sprite-info {
+            margin-top: 15px;
+            font-size: 11px;
+            color: #7ab8ff;
+            line-height: 1.6;
+        }
+
+        .layer-system {
+            background: #0f1e33;
+            border: 3px solid #1e3a5f;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .layer-system h2 {
+            color: #4a9eff;
+            margin: 0 0 20px 0;
+            font-size: 16px;
+            text-align: center;
+            border-bottom: 2px solid #1e3a5f;
+            padding-bottom: 10px;
+        }
+
+        .layers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .layer-item {
+            text-align: center;
+        }
+
+        .layer-item canvas {
+            border: 1px solid #2a4d6f;
+        }
+
+        .layer-label {
+            font-size: 9px;
+            color: #7ab8ff;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .specs-panel h2 {
+            color: #4a9eff;
+            margin: 0 0 20px 0;
+            font-size: 16px;
+            border-bottom: 2px solid #1e3a5f;
+            padding-bottom: 10px;
+        }
+
+        .spec-section {
+            margin-bottom: 25px;
+        }
+
+        .spec-section h3 {
+            color: #4a9eff;
+            font-size: 13px;
+            margin: 0 0 10px 0;
+        }
+
+        .spec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .spec-list li {
+            padding: 6px 0;
+            border-bottom: 1px solid #1e3a5f;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .spec-list li:last-child {
+            border-bottom: none;
+        }
+
+        .spec-list strong {
+            color: #4a9eff;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        code {
+            background: #1a2d47;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #7ab8ff;
+            font-size: 10px;
+        }
+
+        .technique-label {
+            background: #1a2d47;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 9px;
+            color: #7ab8ff;
+            margin-top: 8px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🥋 FIGHTFOCUS PIXEL ART SYSTEM</h1>
+        <p>VISUAL SPECIFICATION & SYSTEM SHOWCASE</p>
+        <p style="font-size: 11px; margin-top: 8px;">48×64px Base Canvas | 8-Layer Compositing | 3× Nearest-Neighbor Scaling</p>
+    </div>
+
+    <div class="main-grid">
+        <div class="left-panel">
+            <div class="sprite-showcase">
+                <div class="sprite-card">
+                    <h3>White Belt - Idle State</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="whiteBelt" width="144" height="192"></canvas>
+                    </div>
+                    <div class="sprite-info">
+                        Starting avatar<br>
+                        White gi + white belt<br>
+                        Neutral fighting stance
+                    </div>
+                    <div class="technique-label">BASE STANCE</div>
+                </div>
+
+                <div class="sprite-card">
+                    <h3>Blue Belt - Guard Work</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="blueBelt" width="144" height="192"></canvas>
+                    </div>
+                    <div class="sprite-info">
+                        Training state<br>
+                        Blue gi + blue belt + stripes<br>
+                        Closed guard drilling
+                    </div>
+                    <div class="technique-label">GUARD RETENTION</div>
+                </div>
+
+                <div class="sprite-card">
+                    <h3>Purple Belt - Celebration</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="purpleBelt" width="144" height="192"></canvas>
+                    </div>
+                    <div class="sprite-info">
+                        Success state<br>
+                        Purple gi + purple belt<br>
+                        Victory pose
+                    </div>
+                    <div class="technique-label">SESSION COMPLETE</div>
+                </div>
+
+                <div class="sprite-card">
+                    <h3>Black Belt - Master Stance</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="blackBelt" width="144" height="192"></canvas>
+                    </div>
+                    <div class="sprite-info">
+                        Master rank<br>
+                        Black gi + black belt<br>
+                        Advanced posture
+                    </div>
+                    <div class="technique-label">LEGENDARY</div>
+                </div>
+            </div>
+
+            <div class="layer-system">
+                <h2>8-Layer Sprite System - White Belt Breakdown</h2>
+                <div class="layers-grid">
+                    <div class="layer-item">
+                        <canvas id="layer1" width="72" height="96"></canvas>
+                        <div class="layer-label">1. Body</div>
+                    </div>
+                    <div class="layer-item">
+                        <canvas id="layer2" width="72" height="96"></canvas>
+                        <div class="layer-label">2. Hair Back</div>
+                    </div>
+                    <div class="layer-item">
+                        <canvas id="layer3" width="72" height="96"></canvas>
+                        <div class="layer-label">3. Clothing</div>
+                    </div>
+                    <div class="layer-item">
+                        <canvas id="layer4" width="72" height="96"></canvas>
+                        <div class="layer-label">4. Gear (Gi)</div>
+                    </div>
+                    <div class="layer-item">
+                        <canvas id="layer5" width="72" height="96"></canvas>
+                        <div class="layer-label">5. Face</div>
+                    </div>
+                    <div class="layer-item">
+                        <canvas id="layer6" width="72" height="96"></canvas>
+                        <div class="layer-label">6. Hair Front</div>
+                    </div>
+                    <div class="layer-item">
+                        <canvas id="layer7" width="72" height="96"></canvas>
+                        <div class="layer-label">7. Accessories</div>
+                    </div>
+                    <div class="layer-item">
+                        <canvas id="layer8" width="72" height="96"></canvas>
+                        <div class="layer-label">8. Belt</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel specs-panel">
+            <h2>Technical Specifications</h2>
+
+            <div class="spec-section">
+                <h3>Canvas & Rendering</h3>
+                <ul class="spec-list">
+                    <li><strong>Base canvas:</strong> 48×64 px (per sprite)</li>
+                    <li><strong>Render scale:</strong> 3× nearest-neighbor (NO anti-aliasing)</li>
+                    <li><strong>Display size:</strong> 144×192 px on screen</li>
+                    <li><strong>Background:</strong> Transparent PNG only</li>
+                    <li><strong>Anchor point:</strong> Feet to bottom-center</li>
+                    <li><strong>Color mode:</strong> Indexed palette (swappable)</li>
+                </ul>
+            </div>
+
+            <div class="spec-section">
+                <h3>Why 48×64?</h3>
+                <ul class="spec-list">
+                    <li>Belt stripes must be visible (4 white marks)</li>
+                    <li>Gi collar detail needs clarity</li>
+                    <li>Gear differences must read clearly</li>
+                    <li>Facial expressions require space</li>
+                    <li>32×48 loses critical detail for progression system</li>
+                </ul>
+            </div>
+
+            <div class="spec-section">
+                <h3>Animation Frame Counts</h3>
+                <ul class="spec-list">
+                    <li><strong>Idle:</strong> 4 frames (breathing loop)</li>
+                    <li><strong>Training:</strong> 6 frames (drill motion)</li>
+                    <li><strong>Celebration:</strong> 8 frames (plays once)</li>
+                    <li><strong>Discouraged:</strong> 4 frames (loops)</li>
+                    <li><strong>Rank-up:</strong> 10 frames (special ceremony)</li>
+                </ul>
+            </div>
+
+            <div class="spec-section">
+                <h3>File Naming Convention</h3>
+                <ul class="spec-list">
+                    <li><code>layer_body_base_f01.png</code></li>
+                    <li><code>layer_hair_back_style03_f01.png</code></li>
+                    <li><code>layer_gear_gi_neutral_f01.png</code></li>
+                    <li><code>layer_belt_white_f01.png</code></li>
+                    <li><code>layer_belt_blue_f01.png</code></li>
+                    <li><code>layer_accessories_earring_f01.png</code></li>
+                </ul>
+            </div>
+
+            <div class="spec-section">
+                <h3>Palette Swapping</h3>
+                <ul class="spec-list">
+                    <li><strong>Skin tone:</strong> 6 palettes × 4 shades each</li>
+                    <li><strong>Hair color:</strong> 10 palettes × 4 shades</li>
+                    <li><strong>Eye color:</strong> 6 palettes × 3 shades</li>
+                    <li><strong>Gear colors:</strong> Unlocked via progression</li>
+                    <li><strong>Belt color:</strong> Rank-based (not user-selectable)</li>
+                </ul>
+            </div>
+
+            <div class="spec-section">
+                <h3>Belt Progression</h3>
+                <ul class="spec-list">
+                    <li>White → Blue → Purple → Brown → Black → Coral</li>
+                    <li>Each belt has 4 stripes (white tape marks)</li>
+                    <li>Black belt has 10 degrees (red bars)</li>
+                    <li>Coral belt is ultimate unlock (split red/white)</li>
+                    <li>Stripes must be visible as distinct pixel marks</li>
+                </ul>
+            </div>
+
+            <div class="spec-section">
+                <h3>Art Style Reference</h3>
+                <ul class="spec-list">
+                    <li>JRPG pixel art (Final Fantasy VI, Chrono Trigger)</li>
+                    <li>4-shade color ramps for depth</li>
+                    <li>Strong outlines for clarity</li>
+                    <li>Readable silhouettes at base scale</li>
+                    <li>Martial arts realism (not fantasy/sci-fi)</li>
+                    <li>Clean, professional sprite work</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced pixel art rendering with better detail
+        const pixelSize = 3;
+
+        function px(ctx, x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        }
+
+        // Color palettes
+        const colors = {
+            skin: {
+                highlight: '#f5c8a3',
+                mid: '#e0a377',
+                shadow: '#c8895c',
+                dark: '#a06b40'
+            },
+            white_gi: '#ffffff',
+            white_gi_shadow: '#d4d4d4',
+            white_gi_dark: '#b8b8b8',
+            blue_gi: '#2b5faa',
+            blue_gi_shadow: '#1e4580',
+            blue_gi_dark: '#152f59',
+            purple_gi: '#6b4c9a',
+            purple_gi_shadow: '#4d3570',
+            purple_gi_dark: '#362550',
+            black_gi: '#2a2a2a',
+            black_gi_shadow: '#1a1a1a',
+            black_gi_dark: '#0f0f0f',
+            hair_dark: '#3d2817',
+            hair_mid: '#5a3e24',
+            hair_light: '#744e2e',
+            belt_white: '#ffffff',
+            belt_blue: '#2b5faa',
+            belt_purple: '#6b4c9a',
+            belt_black: '#1a1a1a',
+            outline: '#0d0d0d'
+        };
+
+        // Draw full character with all layers
+        function drawCharacter(canvasId, beltColor, giColor, giShadow, giDark, pose = 'idle') {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 144, 192);
+
+            // LAYER 1: BODY (skin)
+            // Head shape - more defined
+            for (let y = 10; y < 16; y++) {
+                for (let x = 20; x < 28; x++) {
+                    if (y === 10 && (x < 21 || x > 26)) continue;
+                    if (y === 15 && (x < 21 || x > 26)) continue;
+                    let col = colors.skin.mid;
+                    if (x <= 21 || y >= 14) col = colors.skin.shadow;
+                    if (x === 20 || x === 27 || y === 15) col = colors.skin.dark;
+                    px(ctx, x, y, col);
+                }
+            }
+
+            // Neck - proper anatomy
+            for (let y = 16; y < 19; y++) {
+                for (let x = 22; x < 26; x++) {
+                    px(ctx, x, y, colors.skin.mid);
+                }
+                px(ctx, 22, y, colors.skin.shadow);
+                px(ctx, 25, y, colors.skin.highlight);
+            }
+
+            // LAYER 2: HAIR BACK
+            // Hair behind head
+            for (let y = 8; y < 14; y++) {
+                for (let x = 19; x < 29; x++) {
+                    if (y === 8 && (x < 20 || x > 27)) continue;
+                    if (y > 10 && x > 20 && x < 27) continue;
+                    let col = colors.hair_mid;
+                    if (x === 19 || x === 28) col = colors.hair_dark;
+                    px(ctx, x, y, col);
+                }
+            }
+
+            // LAYER 3 & 4: GI (martial arts uniform)
+            if (pose === 'guard') {
+                // Guard position - laying back
+                // Torso
+                for (let y = 19; y < 42; y++) {
+                    for (let x = 17; x < 31; x++) {
+                        if (y < 22 && (x < 19 || x > 28)) continue;
+                        if (y > 38 && (x < 18 || x > 29)) continue;
+                        let col = giColor;
+                        if (x <= 19 || y >= 38) col = giShadow;
+                        if (x === 17 || x === 30) col = giDark;
+                        px(ctx, x, y, col);
+                    }
+                }
+
+                // Arms in guard position (bent, protecting)
+                // Left arm
+                for (let y = 22; y < 35; y++) {
+                    for (let x = 13; x < 17; x++) {
+                        px(ctx, x, y, giColor);
+                        if (x === 13) px(ctx, x, y, giShadow);
+                    }
+                }
+                // Right arm
+                for (let y = 22; y < 35; y++) {
+                    for (let x = 31; x < 35; x++) {
+                        px(ctx, x, y, giColor);
+                        if (x === 34) px(ctx, x, y, giShadow);
+                    }
+                }
+
+                // Legs bent (guard position)
+                for (let y = 42; y < 58; y++) {
+                    // Left leg
+                    for (let x = 16; x < 22; x++) {
+                        if (y > 54 && x < 17) continue;
+                        px(ctx, x, y, giColor);
+                        if (x === 16) px(ctx, x, y, giShadow);
+                    }
+                    // Right leg
+                    for (let x = 26; x < 32; x++) {
+                        if (y > 54 && x > 30) continue;
+                        px(ctx, x, y, giColor);
+                        if (x === 31) px(ctx, x, y, giShadow);
+                    }
+                }
+
+            } else if (pose === 'celebration') {
+                // Arms raised - victory pose
+                // Torso
+                for (let y = 19; y < 38; y++) {
+                    for (let x = 18; x < 30; x++) {
+                        if (y < 21 && (x < 20 || x > 27)) continue;
+                        let col = giColor;
+                        if (x <= 19) col = giShadow;
+                        px(ctx, x, y, col);
+                    }
+                }
+
+                // Arms up (fist pump)
+                // Left arm
+                for (let y = 12; y < 22; y++) {
+                    for (let x = 14; x < 18; x++) {
+                        px(ctx, x, y, giColor);
+                        if (x === 14) px(ctx, x, y, giShadow);
+                    }
+                }
+                // Right arm
+                for (let y = 12; y < 22; y++) {
+                    for (let x = 30; x < 34; x++) {
+                        px(ctx, x, y, giColor);
+                        if (x === 33) px(ctx, x, y, giShadow);
+                    }
+                }
+
+                // Raised fists
+                for (let y = 8; y < 12; y++) {
+                    for (let x = 15; x < 18; x++) {
+                        px(ctx, x, y, colors.skin.mid);
+                    }
+                    for (let x = 30; x < 33; x++) {
+                        px(ctx, x, y, colors.skin.mid);
+                    }
+                }
+
+                // Legs (standing firm)
+                for (let y = 38; y < 58; y++) {
+                    for (let x = 19; x < 23; x++) {
+                        px(ctx, x, y, giColor);
+                    }
+                    for (let x = 25; x < 29; x++) {
+                        px(ctx, x, y, giColor);
+                    }
+                }
+
+            } else {
+                // Default idle stance
+                // Torso - well defined gi shape
+                for (let y = 19; y < 38; y++) {
+                    for (let x = 18; x < 30; x++) {
+                        if (y < 21 && (x < 20 || x > 27)) continue;
+                        let col = giColor;
+                        if (x <= 19) col = giShadow;
+                        if (x === 18 || x === 29) col = giDark;
+                        px(ctx, x, y, col);
+                    }
+                }
+
+                // Gi collar - proper BJJ lapel style
+                // Left lapel
+                for (let y = 19; y < 26; y++) {
+                    px(ctx, 21, y, giShadow);
+                    px(ctx, 20, y, giDark);
+                }
+                // Right lapel
+                for (let y = 19; y < 26; y++) {
+                    px(ctx, 26, y, giShadow);
+                    px(ctx, 27, y, giDark);
+                }
+
+                // Arms - proper gi sleeves
+                for (let y = 20; y < 36; y++) {
+                    // Left arm
+                    for (let x = 14; x < 18; x++) {
+                        if (y < 23 && x < 16) continue;
+                        let col = giColor;
+                        if (x === 14) col = giShadow;
+                        px(ctx, x, y, col);
+                    }
+                    // Right arm
+                    for (let x = 30; x < 34; x++) {
+                        if (y < 23 && x > 31) continue;
+                        let col = giColor;
+                        if (x === 33) col = giShadow;
+                        px(ctx, x, y, col);
+                    }
+                }
+
+                // Hands visible
+                for (let y = 36; y < 40; y++) {
+                    for (let x = 14; x < 18; x++) {
+                        px(ctx, x, y, colors.skin.mid);
+                    }
+                    for (let x = 30; x < 34; x++) {
+                        px(ctx, x, y, colors.skin.mid);
+                    }
+                }
+
+                // Pants/lower gi
+                for (let y = 38; y < 58; y++) {
+                    for (let x = 18; x < 30; x++) {
+                        if (y > 54 && (x < 19 || x > 28)) continue;
+                        let col = giColor;
+                        if (x <= 19) col = giShadow;
+                        px(ctx, x, y, col);
+                    }
+                }
+
+                // Legs separated - proper stance
+                for (let y = 54; y < 61; y++) {
+                    // Left leg
+                    for (let x = 19; x < 23; x++) {
+                        px(ctx, x, y, giColor);
+                    }
+                    // Right leg
+                    for (let x = 25; x < 29; x++) {
+                        px(ctx, x, y, giColor);
+                    }
+                }
+            }
+
+            // Feet (bare - traditional)
+            for (let y = 61; y < 64; y++) {
+                for (let x = 18; x < 23; x++) {
+                    px(ctx, x, y, colors.skin.dark);
+                }
+                for (let x = 25; x < 30; x++) {
+                    px(ctx, x, y, colors.skin.dark);
+                }
+            }
+
+            // LAYER 5: FACE
+            // Eyes - more detail
+            px(ctx, 21, 12, colors.outline);
+            px(ctx, 22, 12, '#ffffff');
+            px(ctx, 22, 13, colors.outline);
+
+            px(ctx, 25, 12, colors.outline);
+            px(ctx, 26, 12, '#ffffff');
+            px(ctx, 26, 13, colors.outline);
+
+            // Mouth/expression
+            if (pose === 'celebration') {
+                // Happy mouth
+                px(ctx, 22, 14, colors.outline);
+                px(ctx, 23, 14, colors.outline);
+                px(ctx, 24, 14, colors.outline);
+                px(ctx, 25, 14, colors.outline);
+            } else {
+                // Neutral mouth
+                px(ctx, 23, 14, colors.outline);
+                px(ctx, 24, 14, colors.outline);
+            }
+
+            // LAYER 6: HAIR FRONT
+            // Bangs/front hair
+            for (let y = 9; y < 11; y++) {
+                for (let x = 21; x < 27; x++) {
+                    let col = colors.hair_mid;
+                    if (x === 21 || x === 26) col = colors.hair_dark;
+                    if (y === 10 && x === 23) col = colors.hair_light;
+                    px(ctx, x, y, col);
+                }
+            }
+
+            // LAYER 8: BELT
+            // Belt wraps around waist - proper positioning
+            const beltY = pose === 'guard' ? 37 : 37;
+            for (let y = beltY; y < beltY + 3; y++) {
+                for (let x = 18; x < 30; x++) {
+                    let col = beltColor;
+                    if (y === beltY + 2) col = adjustBrightness(beltColor, -30);
+                    px(ctx, x, y, col);
+                }
+            }
+
+            // Belt knot (front center)
+            for (let y = beltY - 1; y < beltY + 4; y++) {
+                px(ctx, 23, y, beltColor);
+                px(ctx, 24, y, beltColor);
+            }
+
+            // Belt stripes - white tape marks (CRITICAL for progression visibility)
+            if (beltColor !== colors.belt_white && pose !== 'guard') {
+                // Left side stripes
+                px(ctx, 19, beltY, '#ffffff');
+                px(ctx, 20, beltY, '#ffffff');
+                // Right side stripes
+                px(ctx, 27, beltY, '#ffffff');
+                px(ctx, 28, beltY, '#ffffff');
+            }
+        }
+
+        // Draw individual layers for breakdown
+        function drawLayer(canvasId, layerNum) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 72, 96);
+
+            const scale = 1.5; // Half scale for layer preview
+            const originalPx = px;
+
+            // Simplified layer rendering for demonstration
+            if (layerNum === 1) {
+                // Body only
+                for (let y = 10; y < 16; y++) {
+                    for (let x = 20; x < 28; x++) {
+                        if (y === 10 && (x < 21 || x > 26)) continue;
+                        ctx.fillStyle = colors.skin.mid;
+                        ctx.fillRect(x * scale, y * scale, scale, scale);
+                    }
+                }
+            }
+            // Additional layers would be rendered here...
+            // For brevity, showing structure
+        }
+
+        function adjustBrightness(hex, percent) {
+            if (!hex.startsWith('#')) return hex;
+            const num = parseInt(hex.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.min(255, Math.max(0, (num >> 16) + amt));
+            const G = Math.min(255, Math.max(0, (num >> 8 & 0x00FF) + amt));
+            const B = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+        }
+
+        // Render all characters
+        drawCharacter('whiteBelt', colors.belt_white, colors.white_gi, colors.white_gi_shadow, colors.white_gi_dark, 'idle');
+        drawCharacter('blueBelt', colors.belt_blue, colors.blue_gi, colors.blue_gi_shadow, colors.blue_gi_dark, 'guard');
+        drawCharacter('purpleBelt', colors.belt_purple, colors.purple_gi, colors.purple_gi_shadow, colors.purple_gi_dark, 'celebration');
+        drawCharacter('blackBelt', colors.belt_black, colors.black_gi, colors.black_gi_shadow, colors.black_gi_dark, 'idle');
+
+        // Render layer breakdown
+        for (let i = 1; i <= 8; i++) {
+            drawLayer(`layer${i}`, i);
+        }
+    </script>
+</body>
+</html>

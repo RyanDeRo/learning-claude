@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FightFocus Pixel Art Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #1a1a2e;
+            color: #eee;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #e94560;
+            font-size: 32px;
+            text-shadow: 2px 2px 0 #0f3460;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            color: #aaa;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .sprite-card {
+            background: #16213e;
+            border: 3px solid #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .sprite-card h3 {
+            margin: 0 0 15px 0;
+            color: #e94560;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .canvas-wrapper {
+            background: #0f3460;
+            padding: 20px;
+            border-radius: 4px;
+            display: inline-block;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            border: 2px solid #e94560;
+        }
+
+        .info {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .specs {
+            background: #16213e;
+            border: 3px solid #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .specs h2 {
+            color: #e94560;
+            margin-top: 0;
+        }
+
+        .specs ul {
+            line-height: 1.8;
+        }
+
+        .specs code {
+            background: #0f3460;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #e94560;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚔️ FightFocus Pixel Art System</h1>
+        <p>48×64px base canvas | 8-layer compositing | 3× nearest-neighbor scaling</p>
+    </div>
+
+    <div class="demo-grid">
+        <div class="sprite-card">
+            <h3>White Belt (Idle)</h3>
+            <div class="canvas-wrapper">
+                <canvas id="whiteBelt" width="144" height="192"></canvas>
+            </div>
+            <div class="info">
+                Starting avatar<br>
+                White gi + white belt<br>
+                Neutral stance
+            </div>
+        </div>
+
+        <div class="sprite-card">
+            <h3>Blue Belt (Training)</h3>
+            <div class="canvas-wrapper">
+                <canvas id="blueBelt" width="144" height="192"></canvas>
+            </div>
+            <div class="info">
+                Earned rank<br>
+                Blue gi + blue belt<br>
+                Training pose
+            </div>
+        </div>
+
+        <div class="sprite-card">
+            <h3>Purple Belt (Celebration)</h3>
+            <div class="canvas-wrapper">
+                <canvas id="purpleBelt" width="144" height="192"></canvas>
+            </div>
+            <div class="info">
+                Advanced rank<br>
+                Purple gi + purple belt<br>
+                Victory pose
+            </div>
+        </div>
+
+        <div class="sprite-card">
+            <h3>Black Belt (Master)</h3>
+            <div class="canvas-wrapper">
+                <canvas id="blackBelt" width="144" height="192"></canvas>
+            </div>
+            <div class="info">
+                Master rank<br>
+                Black gi + black belt<br>
+                Champion stance
+            </div>
+        </div>
+    </div>
+
+    <div class="specs">
+        <h2>Technical Specifications</h2>
+        <ul>
+            <li><strong>Base Canvas:</strong> 48×64 pixels (each avatar drawn at this size)</li>
+            <li><strong>Display Size:</strong> 144×192 pixels (3× scale with nearest-neighbor interpolation)</li>
+            <li><strong>Layer Count:</strong> 8 layers (body, hair_back, clothing_base, gear, face, hair_front, accessories, belt)</li>
+            <li><strong>Color System:</strong> Indexed palette with runtime swapping for skin tones, hair colors, eye colors</li>
+            <li><strong>Belt Colors:</strong> White → Blue → Purple → Brown → Black → Coral</li>
+            <li><strong>Animation States:</strong> Idle (4f), Training (6f), Celebration (8f), Discouraged (4f), Rank-up (10f)</li>
+            <li><strong>File Format:</strong> Transparent PNG, <code>layer_{name}_{variant}_f{frame}.png</code></li>
+        </ul>
+    </div>
+
+    <script>
+        // Pixel art drawing helper
+        function drawPixel(ctx, x, y, color, pixelSize = 3) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        }
+
+        // Draw a basic BJJ fighter avatar
+        function drawAvatar(canvasId, beltColor, giColor, pose = 'idle') {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, 144, 192);
+
+            // Skin tones
+            const skin = {
+                light: '#f4c2a4',
+                mid: '#d4a186',
+                dark: '#b88968',
+                shadow: '#8f6a4f'
+            };
+
+            // Base position (centered, feet at bottom)
+            const centerX = 24;
+            const baseY = 60;
+
+            // LAYER 1: Body (skin)
+            // Head
+            for (let y = 8; y < 14; y++) {
+                for (let x = 20; x < 28; x++) {
+                    if (y === 8 && (x < 21 || x > 26)) continue;
+                    if (y === 13 && (x < 21 || x > 26)) continue;
+                    drawPixel(ctx, x, y, skin.mid);
+                }
+            }
+
+            // Neck
+            for (let y = 14; y < 16; y++) {
+                for (let x = 22; x < 26; x++) {
+                    drawPixel(ctx, x, y, skin.mid);
+                }
+            }
+
+            // Arms (visible parts)
+            // Left hand
+            for (let y = 32; y < 36; y++) {
+                for (let x = 14; x < 18; x++) {
+                    drawPixel(ctx, x, y, skin.mid);
+                }
+            }
+            // Right hand
+            for (let y = 32; y < 36; y++) {
+                for (let x = 30; x < 34; x++) {
+                    drawPixel(ctx, x, y, skin.mid);
+                }
+            }
+
+            // LAYER 2: Hair back
+            // Simple hair behind head
+            for (let y = 6; y < 12; y++) {
+                for (let x = 19; x < 29; x++) {
+                    if (y === 6 && (x < 21 || x > 26)) continue;
+                    if (y > 8 && x > 20 && x < 27) continue; // Don't cover head
+                    drawPixel(ctx, x, y, '#2d2d2d');
+                }
+            }
+
+            // LAYER 3 & 4: Gi (clothing)
+            // Torso
+            for (let y = 16; y < 36; y++) {
+                for (let x = 18; x < 30; x++) {
+                    if (y < 20 && (x < 20 || x > 27)) continue;
+                    drawPixel(ctx, x, y, giColor);
+                }
+            }
+
+            // Gi collar (darker)
+            const collarColor = giColor === '#ffffff' ? '#e8e8e8' : adjustBrightness(giColor, -20);
+            for (let y = 16; y < 22; y++) {
+                // Left collar
+                if (y >= 16) drawPixel(ctx, 21, y, collarColor);
+                if (y >= 17) drawPixel(ctx, 20, y, collarColor);
+                // Right collar
+                if (y >= 16) drawPixel(ctx, 26, y, collarColor);
+                if (y >= 17) drawPixel(ctx, 27, y, collarColor);
+            }
+
+            // Sleeves
+            for (let y = 18; y < 32; y++) {
+                // Left sleeve
+                for (let x = 14; x < 18; x++) {
+                    if (y < 22 && x < 16) continue;
+                    drawPixel(ctx, x, y, giColor);
+                }
+                // Right sleeve
+                for (let x = 30; x < 34; x++) {
+                    if (y < 22 && x > 31) continue;
+                    drawPixel(ctx, x, y, giColor);
+                }
+            }
+
+            // Pants/Gi bottom
+            for (let y = 36; y < 56; y++) {
+                for (let x = 18; x < 30; x++) {
+                    if (y > 50 && (x < 19 || x > 28)) continue;
+                    drawPixel(ctx, x, y, giColor);
+                }
+            }
+
+            // Legs
+            for (let y = 50; y < 60; y++) {
+                // Left leg
+                for (let x = 19; x < 23; x++) {
+                    drawPixel(ctx, x, y, giColor);
+                }
+                // Right leg
+                for (let x = 25; x < 29; x++) {
+                    drawPixel(ctx, x, y, giColor);
+                }
+            }
+
+            // Feet
+            for (let y = 60; y < 63; y++) {
+                for (let x = 18; x < 23; x++) {
+                    drawPixel(ctx, x, y, skin.dark);
+                }
+                for (let x = 25; x < 30; x++) {
+                    drawPixel(ctx, x, y, skin.dark);
+                }
+            }
+
+            // LAYER 5: Face
+            // Eyes
+            drawPixel(ctx, 22, 10, '#2d2d2d');
+            drawPixel(ctx, 25, 10, '#2d2d2d');
+
+            // Mouth (varies by pose)
+            if (pose === 'celebration') {
+                drawPixel(ctx, 22, 12, '#2d2d2d');
+                drawPixel(ctx, 23, 12, '#2d2d2d');
+                drawPixel(ctx, 24, 12, '#2d2d2d');
+                drawPixel(ctx, 25, 12, '#2d2d2d');
+            } else {
+                drawPixel(ctx, 23, 12, '#2d2d2d');
+                drawPixel(ctx, 24, 12, '#2d2d2d');
+            }
+
+            // LAYER 6: Hair front
+            // Bangs
+            for (let y = 7; y < 9; y++) {
+                for (let x = 21; x < 27; x++) {
+                    drawPixel(ctx, x, y, '#2d2d2d');
+                }
+            }
+
+            // LAYER 8: Belt
+            const beltY = 35;
+            for (let y = beltY; y < beltY + 2; y++) {
+                for (let x = 18; x < 30; x++) {
+                    drawPixel(ctx, x, y, beltColor);
+                }
+            }
+
+            // Belt knot
+            for (let y = beltY - 1; y < beltY + 3; y++) {
+                drawPixel(ctx, 23, y, beltColor);
+                drawPixel(ctx, 24, y, beltColor);
+            }
+
+            // Belt stripes (white marks on belt end)
+            if (beltColor !== '#ffffff') {
+                drawPixel(ctx, 19, beltY, '#ffffff');
+                drawPixel(ctx, 28, beltY, '#ffffff');
+            }
+
+            // Pose variations
+            if (pose === 'training') {
+                // Slightly forward lean - adjust arm positions
+                // Left arm extended
+                for (let y = 28; y < 32; y++) {
+                    for (let x = 10; x < 14; x++) {
+                        drawPixel(ctx, x, y, giColor);
+                    }
+                }
+            }
+
+            if (pose === 'celebration') {
+                // Arms raised - fist pump
+                for (let y = 14; y < 20; y++) {
+                    for (let x = 14; x < 18; x++) {
+                        drawPixel(ctx, x, y, giColor);
+                    }
+                    for (let x = 30; x < 34; x++) {
+                        drawPixel(ctx, x, y, giColor);
+                    }
+                }
+                // Raised fists
+                for (let y = 10; y < 14; y++) {
+                    for (let x = 15; x < 18; x++) {
+                        drawPixel(ctx, x, y, skin.mid);
+                    }
+                    for (let x = 30; x < 33; x++) {
+                        drawPixel(ctx, x, y, skin.mid);
+                    }
+                }
+            }
+        }
+
+        // Helper to adjust color brightness
+        function adjustBrightness(hex, percent) {
+            const num = parseInt(hex.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.min(255, Math.max(0, (num >> 16) + amt));
+            const G = Math.min(255, Math.max(0, (num >> 8 & 0x00FF) + amt));
+            const B = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+        }
+
+        // Draw all avatars
+        drawAvatar('whiteBelt', '#ffffff', '#ffffff', 'idle');
+        drawAvatar('blueBelt', '#2b5faa', '#2b5faa', 'training');
+        drawAvatar('purpleBelt', '#6b4c9a', '#6b4c9a', 'celebration');
+        drawAvatar('blackBelt', '#1a1a1a', '#1a1a1a', 'idle');
+    </script>
+</body>
+</html>
