@@ -742,3 +742,79 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Polish animations further
 
 **Status:** ✅ Phase 6 Complete — Custom duration system working!
+
+---
+
+## 2026-06-18 — Pixel Art System Exploration & GitHub Sync
+
+**What we did:**
+- ✅ Reviewed PRD sprite specifications (48×64px, 8-layer system, palette swapping)
+- ✅ Created pixel-art-demo.html — Initial canvas-based sprite demonstration
+- ✅ Created pixel-art-demo-v2.html — Enhanced version matching reference image quality
+- ✅ Analyzed reference images from art examples/ folder (Gemini-generated BJJ sprites)
+- ✅ Documented pixel art skill system in `.claude/skills/pixel-art/`
+- ✅ Committed and pushed all work to GitHub
+- ✅ Set up for MCP image generation work on personal machine
+
+**Files created:**
+- `pixel-art-demo.html` — Basic canvas renderer showing 48×64px sprite concept
+- `pixel-art-demo-v2.html` — Advanced demo with proper BJJ poses, gi detail, belt stripes
+- `art examples/Gemini_Generated_Image_r0oht8r0oht8r0oh.png` — Reference sprite system visualization
+- `art examples/Gemini_Generated_Image_x15eypx15eypx15e.png` — Reference sprite examples with layers
+
+**Technical approach:**
+- Used HTML Canvas to simulate pixel art by drawing 3px rectangles
+- Demonstrated 8-layer compositing (body, hair_back, clothing, gear, face, hair_front, accessories, belt)
+- Showed 4 belt progressions: white, blue, purple, black
+- Rendered different poses: idle stance, guard work, celebration, master stance
+- Implemented proper gi collar detail, belt stripes, and BJJ-specific posture
+
+**Education covered — AI Image Generation Strategy:**
+- **Canvas demos are for validation:** Prove the 48×64px size works and layers composite correctly
+- **Not production-ready:** Canvas-drawn sprites are placeholders, not final assets
+- **Next step: MCP + AI tools:** Use Higgsfield or DALL-E on personal machine for actual sprite generation
+- **Why work computer blocked it:** Corporate networks often block AI image generation APIs
+- **Git workflow:** Commit → Push → Clone on personal machine → Add MCP access → Generate sprites
+
+**What the demos prove:**
+- ✅ 48×64px canvas provides enough space for belt stripes, gi detail, facial features
+- ✅ 8-layer system works (can composite layers independently)
+- ✅ Palette swapping concept valid (same structure, different colors per belt)
+- ✅ BJJ poses are recognizable at this resolution (guard work, celebration, stance)
+- ✅ Belt stripes are visible (white tape marks on belt ends)
+
+**Reference images analyzed:**
+- High-quality pixel art with proper anatomy and BJJ technique
+- Shows all 8 layers separated (body, hair_back, clothing, gear, face, hair_front, accessories, belt)
+- Demonstrates palette swapping for skin tones and hair colors
+- Shows different belt states (white gi idle, blue gi guard work, purple gi celebration)
+- Includes anime-style portrait for lesson delivery screens
+
+**Git commit details:**
+- Commit: `3be5248`
+- Message: "Add pixel art system demonstrations and reference sprites"
+- Files: 4 new files (2 HTML demos, 2 PNG references)
+- Pushed to: https://github.com/RyanDeRo/learning-claude.git
+
+**Next steps on personal machine:**
+1. Clone repo from GitHub
+2. Install MCP server with image generation (Higgsfield, DALL-E, or similar)
+3. Use AI to generate production-quality sprites following PRD specs
+4. Create all 8 layers as separate transparent PNGs
+5. Export with correct naming convention (layer_body_base_f01.png, etc.)
+6. Test sprite renderer with real assets
+7. Animate frames for idle, training, celebration states
+
+**Vibe coding lesson — Placeholder → Production:**
+- Build the system with placeholders FIRST (emoji, canvas demos)
+- Prove the mechanics work (timer, XP, progression)
+- THEN invest in production assets (commissioned art, AI generation)
+- This prevents wasting time/money on art for features that might change
+- Validates canvas size and layer system before pixel artist gets brief
+
+**Why this workflow matters:**
+- Work machine = restrictive policies, can't access AI image tools
+- Personal machine = full control, can add any MCP servers
+- Git makes this seamless: commit on work → push → pull on personal → continue
+
+**Status:** ✅ Pixel art specs validated, demos pushed to GitHub, ready for MCP generation!
