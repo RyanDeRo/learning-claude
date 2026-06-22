@@ -818,3 +818,72 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Git makes this seamless: commit on work → push → pull on personal → continue
 
 **Status:** ✅ Pixel art specs validated, demos pushed to GitHub, ready for MCP generation!
+
+---
+
+## 2026-06-21 — Friend Beta Launch Prep: Deployment + Art Strategy
+
+**What we discussed:**
+- Full deployment strategy for getting the app to friends
+- Art cost estimates and whether to simplify the sprite system
+- Idle animation gap (nothing moves when timer runs)
+
+**Key decisions made:**
+
+**Sprite system simplified:**
+- Dropped the 8-layer compositable wardrobe system entirely for now
+- New approach: one complete pre-drawn sprite per belt color (no runtime layer compositing)
+- Only need 4 poses: idle, training, celebration, discouraged
+- Start with white belt only — users need 21 sessions to reach blue belt, plenty of time to commission more
+- Unlock incentive stays: different belt sprites + animal base model variants as milestone rewards
+- Art budget for v0.1: $80–150 for 4 static white-belt sprites on Fiverr/UpWork
+
+**What we built:**
+- ✅ `vercel.json` — catch-all rewrite so `/journal` doesn't 404 on Vercel
+- ✅ `index.html` — added `theme-color`, meta description, Open Graph tags, manifest link, apple-touch-icon
+- ✅ `public/manifest.json` — PWA install support ("Add to Home Screen" on iPhone)
+- ✅ `src/styles/globals.css` — added `trainingBob` keyframe animation
+- ✅ `src/components/avatar/AvatarRenderer.tsx` — emoji now bobs rhythmically during training state; removed debug state label that was visible to all users
+
+**Files created:**
+- `vercel.json`
+- `public/manifest.json`
+
+**Files modified:**
+- `index.html`
+- `src/styles/globals.css`
+- `src/components/avatar/AvatarRenderer.tsx`
+
+**Hosting decision:**
+- Vercel (free tier, GitHub-connected, auto-deploys on push to main)
+- Cost: $0 for hosting, ~$10-15/yr if we add a custom domain later
+
+**Next steps:**
+1. Create `public/icon-512.png` — 512×512 PNG (Canva: blank canvas, 🥋 emoji centered, export PNG) — **user doing this**
+2. Deploy on Vercel: vercel.com → New Project → import GitHub repo → set Root Directory to `Focus Timer - BJJ`
+3. Post pixel artist brief on Fiverr using `pixel-art-demo-v2.html` as style reference — 4 static white-belt sprites, 48×64px, transparent PNG, $80–150
+
+**Verification checklist before sending link to friends:**
+- [ ] Load on mobile — browser chrome matches dark background (#1a1a2e)
+- [ ] Share URL in iMessage — should show title + description preview (not blank)
+- [ ] iPhone "Add to Home Screen" — shows icon, not letter soup
+- [ ] Navigate directly to `/journal` — loads correctly, no 404
+- [ ] Start timer — emoji bobs rhythmically, not static
+- [ ] Complete session — no debug "idle/training" text visible below avatar
+
+**Status:** ✅ All code changes done — waiting on icon PNG before deploy
+
+---
+
+## 2026-06-21 — Git Commit: Sync to Work PC
+
+**What we did:**
+- Committed all pending changes to git so work can continue on another machine
+- Staged: `.gitignore`, `index.html`, `journal.MD`, `AvatarRenderer.tsx`, `globals.css`, `vercel.json`, `public/`, `art examples/`, `.claude/`
+
+**Next steps:**
+- On work PC: `git pull` to get latest
+- Create `public/icon-512.png` (512×512 PNG with emoji, via Canva)
+- Deploy to Vercel once icon is ready
+
+**Status:** ✅ Synced to GitHub

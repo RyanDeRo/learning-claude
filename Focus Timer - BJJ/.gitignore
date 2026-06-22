@@ -14,8 +14,8 @@ build/
 .vscode/
 .idea/
 
-# Claude Code memory
-.claude/
+# Claude Code - memory has personal state, skills are safe to commit
+.claude/memory/
 
 # OS files
 .DS_Store
