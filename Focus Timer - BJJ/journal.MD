@@ -887,3 +887,151 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Deploy to Vercel once icon is ready
 
 **Status:** ✅ Synced to GitHub
+
+---
+
+## 2026-07-18 — Art Assessment: AI-Generated Sprite Set Is POC-Viable
+
+**What we did:**
+- Reviewed the four AI-generated character images in `art examples/`: base idle, celebrate, discouraged, and double-leg shot
+- Assessed them against the simplified sprite plan from the last session (4 flat poses, no layer compositing)
+- Verdict: **yes, this set unblocks the app.** Character is consistent across all four poses (same face, hair, gi, proportions) — the hard part of AI sprite generation is already solved
+- The double-leg pose can serve as the "training" pose, completing the 4-pose set we scoped
+- This potentially replaces the planned $80–150 Fiverr commission for white-belt sprites
+
+**Prep work needed before the images go in the app:**
+1. Background removal — images have baked-in solid backgrounds (dark red / black) with soft shadows; need transparent PNGs
+2. Normalize canvas — crop/scale all four to the same dimensions with the character aligned consistently (feet on same baseline)
+3. Fix the filename ` basecharacterimage.png` (leading space) → `basecharacter-idle.png`; rename others to a consistent scheme
+
+**Known gap (deferred, not blocking):**
+- Belt progression on-sprite: gi and belt are both white, so recoloring just the belt on a flat image is fiddly. POC decision: show belt rank in the UI (colored belt bar under the avatar), regenerate belt-colored sprite variants later using the base image as the style anchor
+
+**Decisions made:**
+- Proceed with the AI-generated set as the white-belt POC art; skip the artist commission for now
+- Belt color lives in UI chrome for POC, not on the sprite
+
+**Next steps:**
+1. Process the 4 images (background removal, crop, rename) and wire them into `AvatarRenderer.tsx`, replacing the emoji
+2. Map poses to app states: idle → home, double-leg → timer running, celebrate → session complete, discouraged → session abandoned
+3. Then resume the pre-deploy checklist from 2026-06-21 (icon exists now at `public/icon-512.png` — verify it, then Vercel deploy)
+
+**Status:** ✅ Art unblocked — ready to integrate sprites into the app
+
+---
+
+## 2026-07-18 — Sprites Processed and Wired Into the App
+
+**What we did:**
+- Removed backgrounds from all 4 character images using macOS's built-in ML subject segmentation (Vision framework via a small Swift script) — color-based removal was impossible because the hair and background are both pure black
+- Verified cutouts against a magenta test background: hair, outlines, edges all clean
+- Normalized all 4 sprites: cropped, scaled with one shared factor (preserves relative proportions between poses), bottom-aligned on a 512×640 canvas
+- Output to `public/sprites/`: `idle.png`, `training.png`, `celebration.png`, `discouraged.png` (named to match avatar states exactly)
+- Rewrote `AvatarRenderer.tsx`: emoji replaced with sprite images; all 4 render stacked with opacity toggling (preloads them, so no flash on state change); 300ms cross-fade; training pose keeps the bob animation
+- Renamed ` basecharacterimage.png` (leading space) → `basecharacter-idle.png`
+- Build passes (tsc + vite); dev server running; sprite URLs confirmed serving (HTTP 200)
+- Answered XP mechanics question: XP is linear at 4 XP/min (100 per 25-min session), +25% first-session-of-day bonus, all-or-nothing on goal completion (awarded on goal duration only if reached, `useTimer.ts:67`)
+
+**Files changed:**
+- `src/components/avatar/AvatarRenderer.tsx` (rewritten)
+- `public/sprites/idle.png`, `training.png`, `celebration.png`, `discouraged.png` (new)
+- `art examples/basecharacter-idle.png` (renamed)
+
+**Decisions made:**
+- Used Apple Vision subject-lift instead of color keying — semantic segmentation handles black-on-black; the Swift tool lives in session scratchpad (rebuildable in ~20 lines if needed again)
+- Dropped the colored state box behind the avatar; sprites render on the app background directly
+- XP scaling discussion: keeping linear + all-or-nothing for POC; revisit partial credit and length multipliers after real usage
+
+**Next steps:**
+1. User visually verifies all 4 states in browser (idle → training → celebration/discouraged)
+2. Commit sprite integration
+3. Resume pre-deploy checklist (icon-512.png exists; Vercel deploy)
+
+**Status:** ✅ Sprites integrated — pending user visual check in browser
+
+---
+
+## 2026-07-18 — Avatar System: Skin Tone Recolor + Second Identity Scaffolding
+
+**What we did:**
+- Planned and built infrastructure for avatar variety, deliberately scoped smaller than the PRD's original 8-layer palette-swap system (that needs true indexed pixel art from a human artist — AI-generated flat sprites can't be reliably palette-swapped the way the PRD spec assumes)
+- Decisions confirmed with user: skin tone = programmatic recolor (no new AI art), character variety = add one more identity via the existing pipeline (not the full layered system, not yet)
+- Formalized this session's earlier scratchpad tooling into a real, reusable pipeline at `tools/sprite-pipeline/`: `liftsubject.swift` (Vision-framework background removal), `normalize.py` (crop/scale/bottom-align), new `recolor_skin.py` (auto-detects the skin-colored pixel cluster via HSV hue/saturation/value thresholds, shifts hue+saturation with a modest per-pixel-preserving value nudge to produce 6 Fitzpatrick-scale tone variants without touching hair/gi/belt)
+- Generated 6 skin-tone variants of all 4 existing poses; verified via contact sheet — clear light-to-dark progression, gi/hair untouched
+- Added `types/avatar.ts` (`AvatarConfig`), `store/avatarStore.ts` (Zustand + persist, same pattern as `progressionStore`)
+- Rewrote `AvatarRenderer.tsx` to build sprite paths from the store (`presetId`/`skinTone`) instead of a hardcoded path map
+- Built `AvatarPicker.tsx` — tap-the-avatar modal with character (Base/Woman) and skin-tone swatches, wired into `Home.tsx`
+- Removed old flat `public/sprites/*.png` (superseded by `public/sprites/base/tone-3/*.png`, confirmed pixel-identical before deleting)
+- Verified end-to-end with Playwright against the running dev server: picker opens, tone selection updates the sprite live, selection persists across reload, zero console errors
+
+**Files changed:**
+- New: `tools/sprite-pipeline/{liftsubject.swift,recolor_skin.py,normalize.py,README.md}`
+- New: `src/types/avatar.ts`, `src/store/avatarStore.ts`, `src/components/avatar/AvatarPicker.tsx`
+- New: `public/sprites/base/tone-{1..6}/{idle,training,celebration,discouraged}.png` (24 files)
+- Modified: `src/components/avatar/AvatarRenderer.tsx`, `src/screens/Home.tsx`
+- Removed: `public/sprites/{idle,training,celebration,discouraged}.png` (old flat files)
+
+**Decisions made:**
+- Static pre-generated tone variants (build-time script) over runtime canvas recoloring — simpler to maintain/debug, zero new client-side image processing code, matches existing static-asset pattern
+- "Woman" preset scaffolded (types/store/renderer all support it) but not yet populated — user is generating 4 raw pose images now; once dropped in `art examples/`, run them through `tools/sprite-pipeline` to populate `public/sprites/woman/`
+- Deferred: full PRD 8-layer palette-swap system (needs a commissioned pixel artist); onboarding/AvatarSetup integration (separate already-flagged milestone)
+
+**Next steps:**
+1. User finishes generating 4 raw "woman" pose images
+2. Run them through `tools/sprite-pipeline` (liftsubject → normalize → recolor_skin) to populate `public/sprites/woman/tone-{1..6}/`
+3. Verify the Woman preset renders correctly in `AvatarPicker`
+4. Resume the onboarding milestone flagged earlier this session
+
+**Status:** ✅ Skin tone system complete and verified; Woman preset scaffolded, pending user's raw art
+
+---
+
+## 2026-07-18 — Woman Preset Populated via Sprite Pipeline
+
+**What we did:**
+- User generated 4 raw pose images for a second character identity and organized them into `art examples/basecharacterfemale/`
+- Reviewed and renamed the 4 images to match the existing `basecharactermale/` convention by identifying pose content: fist-pump/knee-raise → `basecharactercelebrate.png`, neutral standing → `basecharacter-idle.png`, head down/slumped → `basecharacterdiscouraged.png`, crouched hands-forward → `basecharacterdoubleleg.png`
+- Ran the full `tools/sprite-pipeline` (background removal → normalize → 6-tone recolor) against the new set, populating `public/sprites/woman/tone-{1..6}/{idle,training,celebration,discouraged}.png`
+- Verified via contact sheet (clean cutouts, consistent character, correct tone progression) and via Playwright against the running dev server: selected "Woman" in `AvatarPicker`, confirmed correct sprite renders on Home screen with a selected skin tone, zero console errors
+- `npm run build` still passes
+
+**Files changed:**
+- Renamed: 4 files in `art examples/basecharacterfemale/`
+- New: `public/sprites/woman/tone-{1..6}/{idle,training,celebration,discouraged}.png` (24 files)
+
+**Decisions made:**
+- None new — this executed the plan and tooling built in the previous session's entry
+
+**Next steps:**
+- Both presets (Base, Woman) are now fully playable with all 6 skin tones each
+- Resume the onboarding milestone flagged earlier — still the main gap before this is shareable with someone outside the household
+- If pursuing more identities later, the process is now: generate 4 raw poses → rename to convention → run `tools/sprite-pipeline` (documented in its README)
+
+**Status:** ✅ Woman preset complete and verified — avatar system fully functional end-to-end
+
+---
+
+## 2026-07-18 — Onboarding Flow Built
+
+**What we did:**
+- Built the first-launch onboarding flow flagged as the last gap between the current POC and something shareable with a stranger (per PRD section 7.8, adapted: skipped the separate timer-setup step since Home already has a duration selector — 3 steps instead of the PRD's 5, keeping it under the "2 minutes" target)
+- Extracted `AvatarConfigFields.tsx` (preset buttons + skin-tone swatches) out of `AvatarPicker.tsx` so the same selection UI is reusable without modal chrome — used by both the settings picker and the new onboarding avatar step, avoiding duplicated JSX
+- Built `src/screens/Onboarding.tsx`: 3-step flow (Welcome → avatar creation → lock-mechanic explanation) with a step-dot progress indicator, styled to match existing pixel-panel/pixel-accent conventions
+- Added `src/store/onboardingStore.ts` (Zustand + persist, same pattern as the other stores) tracking `hasCompletedOnboarding`
+- Gated the `/` route in `App.tsx`: shows `Onboarding` until the flag is set, then `Home` — no separate route/redirect needed
+- Verified the full flow end-to-end with Playwright against a fresh browser context (no localStorage): welcome → picked Woman + skin tone 2 → confirmed that choice rendered correctly in the next step's preview → lock mechanic step → landed on Home with the chosen character → reloaded and confirmed it skips onboarding on return visits. Zero console errors throughout.
+
+**Files changed:**
+- New: `src/screens/Onboarding.tsx`, `src/store/onboardingStore.ts`, `src/components/avatar/AvatarConfigFields.tsx`
+- Modified: `src/components/avatar/AvatarPicker.tsx` (now just modal chrome around the shared fields), `src/App.tsx` (routing gate)
+
+**Decisions made:**
+- Reused Home's existing duration selector instead of building a separate onboarding timer-setup step — avoids two places that set the same value
+- Onboarding is a full route swap on `/`, not a modal overlay — simpler to reason about, no z-index/layering concerns with the rest of the app
+
+**Next steps:**
+- Core loop, avatar system (2 presets × 6 tones), and onboarding are now all functional — this is arguably the first build worth handing to a friend
+- Remaining PRD gaps if pursued: Pomodoro mode (cycles), gym background scene, more belt stages/lessons, monetization — none of these block a first real playtest
+- Consider: dogfood this build for a few days before adding more scope
+
+**Status:** ✅ Onboarding complete and verified — first-launch experience now explains the mechanic before the timer starts

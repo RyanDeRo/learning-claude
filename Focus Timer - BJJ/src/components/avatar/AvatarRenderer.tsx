@@ -1,33 +1,38 @@
+import { useAvatarStore } from '@/store/avatarStore'
+
+type AvatarState = 'idle' | 'training' | 'celebration' | 'discouraged'
+
 interface AvatarRendererProps {
-  state: 'idle' | 'training' | 'celebration' | 'discouraged'
+  state: AvatarState
   size?: number
 }
 
-export function AvatarRenderer({ state, size = 120 }: AvatarRendererProps) {
-  const avatarDisplay = {
-    idle: '🥋',
-    training: '💪',
-    celebration: '🎉',
-    discouraged: '😔',
-  }
+const STATES: AvatarState[] = ['idle', 'training', 'celebration', 'discouraged']
 
-  const stateColors = {
-    idle: 'bg-gray-700',
-    training: 'bg-blue-700',
-    celebration: 'bg-green-700',
-    discouraged: 'bg-gray-800',
-  }
+// Sprite canvases are 512×640, so height is width × 1.25
+const ASPECT = 640 / 512
+
+export function AvatarRenderer({ state, size = 120 }: AvatarRendererProps) {
+  const { presetId, skinTone } = useAvatarStore((s) => s.avatarConfig)
+  const spritePath = (s: AvatarState) => `/sprites/${presetId}/tone-${skinTone}/${s}.png`
 
   return (
-    <div className="flex flex-col items-center">
-      <div
-        className={`${stateColors[state]} rounded-lg p-8 flex items-center justify-center transition-all duration-300`}
-        style={{ width: size, height: size }}
-      >
-        <div className={`text-6xl ${state === 'training' ? 'animate-training' : ''}`}>
-          {avatarDisplay[state]}
-        </div>
-      </div>
+    <div
+      className="relative"
+      style={{ width: size, height: size * ASPECT }}
+    >
+      {STATES.map((s) => (
+        <img
+          key={s}
+          src={spritePath(s)}
+          alt={s === state ? `Your fighter, ${s}` : ''}
+          aria-hidden={s !== state}
+          draggable={false}
+          className={`absolute inset-0 h-full w-full object-contain object-bottom transition-opacity duration-300 ${
+            s === state ? 'opacity-100' : 'opacity-0'
+          } ${s === state && s === 'training' ? 'animate-training' : ''}`}
+        />
+      ))}
     </div>
   )
 }

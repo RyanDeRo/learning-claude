@@ -28,3 +28,7 @@ npm-debug.log*
 # Temporary files
 *.tmp
 .cache/
+
+# Sprite pipeline tooling - rebuildable, not committed (see tools/sprite-pipeline/README.md)
+tools/sprite-pipeline/.venv/
+tools/sprite-pipeline/liftsubject

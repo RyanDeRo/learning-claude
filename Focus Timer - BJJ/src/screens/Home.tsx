@@ -8,6 +8,7 @@ import { DurationSelector } from '@/components/timer/DurationSelector'
 import { RevealScreen } from '@/components/session/RevealScreen'
 import { BrokenScreen } from '@/components/session/BrokenScreen'
 import { AvatarRenderer } from '@/components/avatar/AvatarRenderer'
+import { AvatarPicker } from '@/components/avatar/AvatarPicker'
 import { BeltDisplay } from '@/components/progression/BeltDisplay'
 import { XPBar } from '@/components/progression/XPBar'
 import { CompletionToast } from '@/components/ui/CompletionToast'
@@ -31,6 +32,9 @@ export default function Home() {
 
   // Toast notification state
   const [showToast, setShowToast] = useState(false)
+
+  // Avatar customization picker state
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false)
 
   // Show toast briefly when session completes, then hide it
   useEffect(() => {
@@ -98,13 +102,21 @@ export default function Home() {
             <XPBar currentXP={totalXP} />
           </div>
 
-          {/* Avatar - shows what your fighter is doing */}
-          <div className="mb-8 flex justify-center">
+          {/* Avatar - shows what your fighter is doing. Tap to customize. */}
+          <button
+            className="mb-8 flex w-full justify-center"
+            onClick={() => setShowAvatarPicker(true)}
+            disabled={isRunning}
+          >
             <AvatarRenderer
               state={isRunning ? 'training' : 'idle'}
               size={140}
             />
-          </div>
+          </button>
+
+          {showAvatarPicker && (
+            <AvatarPicker onClose={() => setShowAvatarPicker(false)} />
+          )}
 
           {/* Duration Selector - expanded or compact */}
           {!isRunning && (
