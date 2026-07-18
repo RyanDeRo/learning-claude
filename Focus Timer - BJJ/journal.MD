@@ -1035,3 +1035,59 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Consider: dogfood this build for a few days before adding more scope
 
 **Status:** ✅ Onboarding complete and verified — first-launch experience now explains the mechanic before the timer starts
+
+---
+
+## 2026-07-18 — Live on Vercel
+
+**What we did:**
+- User signed up for Vercel and connected the GitHub repo (`RyanDeRo/learning-claude`), setting Root Directory to `Focus Timer - BJJ` and confirming the Vite preset — deploys are now automatic on every push to `main`, free hobby tier, no custom domain yet
+- Before pushing: found 365 pending-but-uncommitted deletions for the unused `art examples/FREE Mana Seed Character Base Demo 2.0/` reference pack (predated this session, not something this session removed) — confirmed with user it was intentional cleanup, then committed it alongside today's actual feature work (avatar system, onboarding, sprite pipeline) in one commit
+- Added `tools/sprite-pipeline/.venv/` and the compiled `liftsubject` binary to `.gitignore` before committing — the venv alone was 62MB and the binary is meant to be rebuilt locally per the pipeline's README, not shipped
+- Pushed to `origin/main`; Vercel's GitHub integration auto-deployed within ~10 seconds
+- Verified the **live URL** (https://focus-timer-screen-lock-bjj.vercel.app/), not just localhost: confirmed old deploy was serving a stale pre-session commit at first (explains why onboarding didn't appear and the avatar looked like the old 🥋 emoji — nothing was actually broken, just not yet pushed), then re-verified after the push landed — onboarding triggers correctly on a fresh session, Woman preset + skin tone selection carries through the flow, lands on Home with the right character, and `/journal` loads directly with no 404 (confirming the catch-all rewrite in `vercel.json` works in production, not just in theory)
+- Confirmed Open Graph/description meta tags are present for share previews (no `og:image` yet, so link previews will be text-only, no thumbnail — noted as a possible future polish item, not fixed now)
+
+**Files changed:**
+- `.gitignore` (added sprite-pipeline venv/binary excludes)
+- Committed: all of this session's earlier work (avatar system, onboarding, sprite pipeline, Mana Seed cleanup) in one commit — see prior journal entries for details
+
+**Decisions made:**
+- No Vercel CLI/API access set up for Claude — GitHub-integration-based deploys need zero shared credentials; CLI access deferred until there's an actual need (log inspection, rollbacks) rather than set up preemptively
+
+**Next steps:**
+- App is live and shareable. Reasonable next real-world test: send the link to one or two people and see if the core loop (lock phone → return → reveal) actually lands for someone who didn't watch it get built
+- Possible small polish: an `og:image` for richer link previews when sharing
+- Bigger-ticket items still open from the PRD (Pomodoro mode, gym scene, more belts/lessons, monetization) — none urgent before real feedback comes in
+
+**Status:** ✅ Live in production at https://focus-timer-screen-lock-bjj.vercel.app/ — verified end-to-end against the actual deployed site, not just localhost
+
+---
+
+## 2026-07-18 — Three Real-World Bugs from First Mobile Testing
+
+**What we did:** First live feedback from actually testing on a phone (Samsung Galaxy S20) surfaced three issues, all fixed and verified:
+
+1. **Custom timer minimum was 5 min, needed 1 min.** Changed the clamp in `DurationSelector.tsx` (`handleCustomSubmit`) from `Math.max(5, ...)` to `Math.max(1, ...)`, updated the `<input min="5">` and label text to match.
+
+2. **"Change" duration link was hard to see/tap.** It was a bare `text-xs underline` link with no visible tap target. Restyled as a proper pill button (`bg-blue-600`, `px-4 py-2`, `rounded-full`) — same visual weight as other buttons in the app, ~40px tall touch target.
+
+3. **Screen lock "interrupted progress" on Android — root-caused and fixed.** The actual lock-detection logic (Page Visibility API) was fine; the real bug was that the running session lived only in React's in-memory `useState`, never persisted. Samsung phones aggressively kill backgrounded browser tabs to save battery — locking the screen likely killed the tab outright, so when the user unlocked and reopened it, the page reloaded with zero memory of the session that had been running. Fixed by adding `src/store/sessionStore.ts` (Zustand + persist, same pattern as the other stores) so the active session survives a tab kill, plus a mount-time check in `useTimer.ts`: if a recovered session is `focus_running` and the page is already visible on load (meaning no `visibilitychange` event will fire to trigger the normal check), it checks immediately against real elapsed time. This also incidentally makes an accidental page refresh mid-session resolve correctly instead of just losing the session silently.
+
+**Files changed:**
+- `src/components/timer/DurationSelector.tsx` (1-min minimum, Change button styling)
+- New: `src/store/sessionStore.ts`
+- `src/hooks/useTimer.ts` (session now backed by the persisted store; added mount-recovery check)
+
+**Decisions made:**
+- Persisted session state via the same Zustand + persist pattern already used everywhere else in the app, rather than a one-off localStorage read/write — keeps the codebase consistent
+
+**Verification:**
+- Rebuilt (`npm run build`, passes)
+- Verified all three fixes against the dev server with Playwright, including simulating the actual failure mode: started a session, rewrote its `startTimestamp` in localStorage to simulate real elapsed time (26 min for the success case, 5 min for the broken case), then hard-reloaded the page (simulating Android killing and recreating the tab) — confirmed the app correctly resolves to Session Complete (+125 XP) or Session Broken ("5 of 25 minutes") immediately on reload in both cases, rather than losing the session
+- This is the first fix in the project driven by real device testing rather than desktop/Playwright-only verification — worth remembering that some classes of bugs (aggressive mobile battery management) only surface off a real phone
+
+**Next steps:**
+- Push and let Vercel redeploy, then user re-tests the actual lock-screen scenario on their Galaxy S20 to confirm in the real world (Playwright can simulate the tab-kill mechanism but can't fully replicate Samsung's OS-level battery behavior)
+
+**Status:** ✅ All three fixes implemented and verified locally — pending push + real-device confirmation

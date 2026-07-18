@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Session } from '@/types/session'
 import { useProgressionStore } from '@/store/progressionStore'
+import { useSessionStore } from '@/store/sessionStore'
 
 /**
  * Core timer hook that manages focus session logic
@@ -15,7 +16,7 @@ import { useProgressionStore } from '@/store/progressionStore'
  * This hook handles all the math and state transitions.
  */
 export function useTimer() {
-  const [session, setSession] = useState<Session | null>(null)
+  const { session, setSession } = useSessionStore()
   const [elapsedTime, setElapsedTime] = useState(0) // Seconds elapsed
   const intervalRef = useRef<number | null>(null)
   const isCheckingRef = useRef(false) // Prevent multiple simultaneous checks
@@ -96,6 +97,19 @@ export function useTimer() {
       isCheckingRef.current = false
     }, 100)
   }, [session, awardXP])
+
+  // Recover a running session on mount (e.g. the mobile browser killed the
+  // tab while the phone was locked and this is a fresh reload). If the
+  // recovered session is already visible, no visibilitychange event will
+  // fire to trigger a check — the page loaded already-visible — so check
+  // immediately instead of waiting for one.
+  useEffect(() => {
+    if (session?.state === 'focus_running' && !document.hidden) {
+      checkSession()
+    }
+    // Only ever run once, right after the persisted session rehydrates.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Reset session (start new one)
   const resetSession = useCallback(() => {

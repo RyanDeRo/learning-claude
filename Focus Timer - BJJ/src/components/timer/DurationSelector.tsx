@@ -39,8 +39,8 @@ export function DurationSelector({ onSelect, compact = false, onExpand }: Durati
     const minutes = parseInt(customMinutes)
     if (isNaN(minutes)) return
 
-    // Enforce limits: 5 min minimum, 1440 min (24 hours) maximum
-    const clampedMinutes = Math.max(5, Math.min(1440, minutes))
+    // Enforce limits: 1 min minimum, 1440 min (24 hours) maximum
+    const clampedMinutes = Math.max(1, Math.min(1440, minutes))
     const seconds = clampedMinutes * 60
 
     setLastDuration(seconds)
@@ -58,7 +58,7 @@ export function DurationSelector({ onSelect, compact = false, onExpand }: Durati
         </span>
         <button
           onClick={onExpand}
-          className="text-xs text-blue-400 hover:text-blue-300 underline"
+          className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-full border-2 border-blue-400 transition-colors"
         >
           Change
         </button>
@@ -91,11 +91,11 @@ export function DurationSelector({ onSelect, compact = false, onExpand }: Durati
 
       {/* Custom input */}
       <div className="mb-4">
-        <p className="text-sm text-gray-400 mb-2">Custom (5-1440 min):</p>
+        <p className="text-sm text-gray-400 mb-2">Custom (1-1440 min):</p>
         <div className="flex gap-2">
           <input
             type="number"
-            min="5"
+            min="1"
             max="1440"
             value={customMinutes}
             onChange={(e) => setCustomMinutes(e.target.value)}
