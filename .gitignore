@@ -1,0 +1,6 @@
+.DS_Store
+.claude/settings.local.json
+
+# Own git repo with its own remote (web-agency.git) — never add as a plain folder,
+# git would silently create a broken gitlink instead of tracking its files.
+/Local Website Build/

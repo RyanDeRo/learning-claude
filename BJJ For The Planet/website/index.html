@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BJJ For The Planet — Jiu-Jitsu Retreats & Charity, Philadelphia PA</title>
+  <meta name="description" content="A 501(c)(3) using Brazilian Jiu-Jitsu to fund conservation and support underserved youth. Charity retreats, the CharitySpar app, and partnerships with Guardian and Elite Sports.">
+  <link rel="canonical" href="https://bjjfortheplanet.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="BJJ For The Planet — Empowering Grapplers, Protecting the Planet">
+  <meta property="og:description" content="A 501(c)(3) charity using Brazilian Jiu-Jitsu to host retreats, fund conservation, and support underserved youth through partnerships with Guardian and Elite Sports.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bjjfortheplanet.com/">
+  <meta property="og:image" content="https://bjjfortheplanet.com/images/hero-panda-monkey.webp">
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": "BJJ For The Planet",
+    "url": "https://bjjfortheplanet.com",
+    "logo": "https://bjjfortheplanet.com/images/logo-bjjftp.webp",
+    "description": "A 501(c)(3) nonprofit using Brazilian Jiu-Jitsu to host charity retreats, fund conservation, and support underserved youth worldwide.",
+    "email": "Bjjfortheplanet@gmail.com",
+    "telephone": "+17039465237",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "501 Monastery Ave",
+      "addressLocality": "Philadelphia",
+      "addressRegion": "PA",
+      "postalCode": "19128",
+      "addressCountry": "US"
+    },
+    "sameAs": [
+      "https://www.instagram.com/bjjfortheplanet/",
+      "https://charityspar.com"
+    ]
+  }
+  </script>
+
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/favicon.png">
+
+  <link rel="preload" as="image" href="images/logo-bjjftp.webp" type="image/webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Tokens ──
+       Palette pulled from the subject, not a template: ink/canvas read as raw
+       gi cloth + stitching; moss/harbor are the two places BJJFTP actually
+       operates (jungle retreats, Peru coast); ember is the one bold accent,
+       chosen to echo the CharitySpar flyer's rust tone so the sister
+       properties visually rhyme. Belt colors are scoped to the rank display
+       only — they're informational, not decorative, so they don't pollute
+       the main palette. */
+    :root {
+      --ink:          #1b1a16;
+      --ink-2:        #262420;
+      --canvas:       #e3decb;
+      --canvas-2:     #d9d3bd;
+      --paper:        #eee9d8;
+      --moss:         #3d5a40;
+      --moss-dark:    #26392a;
+      --ember:        #c1512b;
+      --ember-dark:   #9c3f21;
+      --harbor:       #2b5c82;
+      --harbor-light: #6d9cc2;
+      --gold:         #b8873a;
+
+      --belt-white:   #eee9d8;
+      --belt-blue:    #2b5c82;
+      --belt-purple:  #6b4c7a;
+      --belt-brown:   #6b4423;
+      --belt-black:   #1b1a16;
+
+      --line:         rgba(27,26,22,.15);
+      --line-on-dark: rgba(238,233,216,.18);
+
+      --display:  'Big Shoulders Display', system-ui, sans-serif;
+      --body:     'Source Serif 4', Georgia, serif;
+      --mono:     'Space Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+      --radius:    3px;
+      --radius-md: 6px;
+      --container: 1160px;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+    body {
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.6;
+      background: var(--canvas);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    h1, h2, h3, h4 {
+      font-family: var(--display);
+      font-weight: 800;
+      line-height: .98;
+      text-transform: uppercase;
+      letter-spacing: .002em;
+      text-wrap: balance;
+    }
+    p { text-wrap: pretty; }
+    .wrap {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+    }
+    .mono-label {
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* ── Skip link ── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--ember);
+      color: var(--paper);
+      padding: .75rem 1.25rem;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: .85rem;
+      text-decoration: none;
+      z-index: 9999;
+    }
+    .skip-link:focus { top: 0; }
+
+    :focus-visible {
+      outline: 2px solid var(--ember);
+      outline-offset: 3px;
+    }
+
+    /* ── Belt divider — the site's one recurring signature mark ──
+       Real rank order (white→blue→purple→brown→black), used once as a
+       thesis statement, not sprinkled everywhere. */
+    .belt-divider {
+      display: flex;
+      height: 7px;
+    }
+    .belt-divider span { flex: 1; }
+    .belt-divider .s-white  { background: var(--belt-white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .belt-divider .s-blue   { background: var(--belt-blue); }
+    .belt-divider .s-purple { background: var(--belt-purple); }
+    .belt-divider .s-brown  { background: var(--belt-brown); }
+    .belt-divider .s-black  { background: var(--belt-black); }
+
+    /* ── Buttons — rectangular, stamped, not pill-shaped ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .55rem;
+      font-family: var(--mono);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: .95rem 1.6rem;
+      border-radius: var(--radius);
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      min-height: 44px;
+      transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--ember); color: var(--paper); }
+    .btn-primary:hover { background: var(--ember-dark); }
+    .btn-dark { background: var(--ink); color: var(--canvas); }
+    .btn-dark:hover { background: var(--ink-2); }
+    .btn-outline { background: transparent; color: var(--paper); border-color: rgba(238,233,216,.55); }
+    .btn-outline:hover { background: rgba(238,233,216,.1); border-color: var(--paper); }
+
+    /* ── Header ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(227,222,203,.94);
+      backdrop-filter: saturate(1.15) blur(6px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      gap: 1rem;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .header-brand img { width: 40px; height: 40px; }
+    .header-brand span {
+      font-family: var(--display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 1.02rem;
+      color: var(--ink);
+      line-height: 1.05;
+    }
+    .header-nav { display: flex; align-items: center; gap: 1.6rem; }
+    .header-nav-links { display: flex; align-items: center; gap: 1.6rem; }
+    .header-nav a {
+      font-family: var(--mono);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink-2);
+    }
+    .header-nav a:hover { color: var(--ember); }
+
+    @media (max-width: 860px) {
+      .header-nav-links { display: none; }
+    }
+
+    /* ── Hero sweep ──
+       A pinned scroll intro: the belt/globe logo starts small and sweeps
+       up to full size as you scroll, headline letterforms tighten at the
+       same time. Same technique as the Jazzmine Cox biophilic-design site
+       (GSAP + ScrollTrigger, base CSS is the safe fallback state), swapped
+       to a circular medallion instead of a full-bleed photo since that's
+       the one branded image ready today — real retreat photos can replace
+       it later without touching the animation code. */
+    .hero-sweep {
+      background: var(--ink);
+      color: var(--canvas);
+      position: relative;
+      overflow: hidden;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 560px;
+    }
+    .hero-sweep::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(115deg, rgba(238,233,216,.025) 0 2px, transparent 2px 60px);
+      pointer-events: none;
+    }
+    .hero-sweep-pin {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(1.25rem, 3vw, 2rem);
+      text-align: center;
+      padding: clamp(1.25rem, 4vw, 3rem);
+    }
+    .hero-sweep-eyebrow { margin-bottom: 0; }
+
+    /* Badge mask — the logo file ships as a square with a light backdrop
+       around the circular emblem; masking it to a circle here (cheap CSS,
+       no image edit needed) crops that away so it reads as a medallion,
+       not a floating gray square, against the dark hero. */
+    .hero-sweep-image { width: min(340px, 46vw); will-change: transform; }
+    .badge-mask {
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 0 6px rgba(238,233,216,.12), 0 30px 70px rgba(0,0,0,.5);
+    }
+    .badge-mask img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .hero-sweep-headline {
+      color: var(--canvas);
+      font-size: clamp(2rem, 6vw, 3.6rem);
+    }
+    .hero-sweep-headline .line { display: block; letter-spacing: .02em; will-change: letter-spacing, opacity; }
+    .hero-sweep-headline .line.accent { color: var(--ember); }
+
+    .scroll-cue {
+      position: absolute;
+      left: clamp(1.25rem, 4vw, 3rem);
+      bottom: clamp(1.25rem, 4vw, 3rem);
+      z-index: 2;
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--canvas);
+      writing-mode: vertical-rl;
+      opacity: .75;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-sweep { height: auto; min-height: 0; padding-block: clamp(3rem, 8vw, 5.5rem); }
+      .hero-sweep-pin { height: auto; }
+      .scroll-cue { display: none; }
+    }
+
+    /* ── Hero intro — CTAs/stats band that follows the pinned sweep ── */
+    .hero-intro {
+      background: var(--ink);
+      color: var(--canvas);
+      padding-block: clamp(2.5rem, 6vw, 4rem);
+      text-align: center;
+    }
+    .hero-intro .lede {
+      font-family: var(--body);
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      color: rgba(238,233,216,.82);
+      max-width: 52ch;
+      margin: 0 auto 2rem;
+    }
+    .hero-intro .hero-ctas { justify-content: center; margin-bottom: 2.25rem; }
+    .hero-intro .hero-stats { justify-content: center; border-top: 1px solid var(--line-on-dark); padding-top: 1.4rem; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: var(--mono);
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--harbor-light);
+      margin-bottom: 1.15rem;
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--harbor-light); }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: .9rem; margin-bottom: 2.25rem; }
+    .hero-stats {
+      display: flex;
+      gap: clamp(1.5rem, 4vw, 2.5rem);
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line-on-dark);
+      padding-top: 1.4rem;
+    }
+    .hero-stats div strong {
+      display: block;
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ember);
+    }
+    .hero-stats div span { font-family: var(--mono); font-size: .72rem; letter-spacing: .04em; color: rgba(238,233,216,.6); text-transform: uppercase; }
+
+    /* Patch frame — a stitched mat around an illustration, not a rounded
+       card-with-shadow. Corner ticks stand in for stitch marks. Used in
+       the Retreats section below. */
+    .patch-frame {
+      position: relative;
+      padding: 14px;
+      background: var(--ink-2);
+      border: 1px dashed rgba(238,233,216,.35);
+    }
+    .patch-frame img { width: 100%; max-width: 300px; height: auto; display: block; }
+    .patch-frame::before, .patch-frame::after,
+    .patch-frame .tick-a, .patch-frame .tick-b { content: ""; position: absolute; width: 14px; height: 14px; border: 1.5px solid var(--ember); }
+    .patch-frame::before { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+    .patch-frame::after  { top: -1px; right: -1px; border-width: 1.5px 1.5px 0 0; }
+    .patch-frame .tick-a { bottom: -1px; left: -1px; border-width: 0 0 1.5px 1.5px; }
+    .patch-frame .tick-b { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+    .patch-label {
+      position: absolute;
+      bottom: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ember);
+      color: var(--paper);
+      font-family: var(--mono);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .4rem .85rem;
+      white-space: nowrap;
+    }
+    .retreat-side .patch-frame { max-width: 260px; margin: 0 auto 1.75rem; }
+
+    @media (max-width: 860px) {
+      .patch-frame img { max-width: 220px; }
+    }
+
+    /* ── Sections ── */
+    section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+    .section-head { max-width: 60ch; margin-bottom: clamp(2rem, 5vw, 3rem); }
+    .section-head .eyebrow { color: var(--ember); }
+    .section-head .eyebrow::before { background: var(--ember); }
+    .section-head h2 {
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      color: var(--ink);
+      margin-bottom: .85rem;
+    }
+    .section-head p { font-family: var(--body); color: var(--ink-2); font-size: 1.08rem; opacity: .82; max-width: 58ch; }
+    .section-alt { background: var(--paper); }
+    .section-dark { background: var(--ink); color: var(--canvas); }
+    .section-dark .section-head p { color: rgba(238,233,216,.75); }
+    .section-dark .section-head h2 { color: var(--canvas); }
+    .section-dark .eyebrow { color: var(--harbor-light); }
+    .section-dark .eyebrow::before { background: var(--harbor-light); }
+
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+    /* ── Belt rack (values) ──
+       Real progression, white -> black, used as information: each rank IS
+       one of the values, in the actual order a grappler earns them. */
+    .belt-rack { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+    .belt-rack__row {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      align-items: center;
+      gap: clamp(1.25rem, 4vw, 2.5rem);
+      padding: clamp(1.1rem, 3vw, 1.6rem) 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .belt-rack__strip {
+      position: relative;
+      height: 34px;
+      background: var(--belt-color);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+    }
+    .belt-rack__strip::after {
+      content: "";
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 6px;
+      background: var(--ink);
+      opacity: .28;
+    }
+    .belt-rack__text h3 {
+      font-size: 1.15rem;
+      color: var(--ink);
+      text-transform: uppercase;
+      margin-bottom: .3rem;
+    }
+    .belt-rack__text p { font-family: var(--body); font-size: .96rem; color: var(--ink-2); opacity: .85; max-width: 56ch; }
+    .belt-rack__rank {
+      font-family: var(--mono);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .8;
+    }
+
+    @media (max-width: 640px) {
+      .belt-rack__row { grid-template-columns: 1fr; gap: .6rem; }
+      .belt-rack__strip { height: 22px; }
+    }
+
+    /* ── Retreats ── */
+    .retreat-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 3.5rem);
+      align-items: start;
+    }
+    .retreat-card {
+      background: var(--moss-dark);
+      color: var(--canvas);
+      padding: clamp(1.75rem, 4vw, 2.5rem);
+      border-left: 4px solid var(--ember);
+    }
+    .retreat-card .mono-label { color: rgba(238,233,216,.65); display: block; margin-bottom: .9rem; }
+    .retreat-card h3 { font-size: 1.7rem; margin-bottom: .8rem; }
+    .retreat-card p { font-family: var(--body); color: rgba(238,233,216,.85); margin-bottom: 1rem; }
+    .retreat-card ul { list-style: none; margin: 1.25rem 0; }
+    .retreat-card li {
+      position: relative;
+      padding: .55rem 0 .55rem 1.1rem;
+      font-family: var(--body);
+      font-size: .95rem;
+      color: rgba(238,233,216,.9);
+      border-top: 1px solid var(--line-on-dark);
+    }
+    .retreat-card li:first-child { border-top: none; }
+    .retreat-card li::before { content: ""; position: absolute; left: 0; top: 1.05rem; width: 6px; height: 6px; background: var(--ember); }
+    .retreat-side h3 { font-size: 1.4rem; color: var(--ink); margin-bottom: .75rem; }
+    .retreat-side p { font-family: var(--body); margin-bottom: 1rem; color: var(--ink-2); }
+    .retreat-note {
+      font-family: var(--body);
+      font-size: .88rem;
+      background: var(--canvas-2);
+      border-left: 3px solid var(--harbor);
+      padding: 1rem 1.25rem;
+      color: var(--ink-2);
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 780px) { .retreat-layout { grid-template-columns: 1fr; } }
+
+    /* ── CharitySpar ── */
+    .spar-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 3.5rem);
+      align-items: center;
+    }
+    .spar-diagram { border: 1px solid var(--line-on-dark); }
+    .spar-step {
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--line-on-dark);
+    }
+    .spar-step:last-child { border-bottom: none; }
+    .spar-step .num {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ember);
+      flex-shrink: 0;
+      width: 1.8rem;
+    }
+    .spar-step p { font-family: var(--body); color: rgba(238,233,216,.85); font-size: .96rem; }
+    .spar-step strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .01em; color: var(--canvas); display: block; margin-bottom: .2rem; font-size: 1.05rem; }
+    .spar-copy p { font-family: var(--body); color: rgba(238,233,216,.82); margin-bottom: 1.5rem; font-size: 1.08rem; }
+    .spar-copy h2 { color: var(--canvas); font-size: clamp(2rem,4vw,2.9rem); margin-bottom: .85rem; }
+
+    @media (max-width: 780px) { .spar-layout { grid-template-columns: 1fr; } }
+
+    /* ── Partners ── */
+    .partners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .partner-card {
+      background: var(--canvas);
+      padding: clamp(1.75rem, 3vw, 2.25rem);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .partner-mark {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: .2rem;
+    }
+    .partner-role { font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--moss); margin-bottom: 1rem; }
+    .partner-card p.desc { font-family: var(--body); font-size: .96rem; color: var(--ink-2); opacity: .88; margin-bottom: 1.5rem; flex-grow: 1; }
+    .partner-card a.link {
+      font-family: var(--mono);
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--ember);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      border-bottom: 1px solid transparent;
+    }
+    .partner-card a.link:hover { border-color: var(--ember); }
+
+    /* ── About ── */
+    .about-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 5vw, 3.5rem); align-items: center; }
+    .about-portrait {
+      background: var(--paper);
+      border: 1px dashed var(--line);
+      aspect-ratio: 4 / 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .about-portrait img { width: 96px; opacity: .85; }
+    .about-portrait span { display: block; margin-top: 1rem; font-family: var(--mono); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); opacity: .6; }
+    .about-copy h3 { font-size: 1.9rem; color: var(--ink); margin-bottom: .35rem; }
+    .about-copy .role { font-family: var(--mono); font-size: .78rem; letter-spacing: .03em; text-transform: uppercase; color: var(--moss); font-weight: 700; margin-bottom: 1.25rem; }
+    .about-copy p { font-family: var(--body); color: var(--ink-2); margin-bottom: 1rem; }
+    .about-copy p:last-of-type { margin-bottom: 0; }
+
+    @media (max-width: 780px) {
+      .about-layout { grid-template-columns: 1fr; }
+      .about-portrait { max-width: 220px; margin: 0 auto; }
+    }
+
+    /* ── Follow card — the Get Involved section's headline element now
+       that Instagram/contact is the primary ask instead of donating.
+       Same "info card with an ember spine" language as .retreat-card. ── */
+    .follow-card {
+      background: var(--moss-dark);
+      color: var(--canvas);
+      padding: clamp(1.75rem, 4vw, 2.5rem);
+      border-left: 4px solid var(--ember);
+      margin-bottom: 1.75rem;
+    }
+    .follow-card .mono-label { color: rgba(238,233,216,.65); display: block; margin-bottom: .6rem; }
+    .follow-card h3 { font-size: 1.6rem; margin-bottom: .6rem; }
+    .follow-card p { font-family: var(--body); color: rgba(238,233,216,.85); margin-bottom: 1.1rem; }
+
+    /* ── Support line — donating is still possible, just no longer the
+       page's headline ask, so it's a quiet strip, not a full section. ── */
+    .support-line {
+      border-top: 1px solid var(--line);
+      margin-top: clamp(2.5rem, 5vw, 3.5rem);
+      padding-top: 1.5rem;
+      text-align: center;
+    }
+    .support-line p { font-family: var(--body); font-size: .95rem; color: var(--ink-2); }
+    .support-line a { color: var(--ember); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Get Involved ── */
+    .involved-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem, 5vw, 3.5rem); }
+    .contact-list { list-style: none; margin-top: 1.5rem; }
+    .contact-list li { display: flex; gap: .85rem; padding: .85rem 0; border-top: 1px solid var(--line); font-family: var(--body); font-size: .98rem; }
+    .contact-list li:first-child { border-top: none; }
+    .contact-list a { text-decoration: none; color: var(--ink); font-weight: 600; }
+    .contact-list a:hover { color: var(--ember); }
+    .contact-list .label { font-family: var(--mono); color: var(--ink-2); opacity: .6; min-width: 88px; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; padding-top: .15rem; }
+
+    form.involve-form {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: clamp(1.75rem, 4vw, 2.5rem);
+      display: grid;
+      gap: 1.1rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+    .field label { display: block; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); margin-bottom: .45rem; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      font-family: var(--body);
+      font-size: 1rem;
+      padding: .75rem .9rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--canvas);
+      color: var(--ink);
+      min-height: 44px;
+    }
+    .field textarea { min-height: 100px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--ember); outline-offset: 1px; border-color: var(--ember); }
+    .involve-form .btn { justify-self: start; margin-top: .25rem; }
+    .form-note { font-family: var(--body); font-size: .82rem; color: var(--ink-2); opacity: .65; }
+
+    /* ── Footer ── */
+    footer { background: var(--ink); color: rgba(238,233,216,.75); padding-block: 3rem; }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
+    .footer-brand { display: flex; align-items: center; gap: .65rem; }
+    .footer-brand img { width: 32px; height: 32px; }
+    .footer-brand span { font-family: var(--display); text-transform: uppercase; font-weight: 800; color: var(--canvas); }
+    .footer-links { display: flex; gap: 1.6rem; flex-wrap: wrap; }
+    .footer-links a { font-family: var(--mono); font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; text-decoration: none; color: rgba(238,233,216,.75); }
+    .footer-links a:hover { color: var(--ember); }
+    .footer-bottom {
+      border-top: 1px solid var(--line-on-dark);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: var(--mono);
+      font-size: .74rem;
+      color: rgba(238,233,216,.55);
+    }
+
+    /* ── Sticky mobile CTA bar ── */
+    .mobile-cta-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--paper);
+      border-top: 1px solid var(--line);
+      padding: .7rem 1rem calc(.7rem + env(safe-area-inset-bottom));
+      box-shadow: 0 -6px 20px rgba(0,0,0,.15);
+    }
+    .mobile-cta-bar .btn { width: 100%; }
+    @media (max-width: 640px) {
+      .mobile-cta-bar { display: block; }
+      body { padding-bottom: 74px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header>
+    <div class="header-inner">
+      <a class="header-brand" href="#top">
+        <img src="images/logo-bjjftp.webp" alt="BJJ For The Planet logo — black belt wrapped around the globe">
+        <span>BJJ For&nbsp;The Planet</span>
+      </a>
+      <nav class="header-nav" aria-label="Primary">
+        <div class="header-nav-links">
+          <a href="#mission">Mission</a>
+          <a href="#retreats">Retreats</a>
+          <a href="#charityspar">CharitySpar</a>
+          <a href="#partners">Partners</a>
+          <a href="#about">About</a>
+          <a href="#involved">Contact</a>
+        </div>
+        <a class="btn btn-primary" href="https://www.instagram.com/bjjfortheplanet/" target="_blank" rel="noopener">Follow</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ── Hero (sweep-in) ── -->
+    <div class="hero-sweep" id="top">
+      <div class="hero-sweep-pin">
+        <span class="eyebrow hero-sweep-eyebrow">501(c)(3) &middot; Philadelphia, PA</span>
+        <div class="hero-sweep-image">
+          <div class="badge-mask">
+            <img src="images/logo-bjjftp.webp" alt="BJJ For The Planet logo — a black belt wrapped around the globe">
+          </div>
+        </div>
+        <h1 class="hero-sweep-headline">
+          <span class="line">Empowering Grapplers,</span>
+          <span class="line accent">Protecting the Planet.</span>
+        </h1>
+      </div>
+      <p class="scroll-cue">Scroll ↓</p>
+    </div>
+
+    <div class="hero-intro wrap">
+      <p class="lede">BJJ For The Planet is a charity that uses Brazilian Jiu-Jitsu to host retreats and build apps that support worthy causes. Do jiu-jitsu, and do good.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="https://www.instagram.com/bjjfortheplanet/" target="_blank" rel="noopener">Follow @bjjfortheplanet</a>
+        <a class="btn btn-outline" href="#involved">Get In Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>2025</strong><span>Founded</span></div>
+        <div><strong>Peru</strong><span>Inaugural retreat, 2026</span></div>
+        <div><strong>03</strong><span>Active partners</span></div>
+      </div>
+    </div>
+
+    <div class="belt-divider" role="presentation">
+      <span class="s-white"></span><span class="s-blue"></span><span class="s-purple"></span><span class="s-brown"></span><span class="s-black"></span>
+    </div>
+
+    <!-- ── Mission / Values ── -->
+    <section id="mission" class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Our mission</span>
+        <h2>Jiu-jitsu as a force for good.</h2>
+        <p>"To protect vulnerable ecosystems and the people who rely on them, through the unity of Brazilian Jiu-Jitsu." The five things we hold ourselves to, laid out the way a grappler actually earns them.</p>
+      </div>
+      <div class="belt-rack reveal">
+        <div class="belt-rack__row">
+          <div class="belt-rack__strip" style="--belt-color:var(--belt-white);"></div>
+          <div class="belt-rack__text">
+            <span class="belt-rack__rank">White belt &middot; where it starts</span>
+            <h3>Honor</h3>
+            <p>Respect for the sport, the people who teach it, and the communities we visit.</p>
+          </div>
+        </div>
+        <div class="belt-rack__row">
+          <div class="belt-rack__strip" style="--belt-color:var(--belt-blue);"></div>
+          <div class="belt-rack__text">
+            <span class="belt-rack__rank">Blue belt</span>
+            <h3>Discipline</h3>
+            <p>The same consistency it takes to earn a belt, applied to showing up for a cause.</p>
+          </div>
+        </div>
+        <div class="belt-rack__row">
+          <div class="belt-rack__strip" style="--belt-color:var(--belt-purple);"></div>
+          <div class="belt-rack__text">
+            <span class="belt-rack__rank">Purple belt</span>
+            <h3>Charity</h3>
+            <p>Every retreat, every match, every donation is pointed at someone who needs it more.</p>
+          </div>
+        </div>
+        <div class="belt-rack__row">
+          <div class="belt-rack__strip" style="--belt-color:var(--belt-brown);"></div>
+          <div class="belt-rack__text">
+            <span class="belt-rack__rank">Brown belt</span>
+            <h3>Community</h3>
+            <p>Jiu-jitsu's global network of gyms and athletes, turned into a network for giving back.</p>
+          </div>
+        </div>
+        <div class="belt-rack__row">
+          <div class="belt-rack__strip" style="--belt-color:var(--belt-black);"></div>
+          <div class="belt-rack__text">
+            <span class="belt-rack__rank">Black belt &middot; the standard we hold</span>
+            <h3>Stewardship</h3>
+            <p>Protecting the ecosystems and people that host the communities we train alongside.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Retreats ── -->
+    <section id="retreats" class="section-alt">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Retreats</span>
+          <h2>Train somewhere that needs it.</h2>
+          <p>We partner with organizations like Guardian to visit communities that are giving back locally — then bring grapplers from around the world to train, volunteer, and help fund what comes next.</p>
+        </div>
+        <div class="retreat-layout reveal">
+          <div class="retreat-card">
+            <span class="mono-label">Inaugural retreat &middot; March 2026</span>
+            <h3>Máncora, Peru</h3>
+            <p>Our first retreat partnered with Guardian's academy in Máncora, a coastal city where roughly 30% of the 15,000 residents are under 15 — many with little access to structured youth programs. Guardian Peru gives those kids free jiu-jitsu training year-round; we brought grapplers down to train alongside them, volunteer, and support the program directly.</p>
+            <ul>
+              <li>Daily training with Guardian's Peru academy and international participants</li>
+              <li>Volunteer work: BJJ and English instruction, cultural exchange, beach cleanup</li>
+              <li>Surfing, volleyball, and the Peruvian coast in downtime</li>
+              <li>Lodging and logistics coordinated by BJJ For The Planet</li>
+            </ul>
+            <p style="margin-bottom:0; font-size:.9rem; opacity:.75;">Read more about our host on the ground under <a href="#partners" style="color:var(--ember);">Partners &amp; Donors</a>.</p>
+          </div>
+          <div class="retreat-side">
+            <div class="patch-frame">
+              <span class="tick-a" aria-hidden="true"></span><span class="tick-b" aria-hidden="true"></span>
+              <img src="images/hero-panda-monkey.webp" alt="Illustrated panda and monkey wearing jiu-jitsu gis, sitting together in a jungle clearing">
+              <span class="patch-label">Illustration</span>
+            </div>
+            <h3>What's next</h3>
+            <p>We're planning future retreats but haven't locked a location or date yet. If you want to train somewhere that matters, get on the list — we'll email you the moment it's official.</p>
+            <a class="btn btn-dark" href="#involved">Register for Updates</a>
+            <p class="retreat-note">Real photos from Máncora are on the way — this section will get a full gallery as soon as they're organized. For now, this illustration captures the spirit rather than stock filler.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CharitySpar ── -->
+    <section id="charityspar" class="section-dark">
+      <div class="wrap">
+        <div class="spar-layout reveal">
+          <div class="spar-copy">
+            <span class="eyebrow">Our app</span>
+            <h2>CharitySpar — fight for your cause.</h2>
+            <p>Two jiu-jitsu athletes each nominate a charity, then spar. Only the loser pays — and it goes to the <em style="color:var(--ember); font-style:normal;">winner's</em> chosen charity. It turns every roll at open mat into a reason to give.</p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary" href="https://charityspar.com" target="_blank" rel="noopener">Visit CharitySpar</a>
+            </div>
+          </div>
+          <div class="spar-diagram">
+            <div class="spar-step">
+              <span class="num">01</span>
+              <p><strong>Nominate a charity</strong>Each athlete picks the cause they're rolling for.</p>
+            </div>
+            <div class="spar-step">
+              <span class="num">02</span>
+              <p><strong>Spar</strong>Settle it on the mats — friendly match, real stakes.</p>
+            </div>
+            <div class="spar-step">
+              <span class="num">03</span>
+              <p><strong>Loser pays, winner's cause wins</strong>The loser donates to the winner's charity of choice.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Partners & Donors ── -->
+    <section id="partners" class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Partners &amp; donors</span>
+        <h2>We don't do this alone.</h2>
+        <p>BJJ For The Planet exists because these organizations put their name, their gyms, and their gear behind the same idea — jiu-jitsu can do more than build better grapplers.</p>
+      </div>
+      <div class="partners-grid reveal">
+        <div class="partner-card">
+          <div class="partner-mark">Guardian</div>
+          <div class="partner-role">Retreat host &middot; Youth BJJ programs</div>
+          <p class="desc">A 501(c)(3) offering free jiu-jitsu scholarships to underserved youth worldwide. Guardian's academy in Máncora, Peru — one of four it now runs along the coast — hosted our inaugural retreat and gives local kids year-round access to training, mentorship, and a safe place to be a kid.</p>
+          <a class="link" href="https://www.guardiangym.org" target="_blank" rel="noopener">guardiangym.org →</a>
+        </div>
+        <div class="partner-card">
+          <div class="partner-mark">CharitySpar</div>
+          <div class="partner-role">Our sister app</div>
+          <p class="desc">The charity-sparring app we built in-house. Every match is a fundraiser — athletes nominate a cause, spar, and the loser's donation goes to the winner's charity of choice. Same mission, different mat.</p>
+          <a class="link" href="https://charityspar.com" target="_blank" rel="noopener">charityspar.com →</a>
+        </div>
+        <div class="partner-card">
+          <div class="partner-mark">Elite Sports</div>
+          <div class="partner-role">Gi &amp; apparel donor</div>
+          <p class="desc">A Brazilian Jiu-Jitsu gear brand that has donated gis and apparel directly to support athletes who couldn't otherwise afford them — including gear that's outfitted kids training through our retreat program.</p>
+          <a class="link" href="https://www.elitesports.com" target="_blank" rel="noopener">elitesports.com →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── About / Founder ── -->
+    <section id="about" class="section-alt">
+      <div class="wrap">
+        <div class="about-layout reveal">
+          <div class="about-portrait">
+            <img src="images/logo-bjjftp.webp" alt="BJJ For The Planet logo">
+            <span>Founder photo coming soon</span>
+          </div>
+          <div class="about-copy">
+            <span class="eyebrow">About</span>
+            <h3>Ryan DeRobertis</h3>
+            <p class="role">Founder — trains at NorthStarMMA under Jackson Galka</p>
+            <p>BJJ For The Planet started as a passion project — one hobbyist grappler's way of giving back to a sport that changed his life. The idea was simple: take the discipline, community, and network that jiu-jitsu builds, and point it at causes that need it.</p>
+            <p>What started as one idea has grown into retreats, a gi donation pipeline, and an app — with more in the works. This is still early. If you want to be part of building it, there's room.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Get Involved / Contact ── -->
+    <section id="involved" class="section-alt">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Get involved</span>
+          <h2>Follow along, or reach out directly.</h2>
+          <p>Whether it's the next retreat, a gi donation, or a partnership idea — this is where to find us.</p>
+        </div>
+        <div class="involved-layout reveal">
+          <div>
+            <div class="follow-card">
+              <span class="mono-label">Follow along</span>
+              <h3>@bjjfortheplanet</h3>
+              <p>Retreat updates, training clips, and behind-the-scenes — this is where we post first.</p>
+              <a class="btn btn-primary" href="https://www.instagram.com/bjjfortheplanet/" target="_blank" rel="noopener">Follow on Instagram</a>
+            </div>
+            <ul class="contact-list">
+              <li><span class="label">Email</span><a href="mailto:Bjjfortheplanet@gmail.com">Bjjfortheplanet@gmail.com</a></li>
+              <li><span class="label">Phone</span><a href="tel:+17039465237">(703) 946-5237</a></li>
+              <li><span class="label">Based in</span><span>Philadelphia, PA (Roxborough)</span></li>
+            </ul>
+          </div>
+          <form class="involve-form" name="get-involved" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="get-involved">
+            <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
+            <div class="form-row">
+              <div class="field">
+                <label for="first-name">First name</label>
+                <input id="first-name" name="first-name" type="text" required autocomplete="given-name">
+              </div>
+              <div class="field">
+                <label for="last-name">Last name</label>
+                <input id="last-name" name="last-name" type="text" autocomplete="family-name">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required autocomplete="email">
+              </div>
+              <div class="field">
+                <label for="interest">I'm interested in</label>
+                <select id="interest" name="interest">
+                  <option>Retreat updates</option>
+                  <option>Volunteering</option>
+                  <option>Donating gear or gis</option>
+                  <option>Partnership / sponsorship</option>
+                  <option>Something else</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us a bit about what you're looking for."></textarea>
+            </div>
+            <button class="btn btn-dark" type="submit">Send it</button>
+            <p class="form-note">We only use your info to reach out about BJJ For The Planet — never sold, never spammed.</p>
+          </form>
+        </div>
+
+        <div class="support-line reveal" id="donate">
+          <p><strong>Prefer to support financially?</strong> Donations cover training gear and retreat costs for kids who couldn't otherwise afford it. We're a registered 501(c)(3) — you'll get a receipt. <a href="https://www.paypal.com/ncp/payment/42DVAABERLNJY" target="_blank" rel="noopener">Donate via PayPal →</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="images/logo-bjjftp.webp" alt="BJJ For The Planet logo">
+          <span>BJJ For The Planet</span>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="#mission">Mission</a>
+          <a href="#retreats">Retreats</a>
+          <a href="#charityspar">CharitySpar</a>
+          <a href="#partners">Partners</a>
+          <a href="#donate">Donate</a>
+          <a href="#involved">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 BJJ For The Planet. A registered 501(c)(3) nonprofit.</span>
+        <span>Philadelphia, PA</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-cta-bar">
+    <a class="btn btn-primary" href="https://www.instagram.com/bjjfortheplanet/" target="_blank" rel="noopener">Follow @bjjfortheplanet</a>
+  </div>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
+    }
+
+    /* Hero sweep-in — the logo badge scales from small to full size while
+       pinned, headline letterforms tighten at the same time. Base CSS
+       (scale:1, letter-spacing:.02em) is already the correct finished
+       look, so this only pulls AWAY from it as a scroll-start point; if
+       GSAP is ever blocked or slow, the hero is just still, never stuck
+       mid-effect. Same technique as the Jazzmine Cox biophilic-design
+       site's hero. */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      var heroMM = gsap.matchMedia();
+      heroMM.add(
+        { isDesktop: '(min-width: 861px)', isMobile: '(max-width: 860px)' },
+        function (context) {
+          var isDesktop = context.conditions.isDesktop;
+          gsap.timeline({
+            scrollTrigger: {
+              trigger: '.hero-sweep',
+              start: 'top top',
+              end: isDesktop ? '+=120%' : '+=80%',
+              scrub: 0.6,
+              pin: true,
+              anticipatePin: 1
+            }
+          })
+            .from('.hero-sweep-image', { scale: 0.32, ease: 'none' }, 0)
+            .from('.hero-sweep-headline .line', { letterSpacing: '0.42em', ease: 'none' }, 0)
+            .to('.hero-sweep-eyebrow, .scroll-cue', { opacity: 0, ease: 'none' }, 0.15);
+        }
+      );
+    }
+  </script>
+</body>
+</html>
