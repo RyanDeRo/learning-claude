@@ -8,7 +8,7 @@ Working document. Update as decisions get made — this is expected to change of
 3. AI consulting for small businesses — many prospects don't know what Claude Code even is; I'm ahead of the curve but not bleeding-edge
 4. Small app/game builds
 
-Open question: are all four active from day one, or is there a lead offer (e.g. website builds) with the others as upsells once there's a client relationship?
+**Decided (2026-07-26):** Website builds are the lead offer. SEO and "AI-promotability" (the work needed for a site to actually surface in search and AI answers/assistants) are bundled *into* "website build" as part of the core deliverable, not sold as a separate upsell — this matches what the agency CLAUDE.md already requires by default (SEO block, schema, etc. on every build). Ryan does not want to hide or downplay that AI is used to build the sites — that's a stated differentiator, not something to obscure. AI consulting (service line 3) and small app/game builds (service line 4) remain in the lineup but are not the lead pitch on the landing page.
 
 ## Current self skills and expertise
 - Work in tech, understand it at a high level, no formal coding background
