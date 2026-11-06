@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://bjjfortheplanet.com/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="BJJ For The Planet — Empowering Grapplers, Protecting the Planet">
+  <meta property="og:title" content="BJJ For The Planet — Connecting Grapplers to Support Charity">
   <meta property="og:description" content="A 501(c)(3) charity using Brazilian Jiu-Jitsu to host retreats, fund conservation, and support underserved youth through partnerships with Guardian and Elite Sports.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bjjfortheplanet.com/">
@@ -105,6 +105,7 @@
       background: var(--canvas);
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
     img { display: block; max-width: 100%; }
     a { color: inherit; }
@@ -240,8 +241,57 @@
     }
     .header-nav a:hover { color: var(--ember); }
 
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      margin-left: .5rem;
+    }
+    .hamburger span {
+      display: block;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 1px;
+      transition: transform .2s ease, opacity .2s ease;
+      transform-origin: center;
+    }
+    .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: rgba(227,222,203,.98);
+      border-bottom: 1px solid var(--line);
+      padding: .5rem 0 1rem;
+    }
+    .mobile-nav.is-open { display: flex; }
+    .mobile-nav a {
+      font-family: var(--mono);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink-2);
+      padding: .75rem clamp(1.25rem, 4vw, 3rem);
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+    .mobile-nav a:hover { color: var(--ember); }
+
     @media (max-width: 860px) {
       .header-nav-links { display: none; }
+      .hamburger { display: flex; }
     }
 
     /* ── Hero sweep ──
@@ -521,6 +571,9 @@
       margin-top: 1.5rem;
     }
 
+    .retreat-photo { margin-bottom: 1.75rem; border: 1px solid var(--line); overflow: hidden; }
+    .retreat-photo img { width: 100%; height: auto; display: block; }
+
     @media (max-width: 780px) { .retreat-layout { grid-template-columns: 1fr; } }
 
     /* ── CharitySpar ── */
@@ -595,17 +648,11 @@
     /* ── About ── */
     .about-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 5vw, 3.5rem); align-items: center; }
     .about-portrait {
-      background: var(--paper);
-      border: 1px dashed var(--line);
       aspect-ratio: 4 / 5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
     }
-    .about-portrait img { width: 96px; opacity: .85; }
-    .about-portrait span { display: block; margin-top: 1rem; font-family: var(--mono); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); opacity: .6; }
+    .about-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
     .about-copy h3 { font-size: 1.9rem; color: var(--ink); margin-bottom: .35rem; }
     .about-copy .role { font-family: var(--mono); font-size: .78rem; letter-spacing: .03em; text-transform: uppercase; color: var(--moss); font-weight: 700; margin-bottom: 1.25rem; }
     .about-copy p { font-family: var(--body); color: var(--ink-2); margin-bottom: 1rem; }
@@ -643,6 +690,7 @@
 
     /* ── Get Involved ── */
     .involved-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem, 5vw, 3.5rem); }
+    @media (max-width: 780px) { .involved-layout { grid-template-columns: 1fr; } }
     .contact-list { list-style: none; margin-top: 1.5rem; }
     .contact-list li { display: flex; gap: .85rem; padding: .85rem 0; border-top: 1px solid var(--line); font-family: var(--body); font-size: .98rem; }
     .contact-list li:first-child { border-top: none; }
@@ -737,9 +785,21 @@
           <a href="#involved">Contact</a>
         </div>
         <a class="btn btn-primary" href="https://www.instagram.com/bjjfortheplanet/" target="_blank" rel="noopener">Follow</a>
+        <button class="hamburger" id="hamburger" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open navigation">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </div>
   </header>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    <a href="#mission" class="mobile-nav-link">Mission</a>
+    <a href="#retreats" class="mobile-nav-link">Retreats</a>
+    <a href="#charityspar" class="mobile-nav-link">CharitySpar</a>
+    <a href="#partners" class="mobile-nav-link">Partners</a>
+    <a href="#donate" class="mobile-nav-link">Donate</a>
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#involved" class="mobile-nav-link">Contact</a>
+  </nav>
 
   <main id="main">
     <!-- ── Hero (sweep-in) ── -->
@@ -752,8 +812,8 @@
           </div>
         </div>
         <h1 class="hero-sweep-headline">
-          <span class="line">Empowering Grapplers,</span>
-          <span class="line accent">Protecting the Planet.</span>
+          <span class="line">Connecting Grapplers</span>
+          <span class="line accent">To Support Charity.</span>
         </h1>
       </div>
       <p class="scroll-cue">Scroll ↓</p>
@@ -849,6 +909,9 @@
             <p style="margin-bottom:0; font-size:.9rem; opacity:.75;">Read more about our host on the ground under <a href="#partners" style="color:var(--ember);">Partners &amp; Donors</a>.</p>
           </div>
           <div class="retreat-side">
+            <div class="retreat-photo">
+              <img src="images/f35a50d3-b1ce-467c-bad1-0f22bb5c9a0b-1_all_25388.jpg" alt="Scenes from the Máncora, Peru retreat — group training at Guardian academy, the outdoor thatched facility, kids class circle, and athletes after training">
+            </div>
             <h3>What's next</h3>
             <p>We're planning future retreats but haven't locked a location or date yet. If you want to train somewhere that matters, get on the list — we'll email you the moment it's official.</p>
             <a class="btn btn-dark" href="#involved">Register for Updates</a>
@@ -921,8 +984,7 @@
       <div class="wrap">
         <div class="about-layout reveal">
           <div class="about-portrait">
-            <img src="images/logo-transparent.png" alt="BJJ For The Planet logo">
-            <span>Founder photo coming soon</span>
+            <img src="images/unnamed.png" alt="Ryan DeRobertis, founder of BJJ For The Planet">
           </div>
           <div class="about-copy">
             <span class="eyebrow">About</span>
@@ -1029,6 +1091,24 @@
     <a class="btn btn-primary" href="https://www.instagram.com/bjjfortheplanet/" target="_blank" rel="noopener">Follow @bjjfortheplanet</a>
   </div>
 
+  <script>
+    (function () {
+      var btn = document.getElementById('hamburger');
+      var nav = document.getElementById('mobile-nav');
+      btn.addEventListener('click', function () {
+        var open = nav.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open);
+      });
+      // Close menu when a link is tapped
+      nav.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          nav.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+  </script>
+
   <script src="js/vendor/gsap.min.js"></script>
   <script src="js/vendor/ScrollTrigger.min.js"></script>
   <script>
@@ -1064,13 +1144,13 @@
             scrollTrigger: {
               trigger: '.hero-sweep',
               start: 'top top',
-              end: isDesktop ? '+=120%' : '+=80%',
+              end: isDesktop ? '+=120%' : '+=50%',
               scrub: 0.6,
               pin: true,
               anticipatePin: 1
             }
           })
-            .from('.hero-sweep-image', { scale: 0.32, ease: 'none' }, 0)
+            .from('.hero-sweep-image', { scale: isDesktop ? 0.32 : 0.55, ease: 'none' }, 0)
             .from('.hero-sweep-headline .line', { letterSpacing: '0.42em', ease: 'none' }, 0)
             .to('.hero-sweep-eyebrow, .scroll-cue', { opacity: 0, ease: 'none' }, 0.15);
         }
