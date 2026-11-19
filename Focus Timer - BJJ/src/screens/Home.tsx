@@ -77,7 +77,13 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-pixel-bg flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 gym-bg">
+      {/* Ambient dust motes */}
+      <div className="dust-mote" style={{ left: '15%', bottom: '20%', animationDuration: '7s',  animationDelay: '0s'   }} />
+      <div className="dust-mote" style={{ left: '35%', bottom: '30%', animationDuration: '9s',  animationDelay: '2.5s' }} />
+      <div className="dust-mote" style={{ left: '60%', bottom: '25%', animationDuration: '6s',  animationDelay: '1s'   }} />
+      <div className="dust-mote" style={{ left: '80%', bottom: '15%', animationDuration: '11s', animationDelay: '4s'   }} />
+
       {/* Completion notification toast */}
       <CompletionToast show={showToast && remainingTime === 0} />
 

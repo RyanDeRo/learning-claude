@@ -31,6 +31,55 @@ body {
   line-height: 1.6;
 }
 
+/* Gym background */
+.gym-bg {
+  background-image: url('/gym-background.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Subtle dark overlay so UI cards stay readable */
+.gym-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 20, 0.45);
+  pointer-events: none;
+}
+
+/* Fluorescent light flicker — very subtle, slow */
+@keyframes lightFlicker {
+  0%, 92%, 96%, 100% { opacity: 1; }
+  93%                  { opacity: 0.85; }
+  95%                  { opacity: 0.92; }
+}
+
+/* Dust mote drift — floats upward and fades */
+@keyframes dustFloat {
+  0%   { transform: translateY(0)   translateX(0);   opacity: 0; }
+  10%  { opacity: 0.4; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(-120px) translateX(12px); opacity: 0; }
+}
+
+/* Apply light flicker to the background image itself */
+.gym-bg {
+  animation: lightFlicker 8s ease-in-out infinite;
+}
+
+/* Dust mote elements — add these as empty divs inside .gym-bg if desired */
+.dust-mote {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(255, 220, 160, 0.6);
+  animation: dustFloat linear infinite;
+  pointer-events: none;
+}
+
 /* Animations for session completion */
 @keyframes fadeIn {
   from {

@@ -1091,3 +1091,108 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Push and let Vercel redeploy, then user re-tests the actual lock-screen scenario on their Galaxy S20 to confirm in the real world (Playwright can simulate the tab-kill mechanism but can't fully replicate Samsung's OS-level battery behavior)
 
 **Status:** ✅ All three fixes implemented and verified locally — pending push + real-device confirmation
+
+---
+
+## 2026-09-24 — Label Change: "Base" → "Man" in Avatar Picker
+
+**What we did:**
+- Renamed the male character preset label from "Base" to "Man" in `AvatarConfigFields.tsx`
+- Character picker now reads "Man" / "Woman" — clearer and more consistent
+
+**Files changed:**
+- `src/components/avatar/AvatarConfigFields.tsx` — updated `AVATAR_PRESETS` label
+
+**Status:** ✅ Complete
+
+---
+
+## 2026-09-24 — Gym Background + Ambient Animations
+
+**What we built:**
+- Added AI-generated pixel art BJJ gym as the full-screen background on the Home screen
+- Semi-transparent dark overlay (`rgba(10,10,20,0.45)`) keeps UI cards readable without washing out the background
+- Fluorescent light flicker: subtle 3-step opacity dip every 8 seconds (`lightFlicker` keyframe on `.gym-bg`)
+- 4 floating dust motes with different speeds/delays so they never move in sync (`dustFloat` keyframe + `.dust-mote` divs)
+
+**Files changed:**
+- `public/gym-background.jpg` — AI-generated background image
+- `src/screens/Home.tsx` — replaced `bg-pixel-bg` with `gym-bg` class; added 4 dust mote divs
+- `src/styles/globals.css` — added `.gym-bg`, `.dust-mote`, `@keyframes lightFlicker`, `@keyframes dustFloat`
+
+**Decisions made:**
+- Overlay approach (CSS `::before`) rather than editing the image — means we can tune darkness without re-exporting the asset
+- Flicker is very infrequent (once per 8s) to feel like a real fluorescent tube, not a disco strobe
+- Dust motes use varied `animationDuration` + `animationDelay` to feel organic rather than mechanical
+- Build passes cleanly (tsc + vite)
+
+**Next steps:**
+- Visually verify in browser: background renders, overlay readable, flicker + dust working
+- Commit and push to Vercel
+- Consider adding the gym background to RevealScreen / BrokenScreen as well for consistency
+
+**Status:** ✅ Built and verified (build pass) — pending visual check in browser
+
+---
+
+## 2026-11-19 — Art Overhaul + App Store Direction
+
+**What we discussed:**
+- Current sprite system uses 4 static AI-generated PNGs swapped by opacity — no animation frames, no spritesheet
+- Decision: overhaul the art to be catchy and production-quality, not just POC-viable
+- Decision: target **App Store (iOS/Android)** as well as web — not just a PWA
+
+**Art plan — LPC Spritesheet:**
+- Use the Universal LPC (Liberated Pixel Cup) Spritesheet Character Generator to build the character
+  - URL: https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/
+  - Generator exports a **single large PNG** (~832×1344px) with all animation frames in a grid
+  - Standard layout: each row = one animation (walk, slash, hurt, idle, etc.), each column = one frame
+  - Each frame is 64×64px
+- Planned state → LPC row mapping for the app:
+  | App State | LPC Row | Frames | Notes |
+  |-----------|---------|--------|-------|
+  | `idle` | Stand (Row 11) | 1 | Static or slow breath |
+  | `training` | Walk (Row 2) | 9 | 150ms/frame loop |
+  | `celebration` | Slash (Row 3) | 6 | 100ms/frame, plays once |
+  | `discouraged` | Hurt (Row 5) | 6 | 200ms/frame |
+
+**Art plan — Dojo background:**
+- Find a pixel art dojo tileset or pre-rendered background from itch.io
+  - Search: https://itch.io/search?type=games&q=dojo+tileset
+  - Looking for: free/CC0, interior dojo room, pre-rendered room PNG or tileset
+  - Drop into `public/` to replace `gym-background.jpg`
+
+**Code changes required after assets are ready:**
+- Rewrite `AvatarRenderer.tsx` to animate from a spritesheet instead of swapping static PNGs
+  - Use `<canvas>` with `requestAnimationFrame` or CSS `background-position` with `steps()` timing
+  - Needs to know: which row = which state, how many frames, frame size
+- Remove `public/sprites/` static PNG sets (all 48 files across base/woman × 6 tones)
+- Background: swap `gym-background.jpg` for new dojo asset
+
+**App Store plan:**
+- Wrap the React PWA for native App Store distribution using **Capacitor** (by Ionic)
+  - Capacitor is the standard way to publish a web app to iOS/Android without rewriting it
+  - Works by wrapping the Vite build in a native WebView and giving it native API access
+  - Needed for: push notifications, background lock detection improvements, App Store listing
+- Key additions this unlocks:
+  - iOS App Store + Google Play listing (real discoverability)
+  - Native lock-screen detection (more reliable than Page Visibility API alone)
+  - Push notifications ("Your fighter is waiting to train")
+  - App icon, splash screen, store screenshots
+
+**Ordering of work (do not start coding yet — assets first):**
+1. User: generate LPC character → download `character.png`
+2. User: find + download dojo background from itch.io
+3. User: share filenames and dimensions with Helio
+4. Helio: rewrite `AvatarRenderer.tsx` for spritesheet animation
+5. Helio: wire new dojo background
+6. After visual QA: set up Capacitor and begin App Store prep
+
+**Files to change (future):**
+- `src/components/avatar/AvatarRenderer.tsx` — rewrite for spritesheet animation
+- `public/sprites/` — remove old static PNG sets
+- `public/gym-background.jpg` — replace with new dojo asset
+- `package.json` — add `@capacitor/core`, `@capacitor/ios`, `@capacitor/android`
+- New: `capacitor.config.ts`
+
+**Status:** Blocked on assets — user is generating LPC character and sourcing dojo background before code work begins

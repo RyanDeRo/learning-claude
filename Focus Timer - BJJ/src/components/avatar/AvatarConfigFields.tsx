@@ -2,7 +2,7 @@ import { useAvatarStore } from '@/store/avatarStore'
 import { AvatarPresetId, SkinTone } from '@/types/avatar'
 
 export const AVATAR_PRESETS: { id: AvatarPresetId; label: string }[] = [
-  { id: 'base', label: 'Base' },
+  { id: 'base', label: 'Man' },
   { id: 'woman', label: 'Woman' },
 ]
 
