@@ -1196,3 +1196,112 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - New: `capacitor.config.ts`
 
 **Status:** Blocked on assets — user is generating LPC character and sourcing dojo background before code work begins
+
+---
+
+## 2026-11-19 — PRD Rewrite: LPC Art + Premade Fighters
+
+**What we did:**
+- Pulled the latest commits from the work PC (gym background, avatar polish, art overhaul plan, pixel-art skill)
+- Reviewed the art overhaul plan and flagged three issues: LPC licensing, possibly wrong LPC row numbers in the plan, and saving the full generator URL
+- Rewrote `PRD.MD` (v0.5) to use LPC art and simplify the avatar system
+
+**Files changed:**
+- `PRD.MD` — sections 1, 4, 5, 7.2, 7.3, 7.3a, 7.4, 7.5, 7.7, 7.8, 8, 9 rewritten
+
+**Decisions made:**
+- **Premade roster (4–6 fighters), no character creator.** The belt is the emotional payoff, not customization.
+- **Two-layer sprites:** a fighter sheet (no belt) plus a belt-only sheet per color, stacked. They line up because LPC uses one shared grid.
+- **Stripes go in the UI badge, not on the sprite.** They're unreadable at 64×64.
+- **Gear unlocks and the gear store are removed.** Belts are the only progression. Monetization falls back to the premium subscription and optionally premium fighters.
+- Native path changed from Expo to Capacitor (matches the previous entry)
+- LPC credits file and an in-app Credits screen are required before App Store submission
+- The row numbers in the previous entry's LPC table are unverified. Read the real ones from the exported sheet.
+
+**Next steps:**
+1. User: build 4–6 fighters in the LPC generator **without a belt**, export each, and save each full generator URL
+2. User: export a belt-only sheet (or one fighter with the belt on, to extract from) and download the credits file
+3. Helio: inspect the sheet, fill in `spriteConfig.ts`, and rewrite `AvatarRenderer.tsx` for two-layer animation
+4. Helio: simplify `avatarStore` / `AvatarPicker` from preset × skin tone to a roster ID, and drop gear unlocks from `beltSystem.ts`
+
+**Status:** Blocked on assets
+
+---
+
+## 2026-11-19 — LPC Gap: No Gi Asset
+
+**What we did:**
+- User found that the LPC generator has no BJJ gi (outfits are knight/soldier/medieval style)
+- Discussed options: an LPC base with a gi edit, commissioning a gi layer, no-gi ranked rash guards, and switching asset packs
+
+**Files changed:**
+- `journal.MD` only
+
+**Decisions made:**
+- None yet. Recommended path: export an LPC white long-sleeve top + white pants + belt as a quick visual test, then decide between hand-editing lapels and commissioning a gi layer on the LPC template.
+
+**Next steps:**
+- User picks a direction; update the PRD (sections 7.3 and 7.3a) to match
+
+**Status:** Blocked on art direction decision
+
+---
+
+## 2026-11-20 — Fighter Placed in the Dojo Scene
+
+**What we did:**
+- Added the user's new dojo background (from `art examples/dojo/`) and placed the fighter standing on the mat inside it
+- Checked it visually in Chrome on the local dev server
+
+**Files changed:**
+- `public/dojo-background.jpg` — new background, converted from a 2.2 MB PNG to a 0.5 MB JPG for faster mobile load
+- `src/components/gym/DojoScene.tsx` — new component: a 4:3 dojo stage, fighter positioned on the mat, contact shadow, dust motes
+- `src/components/avatar/AvatarRenderer.tsx` — `size` now also accepts `'fill'` so the fighter scales with the scene
+- `src/screens/Home.tsx` — the scene replaces the old floating avatar at the top of the card; content lifted above the dark overlay
+- `src/styles/globals.css` — page background switched to the dojo (dimmed to 75%); flicker moved onto the scene only
+
+**Decisions made:**
+- Fighter position and size are two constants in `DojoScene.tsx` (`FEET_FROM_BOTTOM`, `FIGHTER_HEIGHT`). Tune those if the background changes.
+- 4:3 scene instead of square, so the timer and Start button stay above the fold on phones
+- **Bugs fixed:** (1) the light flicker was animating the whole page, so the UI flickered too; (2) the dark overlay was painting over the card and dimming all the UI
+
+**Next steps:**
+- User checks it on a real phone
+- Decide on the gi art direction (see previous entry)
+- Optionally use DojoScene on RevealScreen / BrokenScreen too, so celebration and discouraged moments happen in the gym
+- `public/gym-background.jpg` and the stray root `d4adbf9a-...jpeg` are now unused and can be deleted
+
+**Status:** ✅ Built and visually verified locally — not committed
+
+---
+
+## 2026-11-20 — Art Direction: Staying With AI Sprites
+
+**What we discussed:**
+- The user likes the dojo scene. Decision: **keep AI-generated art for now**; LPC is on hold (no gi asset).
+- Next art task: sprites for each belt rank, male and female
+
+**Files changed:**
+- `PRD.MD` — added an "LPC on hold" note at the top of 7.3a
+- `journal.MD`
+
+**Decisions made:**
+- AI sprites stay. The roster, belt-as-reward, and stripes-in-UI decisions from PRD v0.5 still apply.
+- **Belt sprite approach (recommended): use a key color instead of generating every belt.**
+  - Count it out: 2 bodies × 6 skin tones × 4 states × 5 belts = **240 AI images**. AI can't keep a character consistent across 240 generations.
+  - Instead, generate each sprite **once** with a pure magenta (#FF00FF) belt, which no other part of the image uses (48 images, the same count as now).
+  - A small script recolors the magenta pixels to white/blue/purple/brown/black, giving 240 files automatically with every belt on an identical body.
+  - Why not recolor today's white belts? The belt is white on a white gi, so a script can't tell belt pixels from gi pixels. The key color exists to make them separable. It's the same idea as a green screen.
+- Stripes stay in the UI badge, not on the sprite
+
+**Next steps (prioritized):**
+1. Real-phone check of the dojo scene (plus the still-pending Galaxy S20 lock-screen check from the 2026-09 fixes)
+2. Update `.claude/skills/pixel-art/SKILL.md`. It still enforces the old 48×64 8-layer spec and would steer AI sprite work wrong.
+3. User generates magenta-belt sprites (2 bodies × 6 tones × 4 states), matching the current 512×640 transparent PNG format
+4. Helio writes the belt recolor script and wires `currentBelt.color` into `AvatarRenderer`
+5. Belt promotion moment on `RevealScreen` (belt visibly changes)
+6. Use `DojoScene` on `RevealScreen` / `BrokenScreen`
+7. Clean up: remove gear unlocks from `beltSystem.ts`, delete the unused `gym-background.jpg` and the stray root jpeg
+8. After visual QA: Capacitor + App Store prep
+
+**Status:** In progress — waiting on magenta-belt sprites

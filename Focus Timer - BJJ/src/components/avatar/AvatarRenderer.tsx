@@ -4,7 +4,8 @@ type AvatarState = 'idle' | 'training' | 'celebration' | 'discouraged'
 
 interface AvatarRendererProps {
   state: AvatarState
-  size?: number
+  /** Width in px, or 'fill' to stretch to the parent's size (used inside DojoScene) */
+  size?: number | 'fill'
 }
 
 const STATES: AvatarState[] = ['idle', 'training', 'celebration', 'discouraged']
@@ -19,7 +20,11 @@ export function AvatarRenderer({ state, size = 120 }: AvatarRendererProps) {
   return (
     <div
       className="relative"
-      style={{ width: size, height: size * ASPECT }}
+      style={
+        size === 'fill'
+          ? { width: '100%', height: '100%' }
+          : { width: size, height: size * ASPECT }
+      }
     >
       {STATES.map((s) => (
         <img

@@ -33,20 +33,30 @@ body {
 
 /* Gym background */
 .gym-bg {
-  background-image: url('/gym-background.jpg');
+  background-image: url('/dojo-background.jpg');
   background-size: cover;
-  background-position: center top;
+  background-position: center;
   background-repeat: no-repeat;
   position: relative;
 }
 
-/* Subtle dark overlay so UI cards stay readable */
+/* Heavy dark overlay: the page background is just ambience now —
+   the crisp dojo lives in .dojo-scene, so this one should recede */
 .gym-bg::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(10, 10, 20, 0.45);
+  background: rgba(10, 10, 20, 0.75);
   pointer-events: none;
+}
+
+/* The dojo stage the fighter stands in (see DojoScene.tsx) */
+.dojo-scene {
+  background-image: url('/dojo-background.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  animation: lightFlicker 8s ease-in-out infinite;
 }
 
 /* Fluorescent light flicker — very subtle, slow */
@@ -64,12 +74,7 @@ body {
   100% { transform: translateY(-120px) translateX(12px); opacity: 0; }
 }
 
-/* Apply light flicker to the background image itself */
-.gym-bg {
-  animation: lightFlicker 8s ease-in-out infinite;
-}
-
-/* Dust mote elements — add these as empty divs inside .gym-bg if desired */
+/* Dust mote elements — empty divs inside .dojo-scene */
 .dust-mote {
   position: absolute;
   width: 2px;

@@ -7,7 +7,7 @@ import { TimerControls } from '@/components/timer/TimerControls'
 import { DurationSelector } from '@/components/timer/DurationSelector'
 import { RevealScreen } from '@/components/session/RevealScreen'
 import { BrokenScreen } from '@/components/session/BrokenScreen'
-import { AvatarRenderer } from '@/components/avatar/AvatarRenderer'
+import { DojoScene } from '@/components/gym/DojoScene'
 import { AvatarPicker } from '@/components/avatar/AvatarPicker'
 import { BeltDisplay } from '@/components/progression/BeltDisplay'
 import { XPBar } from '@/components/progression/XPBar'
@@ -78,16 +78,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 gym-bg">
-      {/* Ambient dust motes */}
-      <div className="dust-mote" style={{ left: '15%', bottom: '20%', animationDuration: '7s',  animationDelay: '0s'   }} />
-      <div className="dust-mote" style={{ left: '35%', bottom: '30%', animationDuration: '9s',  animationDelay: '2.5s' }} />
-      <div className="dust-mote" style={{ left: '60%', bottom: '25%', animationDuration: '6s',  animationDelay: '1s'   }} />
-      <div className="dust-mote" style={{ left: '80%', bottom: '15%', animationDuration: '11s', animationDelay: '4s'   }} />
-
       {/* Completion notification toast */}
       <CompletionToast show={showToast && remainingTime === 0} />
 
-      <div className="text-center max-w-md w-full">
+      {/* relative z-10 lifts the content above the .gym-bg::before dark overlay */}
+      <div className="relative z-10 text-center max-w-md w-full">
         <h1 className="font-pixel text-2xl mb-2 text-pixel-accent">
           FightFocus
         </h1>
@@ -95,7 +90,20 @@ export default function Home() {
           Lock your phone. Train your fighter.
         </p>
 
-        <div className="bg-pixel-panel p-8 rounded-lg shadow-2xl">
+        <div className="bg-pixel-panel p-8 rounded-lg shadow-2xl overflow-hidden">
+          {/* Dojo scene - fighter on the mat. Full-bleed to the card edges. Tap fighter to change. */}
+          <div className="-mx-8 -mt-8 mb-6">
+            <DojoScene
+              state={isRunning ? 'training' : 'idle'}
+              onFighterClick={() => setShowAvatarPicker(true)}
+              fighterDisabled={isRunning}
+            />
+          </div>
+
+          {showAvatarPicker && (
+            <AvatarPicker onClose={() => setShowAvatarPicker(false)} />
+          )}
+
           {/* Progression info */}
           <div className="mb-6 space-y-4">
             <div className="flex justify-between items-center">
@@ -107,22 +115,6 @@ export default function Home() {
             </div>
             <XPBar currentXP={totalXP} />
           </div>
-
-          {/* Avatar - shows what your fighter is doing. Tap to customize. */}
-          <button
-            className="mb-8 flex w-full justify-center"
-            onClick={() => setShowAvatarPicker(true)}
-            disabled={isRunning}
-          >
-            <AvatarRenderer
-              state={isRunning ? 'training' : 'idle'}
-              size={140}
-            />
-          </button>
-
-          {showAvatarPicker && (
-            <AvatarPicker onClose={() => setShowAvatarPicker(false)} />
-          )}
 
           {/* Duration Selector - expanded or compact */}
           {!isRunning && (

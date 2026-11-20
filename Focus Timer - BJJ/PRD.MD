@@ -1,15 +1,15 @@
 # FightFocus — Product Requirements Document
-**Version:** 0.4 — Belt System, Monetization & SEO Finalized  
-**Status:** Pre-Development / Ready for Claude Code  
-**Last Updated:** Accurate BJJ belt/stripe system, monetization strategy with Founders tier, premium feature roadmap, full SEO/ASO analysis
+**Version:** 0.5 — Art simplified to LPC spritesheets  
+**Status:** POC built (timer, lock detection, belts, journal, onboarding) — art overhaul next  
+**Last Updated:** 2026-11-19 — Replaced the custom 8-layer sprite system with premade LPC fighters + a swappable belt layer. Gear unlocks removed; belts are the progression. Native path changed to Capacitor.
 
 ---
 
 ## 1. Product Overview
 
 **App Name (working title):** FightFocus (or "Roll Timer" / "Mat Time")
-**Platform:** Web app first (React PWA) → Native (Expo/React Native) in v2
-**Core Concept:** A focus timer app that reduces phone addiction through Brazilian Jiu-Jitsu gamification. Users earn belt progression by keeping their phone screen locked for the duration of a focus session. When they return to the app, they discover what techniques they learned and what gear they unlocked while training — creating a discovery moment that rewards discipline rather than punishing distraction.
+**Platform:** Web app first (React PWA) → iOS/Android via Capacitor (wraps the same web app; no rewrite)
+**Core Concept:** A focus timer app that reduces phone addiction through Brazilian Jiu-Jitsu gamification. Users earn belt progression by keeping their phone screen locked for the duration of a focus session. When they return to the app, they discover what technique they learned and how close they are to their next stripe — creating a discovery moment that rewards discipline rather than punishing distraction.
 
 **Tagline (working):** *"Lock your phone. Train on the mats."*
 
@@ -41,10 +41,10 @@ The product works because it reframes the locked phone not as a sacrifice but as
 |---|---|
 | **Focus Timer** | Pomodoro-style timer with session management |
 | **Lock & Return Loop** | Core mechanic: lock phone → session runs passively → return to discover progress |
-| **Avatar & Gym** | Pixel JRPG-style avatar training in a BJJ academy environment |
-| **Belt Progression** | Authentic BJJ belt and stripe system with gear unlocks |
+| **Fighter & Gym** | Animated pixel-art fighter (LPC style) training in a BJJ academy |
+| **Belt Progression** | Authentic BJJ belt and stripe system — the belt on your fighter changes as you rank up |
 | **BJJ Education** | Real technique lessons delivered on session completion, saved to journal |
-| **Monetization** | Freemium with cosmetic IAP and premium subscription |
+| **Monetization** | Freemium + premium subscription (see note in 7.3) |
 
 ---
 
@@ -66,19 +66,19 @@ User returns to app
 App compares return timestamp to session start + goal duration
         ↓
       [Did they make it?]
-       ↙ ↘
-   SUCCESS BROKEN
-Avatar celebrates Avatar slumped
-Lesson delivered Encouragement shown
-Gear progress No XP awarded
-XP awarded Try again prompt
+       ↙            ↘
+   SUCCESS          BROKEN
+Fighter celebrates  Fighter slumped
+Lesson delivered    Encouragement shown
+XP awarded          No XP awarded
+Stripe/belt check   Try again prompt
         ↓
-User sees what they unlocked / learned
+User sees what they learned / earned
         ↓
 Motivated to run another session
 ```
 
-**Why this works narratively:** The avatar trains while the screen is dark. The user doesn't watch it happen. They come back to discover what changed. This is intentional — it mirrors the way real training works. You put in the work, you come back, you're different.
+**Why this works narratively:** The fighter trains while the screen is dark. The user doesn't watch it happen. They come back to discover what changed. This is intentional — it mirrors the way real training works. You put in the work, you come back, you're different.
 
 ---
 
@@ -106,18 +106,16 @@ This is the core mechanic and must be reliable. The implementation is deliberate
 - `document.hidden` state checked on return
 - Any tab-focus event before session end = broken session
 
-**Native implementation (v2):**
-- `AppState` API in React Native detects foreground/background transitions
+**Native implementation (Capacitor):**
+- Capacitor `App` plugin `appStateChange` event detects foreground/background
 - Same logic, more reliable signal than web
-- Detects actual screen lock rather than just tab switching
 
 **What we are NOT building:**
 - No background audio during lock
 - No continued animations during lock
 - No live background process of any kind
-- No ambient sound tied to lock state
 
-Audio and animation run only when the user is actively in the app. When locked, the app is silent and idle. The magic happens in the reveal on return, not in the background.
+Audio and animation run only when the user is actively in the app. The magic happens in the reveal on return, not in the background.
 
 ---
 
@@ -163,16 +161,16 @@ Audio and animation run only when the user is actively in the app. When locked, 
 This screen is a key product moment. It should feel like opening a reward.
 
 **On SUCCESS:**
-- Avatar celebration animation plays
+- Fighter celebration animation plays
 - XP earned displayed (animated counter)
-- If new gear unlocked: gear reveal with animation
-- If new belt stripe/rank: rank-up ceremony
+- If new stripe: stripe added to the belt badge with a small animation
+- If new belt: promotion moment — fighter's belt visibly swaps to the new color
 - Lesson card delivered (see Section 7.6)
-- Progress bar toward next unlock shown
+- Progress bar toward next stripe shown
 - CTA: "Start another session" or "Go to journal"
 
 **On BROKEN:**
-- Avatar discouraged animation plays
+- Fighter discouraged animation plays
 - Brief message — encouraging, not punishing ("Back to the mats. Try again.")
 - How long they lasted shown (e.g., "You made it 14 of 25 minutes")
 - CTA: "Try again" (pre-fills same timer duration)
@@ -182,40 +180,36 @@ This screen is a key product moment. It should feel like opening a reward.
 
 ---
 
-### 7.3 Avatar Creation
+### 7.3 Fighter Selection
 
-**Entry Point:** First-launch onboarding
+**Entry Point:** First-launch onboarding (changeable later in settings)
 
-**Free Customization Options:**
+**The model:** Users pick one of a small set of **premade fighters**. There is no build-your-own character creator.
 
-| Category | Options |
-|---|---|
-| Gender expression | Masculine / Feminine / Neutral |
-| Skin tone | 6 Fitzpatrick scale tones |
-| Hair style | 8 base styles |
-| Hair color | 10 base colors |
-| Eye color | 6 options |
-| Face shape | 4 options |
+- **Launch roster:** 4–6 fighters covering a range of gender expression, skin tone, and hair
+- Each fighter is built once by us in the LPC generator and exported as a spritesheet
+- Adding a fighter later = export one more sheet + add one line of config. No code changes.
+- Every fighter wears the same base outfit (gi or rash guard look); only the **belt** changes with rank
 
-**Unlockable / IAP Cosmetics:**
-- Jewelry (earrings, chains, nose rings)
-- Tattoos and skin markings
-- Additional hair styles and colors
-- Eye style expansions
+**Why premade instead of a creator:**
+- A creator (skin × hair × hair color × eyes) multiplies into hundreds of combinations, each needing art for every animation. A roster of 4–6 is a fixed, testable set.
+- The emotional payoff in this app is the **belt**, not the face. Spending design effort on the belt promotion is a better return than on customization.
+- Onboarding gets faster: one tap instead of five screens of options.
 
-**Art Direction:**
-- Pixel art sprite — **48×64 px base canvas**, rendered at **3× scale (displays at 144×192px)** with nearest-neighbor interpolation
-- 8-layer sprite system (see Section 7.3a for full layer spec)
-- Separate anime-style portrait illustration for profile screen and lesson delivery
-- Avatar is always visible in the gym scene when app is open
-- Size rationale: 48×64 chosen over 32×48 to preserve gear visibility. Belt stripes, gi collar shape, glove silhouettes, and gear detail all require the additional canvas space to read clearly. Gear progression is the emotional core of the product; the art must support it.
+**What we gave up:** Fine-grained self-representation, and cosmetic IAP built on gear/hair/jewelry. If user feedback asks for more representation, the fix is adding more premade fighters — not building a creator.
+
+**Monetization note:** With no gear store, revenue comes from the premium subscription (e.g., extended stats, longer sessions, full lesson library) and optionally premium fighters. Revisit after the POC proves retention.
 
 **Animation States:**
-- Idle (subtle breathing, slight sway)
-- Training (drilling on dummy, guard work, shrimping)
-- Celebration (fist pump, jump — plays on session success)
-- Discouraged (head down, slumped — plays on session broken)
-- Rank-up ceremony (special animation, plays on belt advancement)
+
+| App State | Plays when | Loops? |
+|---|---|---|
+| `idle` | On home screen, no session | Yes |
+| `training` | Session just started / rest period | Yes |
+| `celebration` | Session success | Once, then idle |
+| `discouraged` | Session broken | Yes, until dismissed |
+
+Each state maps to one LPC animation row (see 7.3a). Exact row numbers are read from the exported sheet, not assumed.
 
 **Audio (in-app only):**
 - Ambient gym sounds play while user is in the app
@@ -224,145 +218,90 @@ This screen is a key product moment. It should feel like opening a reward.
 
 ---
 
-### 7.3a Sprite System Specification
+### 7.3a Sprite System Specification (LPC)
 
-This spec must be handed to both the pixel artist and Claude Code before any art or rendering code is produced. All assets and all renderer logic derive from this document. Do not deviate without updating this spec first.
+> **⚠️ Current decision (2026-11-20): LPC is ON HOLD.** LPC has no BJJ gi asset. We're staying with **AI-generated sprites** for now (current format: 512×640 transparent PNGs, one image per state, per character, per skin tone). Belt changes are done by generating sprites per belt color — see journal 2026-11-20. The premade-roster, belt-is-the-reward, and stripes-in-the-UI decisions in 7.3 and 7.4 still apply. The LPC spec below is kept for reference if we revisit it (e.g., commissioning a gi layer on the LPC template).
+
+**Source:** [Universal LPC Spritesheet Character Generator](https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/)
+
+**Each fighter = two PNG sheets stacked on top of each other:**
+
+| Layer | File | Contents |
+|---|---|---|
+| 1 (bottom) | `fighters/{fighterId}.png` | Full character **without a belt** |
+| 2 (top) | `belts/{beltColor}.png` | Belt only, everything else transparent |
+
+Because every LPC layer is drawn on the same grid, the belt sheet lines up with any fighter automatically. One set of belt sheets serves the whole roster (with a per-body-type set if male/female bodies place the belt differently).
+
+**Belt sheets needed:** `white`, `blue`, `purple`, `brown`, `black`, `coral` (6 files, or 12 if two body types). If the generator doesn't offer a color, recolor the belt-only sheet once in an image editor — this is a one-time asset step, not runtime code.
+
+**Stripes are not drawn on the sprite.** At 64×64 the belt is a few pixels tall; stripes would be unreadable. Stripes and black-belt degrees are shown on the **belt badge in the UI** (`BeltDisplay`).
 
 **Canvas & Rendering**
 
 | Property | Value |
 |---|---|
-| Base canvas size | 48×64 px |
-| Render scale | 3× (nearest-neighbor interpolation — no anti-aliasing) |
-| Display size | 144×192 px |
-| Background | Transparent (PNG only) |
-| Anchor point | Feet aligned to bottom-center of canvas |
-| Color mode | Indexed palette (for palette swapping) |
+| Frame size | 64×64 px (LPC standard) |
+| Sheet layout | Rows = animations (each in 4 facing directions), columns = frames |
+| Facing used | One direction only (facing the viewer / side — pick one and use it everywhere) |
+| Render scale | 3× → 192×192 px, nearest-neighbor (`image-rendering: pixelated`) |
+| Playback | CSS `background-position` stepping or `<canvas>`; both layers advance in sync |
 
-**Layer Stack (render order — 1 is bottom, 8 is top)**
+**Config (the only place animation data lives):** `src/constants/spriteConfig.ts`
 
-| Layer | Name | Contents | Notes |
-|---|---|---|---|
-| 1 | `body` | Skin base, body shape | Skin tone applied here via palette swap |
-| 2 | `hair_back` | Back of hair, ponytails, long sections | Renders behind head/face |
-| 3 | `clothing_base` | Default t-shirt and shorts | Replaced by gear as user progresses |
-| 4 | `gear` | Gi, rash guard, spats, training attire | Swapped on unlock; transparent where not applicable |
-| 5 | `face` | Eyes, nose, mouth | Eye color via palette swap |
-| 6 | `hair_front` | Bangs, front hair pieces | Renders over face |
-| 7 | `accessories` | Jewelry, headbands | Transparent until unlocked |
-| 8 | `belt` | Belt only — rendered as its own layer | Separate layer so stripe marks composite cleanly on top |
+```ts
+// Filled in after inspecting the real exported sheet
+export const ANIMATIONS = {
+  idle:        { row: ?, frames: ?, msPerFrame: 300, loop: true },
+  training:    { row: ?, frames: ?, msPerFrame: 150, loop: true },
+  celebration: { row: ?, frames: ?, msPerFrame: 100, loop: false },
+  discouraged: { row: ?, frames: ?, msPerFrame: 200, loop: true },
+}
 
-**Color / Palette Swapping**
-
-- All assets drawn with a defined neutral palette (grayscale for body/clothing, placeholder tones for skin/hair)
-- Renderer replaces specific pixel values at runtime with user-selected or unlocked colors
-- Skin tone: 6 Fitzpatrick-scale swappable palettes (each palette = 4 shades: highlight, midtone, shadow, deep shadow)
-- Hair color: 10 swappable palettes
-- Eye color: 6 swappable palettes
-- Gear colors (gi, rash guard, spats): unlocked palettes replace neutral gear tones
-- Belt color: driven by rank (white → blue → purple → brown → black); not user-selectable
-
-**Animation Frames Per State**
-
-| State | Frames | Notes |
-|---|---|---|
-| Idle | 4 | Subtle breathing cycle, loops |
-| Training | 6 | Drilling motion on dummy or partner |
-| Celebration | 8 | Fist pump or jump; plays once then returns to idle |
-| Discouraged | 4 | Head down, slumped; loops until user dismisses |
-| Rank-up ceremony | 10 | Special one-time animation on belt advancement |
-
-**File Naming Convention**
-
-```
-layer_{layer_name}_{variant}_{frame}.png
-
-Examples:
-layer_body_base_f01.png
-layer_hair_back_style03_f01.png
-layer_gear_gi_white_f01.png
-layer_gear_rashguard_neutral_f01.png
-layer_belt_white_f01.png
-layer_belt_blue_f01.png
-layer_accessories_earring_gold_f01.png
+export const FIGHTERS = [
+  { id: 'fighter-1', name: '…', sheet: '/sprites/fighters/fighter-1.png', bodyType: 'male', generatorUrl: '…' },
+  // one line per fighter
+]
 ```
 
-**Art Production Pipeline (recommended)**
+Store each fighter's full generator URL (everything after `#` encodes the character) so it can be re-exported or tweaked later.
 
-1. Use placeholder/AI-generated assets during Phase 1 and 2 of build to test the renderer
-2. Lock renderer logic fully before commissioning final art
-3. Commission pixel artist with this spec document — provide `layer_body_base` as the reference asset first; all other layers must align to that canvas
-4. Deliver assets in a flat folder with the naming convention above; no subdirectories
-5. Renderer imports assets by name — naming convention is load-bearing, not cosmetic
+**Licensing (required before App Store submission):**
+- LPC assets are free but carry per-asset licenses (CC-BY-SA, GPL, OGA-BY, CC0). Most require crediting the artists.
+- Download and keep the generator's credits/attribution file for every fighter and belt export in `public/sprites/CREDITS.txt`
+- Prefer CC0 / OGA-BY / CC-BY parts where there's a choice
+- App includes a Credits screen listing all LPC artists
 
 ---
 
 ### 7.4 BJJ Belt Progression System
 
-**Progression model:** Accurate BJJ belt and stripe system
+**Progression model:** Accurate BJJ belt and stripe system. **The belt is the reward** — there are no gear unlocks.
 
-Each belt color has exactly 4 stripes. The user earns stripes incrementally through completed focus sessions before advancing to the next belt. Black belt has 10 stripes (degrees); earning all 10 stripes on black belt awards the Coral Belt — the sport's highest honor.
+Each colored belt has 4 stripes. Black belt has degrees; completing black belt awards the Coral Belt — the prestige endpoint.
 
-**Full Belt Progression Table**
-
-| Stage | Rank | Total Unlocks |
+| Belt | Stages | What the user sees |
 |---|---|---|
-| 1 | White Belt | Gi (white), white belt |
-| 2 | White + 1 Stripe | First stripe on belt |
-| 3 | White + 2 Stripes | Second stripe |
-| 4 | White + 3 Stripes | Third stripe |
-| 5 | White + 4 Stripes | Fourth stripe |
-| 6 | Blue Belt | Blue gi, blue belt |
-| 7 | Blue + 1 Stripe | Rash guard unlock |
-| 8 | Blue + 2 Stripes | New gi cut style |
-| 9 | Blue + 3 Stripes | Alternate blue gi color |
-| 10 | Blue + 4 Stripes | Fourth stripe |
-| 11 | Purple Belt | Purple gi, purple belt |
-| 12 | Purple + 1 Stripe | New sleeve style |
-| 13 | Purple + 2 Stripes | Spats/leggings unlock |
-| 14 | Purple + 3 Stripes | Alternate purple gi |
-| 15 | Purple + 4 Stripes | Fourth stripe |
-| 16 | Brown Belt | Brown gi, brown belt |
-| 17 | Brown + 1 Stripe | Premium gi texture |
-| 18 | Brown + 2 Stripes | Gym trophy (wall decoration) |
-| 19 | Brown + 3 Stripes | Embroidered gi option |
-| 20 | Brown + 4 Stripes | Fourth stripe |
-| 21 | Black Belt | Black gi option, black belt, special ceremony animation |
-| 22 | Black + 1 Degree | Red bar on belt end |
-| 23 | Black + 2 Degrees | New bar |
-| 24 | Black + 3 Degrees | Championship poster in gym |
-| 25 | Black + 4 Degrees | New bar |
-| 26 | Black + 5 Degrees | Halfway ceremony — special animation |
-| 27 | Black + 6 Degrees | New bar |
-| 28 | Black + 7 Degrees | New bar |
-| 29 | Black + 8 Degrees | New bar |
-| 30 | Black + 9 Degrees | New bar |
-| 31 | Black + 10 Degrees | New bar |
-| 32 | **Coral Belt** | **Ultimate unlock — Coral Belt, full gym transformation, legendary ceremony animation** |
+| White | 0–4 stripes | Fighter wears white belt; badge shows stripes |
+| Blue | 0–4 stripes | **Promotion:** fighter's belt swaps to blue |
+| Purple | 0–4 stripes | Belt swaps to purple |
+| Brown | 0–4 stripes | Belt swaps to brown |
+| Black | 0–10 degrees | Belt swaps to black; badge shows red-bar degrees |
+| Coral | Final | Belt swaps to coral; special celebration |
 
-**Belt color reference (for palette swap system):**
-White → Blue → Purple → Brown → Black → Coral (red/white split)
+**Promotion moment:** On a new belt, the reveal screen plays the celebration animation, then swaps the belt layer to the new color with a brief flash. Same animation for every promotion — the new belt color is the payoff.
 
-**Stripe rendering:** Each stripe is a white tape mark on the belt end. Stripes 1–4 rendered as individual pixel marks on the belt layer. Black belt degrees use a red bar system — rendered as a separate sub-layer composited onto the belt. Coral belt is a unique belt asset (not a palette swap — it is a split red/white design requiring its own art).
-
-**Note on pacing:** The XP required per stripe/rank is a game design tuning decision. The system should be designed so that a user doing 1–2 sessions per day reaches Blue Belt in approximately 3–4 months of consistent use. Full progression to Coral Belt is a multi-year journey for dedicated users — it is the "prestige" endpoint, not an expected outcome. This long tail is intentional: it keeps the app relevant indefinitely for power users.
-
-**Gym environment:** Mat room with grappling dummies, mirror wall, training partners (NPC)
-
-**Training animations:** Guard passing drill, takedown entry, shrimping/hip escape, rolling with partner, drilling on dummy, collar tie work
+**Note on pacing:** XP per stripe is a tuning decision. Target: 1–2 sessions per day reaches Blue Belt in ~3–4 months. Coral is a multi-year journey for power users — intentional long tail.
 
 ---
 
 ### 7.5 BJJ Academy Environment
 
-- 2D side-scrolling pixel scene rendered as background behind avatar
-- BJJ academy aesthetic: mat room with grappling dummies, mirror wall, training partners (NPCs)
-- Starts sparse: basic mats, plain walls
-- Gym decorations unlock as user advances: trophies, belt display wall, posters, new equipment, flags, additional NPCs
-- Day/night cycle tied to real-world time of session (morning light vs. evening lighting)
-- Gym scene is only animated when user is in the app — static/idle when backgrounded
+- Single pixel-art academy background behind the fighter (pre-rendered PNG, ideally LPC-compatible style from itch.io / OpenGameArt)
+- Light ambient animation only (light flicker, dust motes) — already built
+- Static when app is backgrounded
 
-**MVP gym:** One static background. Decoration system is v1.1.
+**Later (v1.1+, only if retention data justifies it):** gym decorations that unlock at belt promotions (belt display wall, trophies).
 
 ---
 
@@ -375,7 +314,6 @@ White → Blue → Purple → Brown → Black → Coral (red/white split)
 - Technique name and martial art origin
 - 3–5 sentence plain-language description
 - Key coaching points (2–3 bullet points)
-- Pixel art illustration of the position or technique
 - YouTube reference link (curated, not user-submitted) — v1.1
 
 **BJJ Curriculum (30+ lessons for MVP):**
@@ -405,160 +343,70 @@ White → Blue → Purple → Brown → Black → Coral (red/white split)
 - Completing a full focus session (primary — majority of XP)
 - Daily first session bonus (+25% XP)
 - Consecutive day streak bonus (v1.1)
-- Weekly challenge completion (v1.1)
 
-**XP triggers unlocks for:**
-- Belt stripes and new belt ranks
-- New gi colors and gear items
-- New gym decorations (v1.1)
+**XP drives:**
+- Belt stripes and belt promotions
 - BJJ technique lessons (one per session, sequentially)
 
 **Broken session:** No XP awarded. Streak unaffected if at least one full session completed that day.
 
-**Partial credit (optional setting, default OFF):** If enabled, awards XP proportional to time completed before break (e.g., 14/25 min = 56% XP). Useful for beginners building the habit.
+**Partial credit (optional setting, default OFF):** If enabled, awards XP proportional to time completed before break (e.g., 14/25 min = 56% XP).
 
 ---
 
 ### 7.8 Onboarding Flow
 
 1. Welcome screen — app identity, BJJ theme preview
-2. Avatar creation — gender, skin tone, hair, eyes (starts in white gi)
+2. Pick your fighter — tap one of the roster (starts in white belt)
 3. Timer setup — pre-filled 25/5 Pomodoro defaults, user can adjust
 4. Explanation of the lock mechanic — "Start your session, lock your phone. You train on the mats while you're away. Come back when the time is up."
 5. First session launched
 
-Onboarding should take under 2 minutes. No account creation required to start (guest session with local storage, account creation prompted after first completed session).
+Onboarding should take under 1 minute. No account creation required (local storage; accounts post-POC).
 
 ---
 
 ## 8. Technical Stack
 
-All decisions made with AI-assisted development in mind. Stack optimized for maximum 
+| Concern | Choice |
+|---|---|
+| Framework | React + TypeScript + Vite (PWA) |
+| Styling | Tailwind CSS |
+| State | Zustand (persisted to local storage for POC) |
+| Hosting | Vercel |
+| Native | Capacitor (iOS + Android wrapper) — after art overhaul |
+| Backend (post-POC) | Supabase (accounts, sync) |
 
 ---
 
 ## 9. Project Folder Structure
 
+Create folders just-in-time. Only the art-related parts change from the current repo:
 
+```
+public/
+├── sprites/
+│   ├── fighters/          # One LPC sheet per fighter (no belt)
+│   │   ├── fighter-1.png
+│   │   └── ...
+│   ├── belts/             # Belt-only sheets, one per color
+│   │   ├── white.png
+│   │   ├── blue.png
+│   │   ├── purple.png
+│   │   ├── brown.png
+│   │   ├── black.png
+│   │   └── coral.png
+│   └── CREDITS.txt        # LPC attribution (required)
+└── gym-background.jpg     # Academy background
 
-fightfocus/
-│
-├── public/ # Static files served as-is
-│ ├── sprites/ # Pixel art assets
-│ │ ├── body/
-│ │ ├── hair_back/
-│ │ ├── clothing_base/
-│ │ ├── gear/
-│ │ ├── face/
-│ │ ├── hair_front/
-│ │ ├── accessories/
-│ │ └── belt/
-│ ├── backgrounds/ # BJJ academy backgrounds
-│ │ └── academy/
-│ ├── sfx/ # Sound effects
-│ └── fonts/ # Pixel/display fonts
-│
-├── src/
-│ ├── main.tsx # App entry point
-│ ├── App.tsx # Root component, routing
-│ │
-│ ├── components/ # Reusable UI components
-│ │ ├── timer/
-│ │ │ ├── TimerDisplay.tsx
-│ │ │ ├── TimerControls.tsx
-│ │ │ └── SessionIndicator.tsx
-│ │ ├── avatar/
-│ │ │ ├── AvatarRenderer.tsx # The sprite compositor
-│ │ │ ├── AvatarCreator.tsx # Creation/customization UI
-│ │ │ └── AvatarPortrait.tsx # Larger profile portrait
-│ │ ├── gym/
-│ │ │ ├── GymScene.tsx # Background scene wrapper
-│ │ │ └── GymBackground.tsx # Actual pixel background
-│ │ ├── session/
-│ │ │ ├── RevealScreen.tsx # Success reveal
-│ │ │ ├── BrokenScreen.tsx # Failed session
-│ │ │ └── LockPrompt.tsx # "Lock your phone" UI
-│ │ ├── progression/
-│ │ │ ├── XPBar.tsx
-│ │ │ ├── BeltDisplay.tsx
-│ │ │ ├── GearUnlock.tsx # Unlock reveal animation
-│ │ │ └── RankUpCeremony.tsx
-│ │ ├── journal/
-│ │ │ ├── JournalList.tsx
-│ │ │ ├── LessonCard.tsx
-│ │ │ └── JournalSearch.tsx
-│ │ ├── store/ # Gear store / IAP
-│ │ │ ├── GearStore.tsx
-│ │ │ └── StoreItem.tsx
-│ │ └── ui/ # Generic reusable primitives
-│ │ ├── Button.tsx
-│ │ ├── Modal.tsx
-│ │ ├── ProgressBar.tsx
-│ │ └── PixelBorder.tsx # Reusable pixel-style border
-│ │
-│ ├── screens/ # Full page views (routed)
-│ │ ├── Home.tsx # Main academy screen with timer
-│ │ ├── Onboarding.tsx
-│ │ ├── AvatarSetup.tsx
-│ │ ├── Journal.tsx
-│ │ ├── Profile.tsx
-│ │ ├── Store.tsx
-│ │ └── Settings.tsx
-│ │
-│ ├── hooks/ # Custom React hooks
-│ │ ├── useTimer.ts # All timer logic lives here
-│ │ ├── useLockDetection.ts # Page Visibility API logic
-│ │ ├── useSession.ts # Session start/end/state
-│ │ ├── useProgression.ts # XP, rank, unlock logic
-│ │ ├── useAvatar.ts # Avatar state and layers
-│ │ └── useJournal.ts # Lesson fetching/saving
-│ │
-│ ├── lib/ # Third-party config and clients
-│ │ ├── supabase.ts # Supabase client init
-│ │ ├── stripe.ts # Stripe client init
-│ │ └── posthog.ts # Analytics init
-│ │
-│ ├── store/ # Global state (Zustand)
-│ │ ├── avatarStore.ts
-│ │ ├── sessionStore.ts
-│ │ ├── progressionStore.ts
-│ │ └── userStore.ts
-│ │
-│ ├── types/ # TypeScript type definitions
-│ │ ├── avatar.ts
-│ │ ├── session.ts
-│ │ ├── progression.ts
-│ │ ├── lesson.ts
-│ │ └── user.ts
-│ │
-│ ├── constants/ # Values that never change
-│ │ ├── beltSystem.ts # Full belt/stripe progression data
-│ │ ├── bjjLessons.ts # BJJ technique library
-│ │ ├── colors.ts # Palette swap color definitions
-│ │ ├── xpThresholds.ts # XP required per rank
-│ │ └── spriteConfig.ts # Layer names, frame counts
-│ │
-│ ├── utils/ # Pure helper functions
-│ │ ├── spriteCompositor.ts # Canvas layer stacking logic
-│ │ ├── paletteSwap.ts # Color replacement logic
-│ │ ├── sessionCalc.ts # Timestamp math, elapsed time
-│ │ ├── xpCalc.ts # XP award calculations
-│ │ └── formatTime.ts # Timer display formatting
-│ │
-│ └── styles/ # Global styles
-│ ├── globals.css
-│ ├── fonts.css
-│ └── pixelTheme.css # Pixel-specific CSS (borders, rendering)
-│
-├── supabase/
-│ ├── migrations/ # Database schema files
-│ └── seed/ # Lesson data seed files
-│ └── bjj_lessons.sql
-│
-├── .env.local # Secrets (never commit this)
-├── .env.example # Template for env vars (commit this)
-├── index.html
-├── vite.config.ts
-├── tailwind.config.ts
-├── tsconfig.json
-└── package.json
+src/
+├── components/avatar/
+│   ├── AvatarRenderer.tsx # Stacks fighter + belt sheets, steps frames
+│   └── AvatarPicker.tsx   # Roster picker
+├── constants/
+│   ├── spriteConfig.ts    # FIGHTERS roster + ANIMATIONS row/frame map
+│   └── beltSystem.ts      # Belt/stripe progression + XP thresholds
+└── ...                    # Timer, session, journal, progression — unchanged
+```
+
+**Removed from earlier versions:** the 8-layer compositor, palette swapping (`paletteSwap.ts`, `colors.ts`), gear store / IAP components, and the per-preset × per-skin-tone static PNG folders.
