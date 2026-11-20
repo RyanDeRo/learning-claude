@@ -1305,3 +1305,28 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 8. After visual QA: Capacitor + App Store prep
 
 **Status:** In progress — waiting on magenta-belt sprites
+
+---
+
+## 2026-11-20 — Pixel-Art Skill Rewritten for the AI Sprite Pipeline
+
+**What we did:**
+- Rewrote `.claude/skills/pixel-art/SKILL.md`. It still enforced the retired 48×64 / 8-layer / palette-swap spec as "NON-NEGOTIABLE".
+- Found that `tools/sprite-pipeline/` already handles background removal, normalizing, and the 6 skin tones. That corrects the previous entry: the user does **not** need 48 images.
+
+**Files changed:**
+- `.claude/skills/pixel-art/SKILL.md` — full rewrite: AI-sprite workflow, magenta belt rule, prompt template, pipeline order, output format
+- `journal.MD`
+
+**Decisions made:**
+- **8 AI images (4 poses × 2 bodies) → 240 sprites** via the scripts (6 skin tones × 5 belts)
+- Belt recolor runs **last**, after skin recolor (a brown belt's hue overlaps the skin detector)
+- Starting rank colors defined in the skill; tune them by eye against the dojo
+- Planned sprite path: `public/sprites/{preset}/tone-{n}/{belt}/{state}.png`
+
+**Next steps:**
+1. User: generate 8 raw images using the skill's prompt template (idle first, then use it as the reference)
+2. Helio: write `recolor_belt.py`, run the full pipeline, update `AvatarRenderer` to use `currentBelt.color`
+3. Remaining list from the previous entry (phone test, promotion moment, DojoScene on reveal/broken, cleanup, Capacitor)
+
+**Status:** Waiting on raw magenta-belt images
