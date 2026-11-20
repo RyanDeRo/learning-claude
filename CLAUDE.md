@@ -22,5 +22,12 @@ Every real project lives in its own subfolder (e.g. `Local Website Build/`, `Foc
 - Be honest about what's a viable money-making direction and what's just a fun build. I'd rather hear "this is a good learning exercise but a weak business" than have that go unsaid.
 - Keep solutions simple enough that I can maintain, explain, and repeat them — sustainability matters more than cleverness.
 
-## Journals
-Each project subfolder keeps its own journal (`journal.md`) logging sessions, decisions, and next steps. Update the relevant one after meaningful work in that project.
+## Lessons in every interaction
+Every interaction should leave me with at least one lesson, not just a finished task. End each response that does real work with a short **Lesson** section (2–4 sentences): one transferable idea from what we just did — an AI/tooling concept, a business or consulting principle, or a judgment call and why it went the way it did. Favor lessons I could reuse with a client or in my PagerDuty work. Don't pad: for a trivial one-line answer, skip it. Record the useful ones in the journal entry for that session under a **Lessons** heading.
+
+## Journals — always update
+Update the journals at the end of every session that does meaningful work. Don't wait to be asked.
+- **Every project:** the project's own `journal.md` (sessions, decisions, next steps, lessons).
+- **ryAIn Consulting and local web agency work** (anything in `ryainconsulting/` or `Local Website Build/`, including client sites): also update `ryainconsulting/journal.md`, plus the client's own journal and `Local Website Build/journal.md` for client site work.
+- **BJJ For The Planet work** (website, CharitySpar, flyers, brand): `BJJ For The Planet/journal.md`.
+

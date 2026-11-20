@@ -17,4 +17,9 @@ The business name is: $ARGUMENTS
    - Note any tooling or workflow improvements discovered this session
    - Update the open questions / next steps checklist
 
+3. Update the ryAIn Consulting journal at `ryainconsulting/journal.md` (repo root):
+   - Add a dated entry noting the client work done and anything that affects the business (pricing, offers, case studies, reusable process)
+
+4. Include a **Lessons** heading in each entry: the transferable takeaways from this session.
+
 Be specific and factual. A short accurate entry beats a long vague one.
