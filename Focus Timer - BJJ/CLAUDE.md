@@ -38,7 +38,7 @@ FightFocus is a focus timer app with martial arts gamification. Users lock their
 
 **Purpose:** The human should be able to read `journal.MD` and immediately understand where the project stands without re-reading the entire conversation history.
 
-**Location:** `/Users/rderobertis/Personal/learning-claude/Focus Timer - BJJ/journal.MD`
+**Location:** `journal.MD` in this folder (same folder as this CLAUDE.md)
 
 ---
 
@@ -57,7 +57,8 @@ FightFocus is a focus timer app with martial arts gamification. Users lock their
 - Web-first (React PWA with Vite)
 - No background processing during lock (app is idle)
 - Lock detection via Page Visibility API
-- Sprite system: 48×64px base canvas, 8-layer compositing, palette swapping
+- Sprites: AI-generated poses processed by `tools/sprite-pipeline/` (skin tones and belt colors are scripted, not generated). 512×640 transparent PNGs. See the `pixel-art` skill.
+- Native: Capacitor wraps the web app for iOS/Android (after the art overhaul)
 - State management: Zustand
 - Styling: Tailwind CSS
 - Local storage for POC (Supabase later)
@@ -87,7 +88,7 @@ Make sure to give me vibe coding and AI usage tips. This project is for the goal
 
 - **PRD:** Full product spec and architecture
 - **Journal:** Session-by-session progress log (update after EVERY interaction)
-- **Current Phase:** Pre-Development (POC not yet started)
+- **Current Phase:** POC built (timer, lock detection, belts, journal, onboarding, dojo scene). Now: belt-rank sprites, promotion moment, then App Store prep. See the latest journal entry for the live task list.
 
 
 ## Persona

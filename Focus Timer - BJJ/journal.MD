@@ -1330,3 +1330,27 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 3. Remaining list from the previous entry (phone test, promotion moment, DojoScene on reveal/broken, cleanup, Capacitor)
 
 **Status:** Waiting on raw magenta-belt images
+
+---
+
+## 2026-11-20 — Project CLAUDE.md Brought Up to Date
+
+**What we did:**
+- Fixed three stale lines in the project `CLAUDE.md`
+
+**Files changed:**
+- `CLAUDE.md`:
+  - Sprite constraint: the retired 48×64 / 8-layer spec is replaced by the AI sprite pipeline and the `pixel-art` skill
+  - Added Capacitor as the native path
+  - Current Phase: "Pre-Development" → POC built, now on belt sprites, the promotion moment, and App Store prep
+  - Journal location: was an absolute path to a folder that doesn't exist (`/Users/rderobertis/Personal/...`); now a relative reference, so it works on both computers
+- `journal.MD`
+
+**Decisions made:**
+- The PRD, the `pixel-art` skill, and `CLAUDE.md` now all agree on the art direction
+- CLAUDE.md points to the journal for the live task list instead of duplicating it, so there's one place to update
+
+**Next steps:**
+- Unchanged: user generates 8 magenta-belt raw images; Helio writes `recolor_belt.py` and wires belts into the renderer
+
+**Status:** Waiting on raw images
