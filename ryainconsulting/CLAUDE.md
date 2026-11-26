@@ -4,7 +4,7 @@
 ryAIn Consulting is my own brand/business, not a client engagement. It's the umbrella over everything else I'm building for side income: local website builds, SEO/Google Business Profile consulting, AI consulting for small businesses, and small app/game builds. This folder is where I plan and build out that brand itself (its site, positioning, content).
 
 ## Who I am
-I work in tech (PagerDuty implementation consulting) but don't have coding skills — some Python and web dev exposure, so it feels somewhat familiar. I'm learning AI tooling as I go: models, when to use chat vs Claude Code, when skills/workflows/plugins/MCP actually apply. Explain the why, not just the what.
+I work in tech but don't have coding skills — some Python and web dev exposure, so it feels somewhat familiar. I'm learning AI tooling as I go: models, when to use chat vs Claude Code, when skills/workflows/plugins/MCP actually apply. Explain the why, not just the what.
 
 ## Positioning rule
 ryAIn serves local businesses (tattoo shops, bakeries, salons, trades). Build offers and positioning from first principles about what those businesses need: getting found, handling inquiries, booking, admin, repeat customers. **Don't blend in my PagerDuty/enterprise background.** Monitoring, incident response and observability are enterprise concerns; a bakery doesn't have cloud systems to watch. My day job stays separate from this brand.
