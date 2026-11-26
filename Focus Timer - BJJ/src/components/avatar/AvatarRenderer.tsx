@@ -1,4 +1,6 @@
 import { useAvatarStore } from '@/store/avatarStore'
+import { useProgressionStore } from '@/store/progressionStore'
+import { BeltColor } from '@/types/progression'
 
 type AvatarState = 'idle' | 'training' | 'celebration' | 'discouraged'
 
@@ -13,9 +15,13 @@ const STATES: AvatarState[] = ['idle', 'training', 'celebration', 'discouraged']
 // Sprite canvases are 512×640, so height is width × 1.25
 const ASPECT = 640 / 512
 
+// Coral (the endgame rank) has no sprite yet — show black until it gets its own art
+const spriteBelt = (color: BeltColor) => (color === 'coral' ? 'black' : color)
+
 export function AvatarRenderer({ state, size = 120 }: AvatarRendererProps) {
   const { presetId, skinTone } = useAvatarStore((s) => s.avatarConfig)
-  const spritePath = (s: AvatarState) => `/sprites/${presetId}/tone-${skinTone}/${s}.png`
+  const belt = spriteBelt(useProgressionStore((s) => s.currentBelt.color))
+  const spritePath = (s: AvatarState) => `/sprites/${presetId}/tone-${skinTone}/${belt}/${s}.png`
 
   return (
     <div

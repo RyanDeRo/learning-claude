@@ -1354,3 +1354,76 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Unchanged: user generates 8 magenta-belt raw images; Helio writes `recolor_belt.py` and wires belts into the renderer
 
 **Status:** Waiting on raw images
+
+---
+
+## 2026-11-25 — Magenta Belts via Gemini Image Edit (Browser)
+
+**What we did:**
+- Clarified where the prompt template is used: paste it into an image tool (Gemini, which made the original sprites)
+- Helio ran Gemini through Claude in Chrome: uploaded the existing `basecharactermale/basecharacter-idle.png` and asked for an **edit** (belt only, recolored to flat #FF00FF) instead of generating from scratch
+- User approved downloads; Helio ran all 8 edits (4 poses × male/female), each in a fresh Gemini chat, and filed them in `art examples/magenta-raw/{male,female}/{idle,celebrate,discouraged,doubleleg}.jpeg`
+- QA: side-by-side contact sheet vs. the originals showed no character drift; each sprite has ~8–14k magenta pixels
+- Female idle was refused once ("I'm having a hard time fulfilling your request"). A softer rephrase worked on retry and was used for the rest of the female set.
+
+**Files changed:**
+- `journal.MD`
+
+**Decisions made:**
+- **Edit the existing 8 base sprites instead of generating new ones.** The characters already in the app stay identical, and an edit ("change only X") is far more consistent than a fresh generation. The `pixel-art` skill's from-scratch prompt is now the fallback.
+- The edited output has a white or black background; `liftsubject` removes it, so that's fine
+- **Gemini downloads are JPEG, not PNG.** Compression smears the magenta slightly (e.g. (204,26,208) instead of (255,0,255)), so `recolor_belt.py` must match a **hue range**, not an exact color.
+- Raw files keep the app's pose names; note the 4th pose is `doubleleg` (the skill's prompt list calls it "training")
+
+**Next steps:**
+1. Helio writes `recolor_belt.py` (hue-range match, preserve shading, runs last) and runs the full pipeline: liftsubject → normalize → skin tones → belts
+2. Spot-check outputs on the dojo background; tune rank colors by eye
+3. Wire `currentBelt.color` into `AvatarRenderer`
+4. Update the `pixel-art` skill: edit-existing-sprite as the primary workflow, JPEG/hue-range note
+
+## Lessons
+- Edit with explicit invariants ("only change X") beats regenerating from a template when consistency matters
+- A generic AI refusal on a benign request is often flaky: retry once with softer wording before assuming a real block
+- QA AI batch output with a side-by-side contact sheet, not one image at a time
+
+**Status:** In progress — all 8 magenta sprites done; next is the recolor script
+
+---
+
+## 2026-11-25 — Belt Pipeline Run: 240 Sprites Live in the App
+
+**What we did:**
+- Ran the full pipeline on the 8 magenta-raw images: liftsubject → normalize → 6 skin tones → 5 belts = **240 sprites**
+- Wrote `tools/sprite-pipeline/recolor_belt.py`
+- Wired the belt into `AvatarRenderer`: the sprite path is now `/sprites/{preset}/tone-{n}/{belt}/{state}.png`, driven by `progressionStore.currentBelt.color`
+- Deleted the 48 old belt-less sprites (still in git history)
+- QA: belt test zoomed on the dojo, then a 20-tile sheet (all belts × all poses × extreme skin tones). No pink fringe, and brown stays distinct from the darkest skin.
+
+**Files changed:**
+- `tools/sprite-pipeline/recolor_belt.py` (new)
+- `tools/sprite-pipeline/README.md`: step 4b for belts
+- `src/components/avatar/AvatarRenderer.tsx`: reads the current belt
+- `public/sprites/**`: 240 new files, 48 old removed
+- `.claude/skills/pixel-art/SKILL.md`: the edit-in-Gemini workflow is now preferred; recolor_belt documented
+- `journal.MD`
+
+**Decisions made:**
+- **Mix-based recolor, not exact match.** Each pixel is treated as (neutral gray) + t × magenta, with t from `min(R,B) - G`. Only the magenta share is swapped, so outline and gi edges blend correctly with no halo.
+- **256-color palette PNGs:** 50 MB → 8.7 MB for all 240, with no visible difference. A phone only loads its own 4 sprites (~150 KB).
+- **Coral belt → shows the black sprite** until coral gets its own art (red/white split)
+- Black belt is close to the outline color but reads fine at full size. The real BJJ black belt has a red bar; that's a possible future polish item.
+
+**Next steps:**
+1. Run the app on a phone and look at belts in context (also covers the pending dojo/S20 checks)
+2. Tune rank colors by eye if any look off (`BELTS` in `recolor_belt.py`, then rerun step 4b)
+3. Belt promotion moment on `RevealScreen` (belt visibly changes)
+4. Use `DojoScene` on `RevealScreen` / `BrokenScreen`
+5. Cleanup: gear unlocks in `beltSystem.ts`, unused `gym-background.jpg`
+6. Capacitor + App Store prep
+
+## Lessons
+- Measure the real data before writing thresholds: profiling the belt pixels showed the halo problem before it shipped
+- Model edge pixels as mixes ("how much magenta?") instead of yes/no masks. That's the trick behind every good green-screen key.
+- Check asset weight early: 50 MB would have quietly bloated the App Store download
+
+**Status:** Complete. Belts are live; next is the promotion moment.

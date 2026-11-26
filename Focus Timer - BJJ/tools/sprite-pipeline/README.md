@@ -38,7 +38,16 @@ swiftc -O liftsubject.swift -o liftsubject
      .venv/bin/python recolor_skin.py "normalized/$state.png" "../../public/sprites/<preset-id>"
    done
    ```
-   This produces `public/sprites/<preset-id>/tone-{1..6}/<state>.png`.
+   Write these to a scratch folder (e.g. `toned/`), not `public/`; belts come next.
+
+4b. Generate the 5 belt variants (must run AFTER skin recolor):
+   ```bash
+   for n in 1 2 3 4 5 6; do for state in idle training celebration discouraged; do
+     .venv/bin/python recolor_belt.py "toned/tone-$n/$state.png" "../../public/sprites/<preset-id>/tone-$n"
+   done; done
+   ```
+   This produces `public/sprites/<preset-id>/tone-{1..6}/{white,blue,purple,brown,black}/<state>.png`
+   (palette-compressed PNGs). Requires the raw images to have a magenta (#FF00FF) belt.
 
 5. Spot-check: open a couple of tone variants and confirm hair/gi/belt are
    untouched and only the skin hue shifted. If the skin-cluster detection

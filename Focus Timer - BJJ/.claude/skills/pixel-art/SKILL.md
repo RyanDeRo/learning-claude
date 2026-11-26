@@ -49,7 +49,22 @@ outside the skin detector's 0–40 range, so skin recolor won't touch it.
 **Order matters:** belt recolor runs **last**, after skin recolor. (A brown belt's hue overlaps skin;
 recoloring skin after would corrupt it.)
 
-## AI prompt template (for the user's image tool)
+## Preferred: edit the existing sprites (Gemini)
+
+Upload an existing base sprite (`art examples/basecharacter{male,female}/`) to Gemini, one per fresh chat, with:
+
+```
+Generate an edited version of this pixel art sprite where the only change is the belt color:
+make the belt solid flat magenta #FF00FF (no shading, no stripes, no gradients). Keep the
+character, pose, gi, style, and background exactly the same. No magenta anywhere else.
+```
+
+Edits keep the approved characters identical; generating from scratch (template below) drifts. Gemini
+downloads are JPEG on a white or black background; that's fine (liftsubject + hue-range matching).
+Raw magenta images live in `art examples/magenta-raw/{male,female}/`. Pose name mapping: doubleleg → training,
+celebrate → celebration. Preset ids: male = `base`, female = `woman`.
+
+## AI prompt template (fallback: new characters only)
 
 Generate the **idle** pose first and get it right; then attach it as a reference image for the other
 three poses so the character stays consistent.
@@ -83,7 +98,7 @@ Full commands live in `tools/sprite-pipeline/README.md`. Order:
 1. `liftsubject` — ML background removal (macOS Vision). Color-keying fails because hair and backgrounds are both near-black.
 2. `normalize.py` — crop, uniform scale, bottom-align to the 512×640 canvas
 3. `recolor_skin.py` — 6 skin tones
-4. `recolor_belt.py` — **not written yet.** Replaces magenta pixels with each rank color and preserves shading; outputs one folder per belt.
+4. `recolor_belt.py` — swaps the magenta belt for each rank color, outputs one folder per belt, and saves as a 256-color palette PNG (~5× smaller). Matches magenta by *amount* (`min(R,B) - G`), not exact color, because Gemini outputs JPEG and edges blend into outline/gi.
 5. Spot-check a few outputs: skin shifted only on skin, belt fully recolored (no pink fringe at the edges), gi untouched
 
 Rank colors (starting values, tune by eye on the dojo background): white `#F2F2F2`, blue `#1F4FD1`,
