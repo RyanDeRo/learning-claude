@@ -47,7 +47,12 @@ export function RevealScreen({ session, onContinue }: RevealScreenProps) {
         {/* Lesson Card */}
         {newLesson ? (
           <div className="mb-6">
-            <h3 className="text-lg font-bold text-white mb-4">🥋 New Technique Unlocked</h3>
+            <img
+              src="/scroll/scroll-open.png"
+              alt=""
+              className="w-40 h-auto mx-auto mb-2 animate-slideUp"
+            />
+            <h3 className="text-lg font-bold text-white mb-4">New Technique Unlocked</h3>
             <LessonCard lesson={newLesson} />
           </div>
         ) : (

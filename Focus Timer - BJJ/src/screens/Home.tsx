@@ -159,7 +159,10 @@ export default function Home() {
               to="/journal"
               className="block w-full px-4 py-3 bg-amber-800 hover:bg-amber-700 text-amber-50 font-bold border-4 border-amber-900 transition-all hover:scale-105"
             >
-              📖 View Training Manual
+              <span className="inline-flex items-center justify-center gap-2">
+                <img src="/scroll/scroll-tied.png" alt="" className="w-7 h-auto" />
+                View Training Manual
+              </span>
             </Link>
           </div>
         </div>

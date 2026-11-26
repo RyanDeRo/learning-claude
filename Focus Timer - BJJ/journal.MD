@@ -1426,4 +1426,43 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Model edge pixels as mixes ("how much magenta?") instead of yes/no masks. That's the trick behind every good green-screen key.
 - Check asset weight early: 50 MB would have quietly bloated the App Store download
 
-**Status:** Complete. Belts are live; next is the promotion moment.
+- Committed only this session's files (`8526658`) and pushed. The new sprite URL returned a PNG from the Vercel site about 30s later.
+
+**Status:** Complete. Belts are live in production; next is the promotion moment.
+
+---
+
+## 2026-11-25 — Scroll Art Replaces the CSS Parchment
+
+**What we did:**
+- The user added 3 scroll images (`art examples/dojo/*.webp`): tall open, wide open, tied. Background removed with `liftsubject`.
+- **Training Manual (`/journal`)**: the CSS gradient/clip-path parchment is replaced by the tall pixel-art scroll
+  - Erased the painted glyphs so the paper is blank: masked gray-dark pixels only (aging is warm brown) and filled each from its row neighbors, which keeps the shading
+  - Cut into `scroll-top.png` / 1px `scroll-band.png` / `scroll-bottom.png`. The band tiles between the caps, so the scroll grows with the list.
+- **Reveal screen**: the open scroll sits above "New Technique Unlocked"; `LessonCard` restyled as parchment (it was a gray card)
+- **Locked lessons + Home "View Training Manual" button**: the tied scroll replaces 🔒 / 📖
+- Verified in Chrome: desktop, 390px phone (via iframe), Home, and a full 60s test session to reach the reveal
+
+**Files changed:**
+- `public/scroll/` (new): scroll-top, scroll-band, scroll-bottom, scroll-open, scroll-tied (~170 KB total)
+- `src/styles/globals.css`: `.parchment-scroll` rewritten; new `.scroll-cap`, `.scroll-body`, `.scroll-content`
+- `src/screens/Journal.tsx`, `src/screens/Home.tsx`, `src/components/session/RevealScreen.tsx`, `src/components/journal/LessonCard.tsx`
+- `journal.MD`
+
+**Decisions made:**
+- **Cap / tiled-band / cap ("3-slice")** instead of stretching one image: stretching warps the art and puts content over painted text
+- The paper fill lives only *between* the caps. Behind them, it showed through the transparent areas around the rollers.
+- 1px band, not 16px: a taller strip repeats its edge bumps (ladder look)
+- Max width 680px + `image-rendering: pixelated`: larger, the rollers dominate and blur
+- `min-height: 95cqw` (container query units) keeps the caps from colliding when a search leaves the list short
+
+**Next steps:**
+- Commit + push when the user approves (Vercel deploys from `main`)
+- Then continue: real-phone check, belt promotion moment, DojoScene on reveal/broken screens
+
+## Lessons
+- When art must hold variable-length content, slice it: fixed ends, a repeatable middle. It's the same 9-slice idea games and UI kits use for resizable panels.
+- Separate "what to erase" by a property the noise doesn't share (gray glyphs vs. warm aging), then fill from neighbors instead of a flat color
+- Look at it in a real browser at real sizes; three of the four fixes here only showed up on screen
+
+**Status:** Complete locally, not yet deployed

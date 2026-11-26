@@ -18,7 +18,7 @@ export function LessonCard({ lesson }: LessonCardProps) {
   }
 
   return (
-    <div className="bg-gray-800 border-2 border-gray-700 rounded-lg p-6 space-y-4">
+    <div className="bg-[#F4E7B5] border-4 border-double border-amber-900 p-6 space-y-4 text-left">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -29,17 +29,17 @@ export function LessonCard({ lesson }: LessonCardProps) {
               {lesson.category}
             </span>
           </div>
-          <h3 className="text-xl font-bold text-white">{lesson.title}</h3>
+          <h3 className="text-xl font-bold text-amber-950">{lesson.title}</h3>
         </div>
       </div>
 
       {/* Content */}
-      <div className="text-gray-300 leading-relaxed">{lesson.content}</div>
+      <div className="text-amber-900 leading-relaxed">{lesson.content}</div>
 
       {/* Footer */}
-      <div className="pt-4 border-t border-gray-700">
-        <p className="text-sm text-gray-500">
-          💡 This lesson has been saved to your journal
+      <div className="pt-4 border-t border-amber-800/40">
+        <p className="text-sm text-amber-800">
+          Saved to your Training Manual
         </p>
       </div>
     </div>

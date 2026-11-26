@@ -53,7 +53,10 @@ export default function Journal() {
         </div>
 
         {/* Scroll Container */}
-        <div className="parchment-scroll relative">
+        <div className="parchment-scroll">
+          <img src="/scroll/scroll-top.png" alt="" className="scroll-cap" />
+          <div className="scroll-body">
+          <div className="scroll-content">
           {/* Search Bar */}
           <div className="mb-8 ink-reveal">
             <input
@@ -148,7 +151,7 @@ export default function Journal() {
                       key={lesson.id}
                       onClick={() => unlocked && setSelectedLessonId(lesson.id)}
                       disabled={!unlocked}
-                      className={`w-full text-left p-5 md:p-6 border-4 border-double lesson-card ${
+                      className={`w-full text-left p-3 md:p-6 border-4 border-double lesson-card ${
                         unlocked
                           ? 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-900 cursor-pointer wax-seal'
                           : 'bg-gradient-to-br from-amber-200 to-amber-300 border-amber-700 opacity-60 cursor-not-allowed'
@@ -164,10 +167,13 @@ export default function Journal() {
                           </span>
 
                           {/* Title */}
-                          <h3 className={`text-2xl md:text-3xl mb-3 calligraphy-accent ${
+                          <h3 className={`text-xl md:text-3xl mb-3 calligraphy-accent flex items-center gap-2 ${
                             unlocked ? 'text-amber-900' : 'text-amber-600'
                           }`}>
-                            {unlocked ? lesson.title : '🔒 ' + lesson.title}
+                            {!unlocked && (
+                              <img src="/scroll/scroll-tied.png" alt="Locked" className="w-8 h-auto shrink-0" />
+                            )}
+                            {lesson.title}
                           </h3>
 
                           {/* Preview or Locked Message */}
@@ -192,6 +198,9 @@ export default function Journal() {
               )}
             </div>
           )}
+          </div>
+          </div>
+          <img src="/scroll/scroll-bottom.png" alt="" className="scroll-cap" />
         </div>
 
         {/* Back to Training Button */}
