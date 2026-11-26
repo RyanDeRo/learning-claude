@@ -28,3 +28,16 @@
 - Start discovery with the client's day, not your toolbox. Interviewing 3–5 owners is now the first module because it decides what's worth learning next.
 
 **Next:** Module 1: interview 3–5 owners (Kadillac, nail salons, smoothie shop, Personal Touch, the BJJ gym) about their weekly time sinks.
+
+## 2026-11-25 — Offer restructured, ryAIn site live, private-file incident on client sites
+- **Offer (Ryan's decision):** the $50/mo website is the foot in the door. The $150 voice plan is gone. Everything AI (voice/chat agents, n8n automations, AI usage consulting) is now one **custom-quoted** offer, priced by how much automation the client wants. "Unlimited updates" is dropped from the $50 plan. The site bio no longer mentions PagerDuty, which matches the 11-20 decision.
+- **ryAIn site is live** at `ryainconsulting.netlify.app`. There's no custom domain yet, on purpose, to keep costs down.
+- **Incident:** Netlify was publicly serving internal files. On Kadillac (a real client) that meant the client journal and research notes; on ryAIn it meant the **finance tracker** and journal. Fixing Kadillac caused about 30 minutes of downtime. Fixed with a `site/` folder layout and a "journal.md must 404" check, now in the agency Netlify guide. Old deploys still contain the files and are slated for deletion.
+- **Client-facing quality issue caught by Ryan:** North Star testimonials had been trimmed and spliced. Now only complete, verbatim reviews are used (also saved as a standing rule in Claude's memory).
+
+**Lessons**
+- **Land and expand:** a cheap, low-risk entry product earns the trust that sells the scoped, higher-value work. That only works if the entry product is clearly scoped, which is why "unlimited" came out.
+- **Security is part of the product.** A client's internal notes sitting at a public URL is a trust breach, even if nobody found it. "Verify private things are actually private" belongs on every go-live checklist I sell.
+- **The incident order is reusable as a story for clients:** restore service (rollback), then find the cause (publish-dir timing), then fix it so it can't recur (folder structure plus a 404 check). That's a real example of the reliability habit, explained in a local business's terms.
+
+**Next:** decide whether to state an edit limit on the $50 plan. Get one AI automation proof point for the Work section (an owner interview from Module 1 could become the first one).
