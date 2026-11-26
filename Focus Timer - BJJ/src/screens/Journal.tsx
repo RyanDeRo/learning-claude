@@ -96,7 +96,7 @@ export default function Journal() {
                 ← Return to Index
               </button>
 
-              <div className="parchment-page p-8 md:p-12">
+              <div className="parchment-page p-4 md:p-12">
                 {/* Category Badge */}
                 <div className="mb-6 ink-reveal">
                   <span className={`category-badge ${getCategoryClass(selectedLesson.category)}`}>
@@ -151,10 +151,10 @@ export default function Journal() {
                       key={lesson.id}
                       onClick={() => unlocked && setSelectedLessonId(lesson.id)}
                       disabled={!unlocked}
-                      className={`w-full text-left p-3 md:p-6 border-4 border-double lesson-card ${
+                      className={`w-full text-left p-3 md:p-6 border-2 lesson-card ${
                         unlocked
-                          ? 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-900 cursor-pointer wax-seal'
-                          : 'bg-gradient-to-br from-amber-200 to-amber-300 border-amber-700 opacity-60 cursor-not-allowed'
+                          ? 'bg-[rgba(122,90,54,0.08)] border-[#7a5a36] cursor-pointer wax-seal'
+                          : 'bg-transparent border-dashed border-[#7a5a36]/60 cursor-not-allowed'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-4 relative">
@@ -168,7 +168,7 @@ export default function Journal() {
 
                           {/* Title */}
                           <h3 className={`text-xl md:text-3xl mb-3 calligraphy-accent flex items-center gap-2 ${
-                            unlocked ? 'text-amber-900' : 'text-amber-600'
+                            unlocked ? 'text-[#3d2a17]' : 'text-[#7a5a36]'
                           }`}>
                             {!unlocked && (
                               <img src="/scroll/scroll-tied.png" alt="Locked" className="w-8 h-auto shrink-0" />
@@ -178,7 +178,7 @@ export default function Journal() {
 
                           {/* Preview or Locked Message */}
                           <p className={`text-base md:text-lg manuscript-text ${
-                            unlocked ? 'text-amber-800' : 'text-amber-600 italic'
+                            unlocked ? 'text-[#3d2a17]' : 'text-[#7a5a36] italic'
                           }`}>
                             {unlocked
                               ? lesson.content.slice(0, 120) + '...'

@@ -1466,3 +1466,35 @@ Session Complete → XP Award → New Technique Unlocked → Lesson Card → Con
 - Look at it in a real browser at real sizes; three of the four fixes here only showed up on screen
 
 **Status:** Complete locally, not yet deployed
+
+---
+
+## 2026-11-25 — Scroll Controls Restyled as Ink on Paper
+
+**What we did:**
+- The user asked for the buttons on the scroll to blend in better. Before, they were white or yellow boxes with drop shadows that floated over the art.
+- Restyled everything inside the scroll as "ink on paper": an ink palette (`--ink-dark #3d2a17`, `--ink-mid #7a5a36`, `--ink-faint` tint, `--paper #f4e7b5`) in a new `:root` block
+  - Search box: faint ink wash and a 2px ink border instead of a white box with a shadow
+  - Filter buttons: outlined ink; the selected one is solid ink with paper-colored text
+  - Category tags: colored-ink stamps (no pastel fill or glow)
+  - Lesson cards: unlocked = solid ink border + faint tint; locked = dashed outline. Ink-brown text replaces the orange.
+  - Lesson detail page: ink double border and wash instead of a white box; "Return to Index" outlined (scoped with `.scroll-content .dojo-button`, so "Return to Dojo" on the dark background keeps its heavy style)
+- Fixed the clipped wax seal: removed `overflow: hidden` from `.lesson-card` (it existed only for the old hover stain, now replaced by a tint)
+- Tighter lesson-page padding on phones
+- Checked at 390px and 700px in Chrome, list and detail views
+
+**Files changed:**
+- `src/styles/globals.css`, `src/screens/Journal.tsx`, `journal.MD`
+
+**Decisions made:**
+- Shared colors live in CSS variables, so a future tweak is a one-line change
+- Scoped override rather than editing `.dojo-button` globally: same component, different surface, different style
+
+**Next steps:**
+- Commit + push when the user wants to see it live
+
+## Lessons
+- Elements "float" when they bring their own surface (fill + shadow). To make UI feel part of a background, borrow the background's colors and drop the shadows.
+- Scope style changes to where they're needed (`.scroll-content .dojo-button`) instead of changing a shared style that other screens rely on
+
+**Status:** Complete locally
